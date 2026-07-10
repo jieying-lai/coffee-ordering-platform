@@ -183,7 +183,7 @@ nav {
 }
 .add-btn:hover { background: var(--color-accent-dark); }
 
-/* ============ ENTRY / LANDING PAGE (root index.php) ============ */
+/* ============ ENTRY / LANDING PAGE ============ */
 .entry-page {
   display: flex;
   align-items: center;
