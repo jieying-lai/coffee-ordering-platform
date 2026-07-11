@@ -9,6 +9,9 @@
   --color-accent-dark: rgb(168,71,47); 
   --color-gold:rgb(184,137,93); 
   --color-border: rgb(224,213,196);
+  --main-color: #C85A3E;
+	--hover-color: #D87C4A;
+	--light-color: #F8E7DF;
 
   --font-heading: 'Playfair Display', serif;
   --font-body: 'Nunito', sans-serif;
@@ -360,4 +363,224 @@ nav {
 
 @media (max-width: 900px) and (min-width: 641px) {
   .reviews-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+* {
+	box-sizing: border-box;
+}
+
+body {
+	margin: 0;
+	background-color: #FFF9F5;
+	color: #241814;
+	font-family: Arial, Helvetica, sans-serif;
+}
+
+.login-page {
+	width: 100%;
+	max-width: 850px;
+	margin: 0 auto;
+	padding: 55px 30px;
+  font-family: "Playfair Display", serif;
+	font-weight: 700;
+}
+
+.login-page h1 {
+	margin: 0 0 85px;
+	text-align: center;
+	font-family: Georgia, "Times New Roman", serif;
+	font-size: 44px;
+	font-weight: bold;
+}
+
+.login-card {
+	width: 100%;
+	padding: 50px;
+	background-color: #fadac8;
+	border-radius: 18px;
+	box-shadow: 0 2px 18px rgba(0, 0, 0, 0.14);
+}
+
+.required-message {
+	margin: 0 0 45px;
+	font-size: 24px;
+  font-family: "Nunito", sans-serif;
+}
+
+.required-star {
+	color: var(--main-color);
+	font-weight: bold;
+}
+
+.input-group {
+	position: relative;
+	margin-bottom: 42px;
+}
+
+.input-group label {
+	position: absolute;
+	top: 50%;
+	left: 35px;
+	transform: translateY(-50%);
+	font-size: 28px;
+	pointer-events: none;
+	transition: opacity 0.2s;
+  font-family: "Nunito", sans-serif;
+}
+
+.input-group input {
+	width: 100%;
+	height: 78px;
+	padding: 15px 25px;
+	border: 2px solid #999999;
+	border-radius: 20px;
+	background-color: transparent;
+	font-size: 21px;
+	outline: none;
+  font-family: "Nunito", sans-serif;
+}
+
+.input-group input:focus {
+	border-color: var(--main-color);
+	box-shadow: 0 0 0 3px rgba(200, 90, 62, 0.18);
+}
+
+/* Move the label upward when the input is selected or contains text */
+.input-group input:focus + label,
+.input-group input:not(:placeholder-shown) + label {
+	opacity: 0;
+	visibility: hidden;
+}
+
+.show-password {
+	position: absolute;
+	top: 50%;
+	right: 24px;
+	transform: translateY(-50%);
+	width: 36px;
+	height: 36px;
+	padding: 4px;
+	border: none;
+	background: transparent;
+	cursor: pointer;
+}
+
+.show-password svg {
+	width: 100%;
+	height: 100%;
+	fill: none;
+	stroke: #777777;
+	stroke-width: 1.7;
+	stroke-linecap: round;
+	stroke-linejoin: round;
+}
+
+.remember-section {
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+	gap: 10px;
+	margin-bottom: 35px;
+	font-size: 23px;
+  font-family: "Nunito", sans-serif;
+}
+
+.remember-section input[type="checkbox"] {
+	width: 40px;
+	height: 40px;
+	margin: 0 5px 0 0;
+	accent-color: var(--main-color);
+	cursor: pointer;
+}
+
+.remember-section label {
+	cursor: pointer;
+}
+
+a {
+	color: #C85A3E;
+	font-weight: bold;
+	text-decoration: underline;
+}
+
+.remember-section a {
+	font-size: 21px;
+}
+
+.help-links {
+	display: flex;
+	flex-direction: column;
+	align-items: flex-start;
+	gap: 18px;
+	font-size: 23px;
+  font-family: "Nunito", sans-serif;
+}
+
+.button-section {
+	display: flex;
+	justify-content: flex-end;
+	margin-top: 75px;
+}
+
+.sign-in-button {
+	min-width: 165px;
+	padding: 21px 35px;
+	border: none;
+	border-radius: 50px;
+	background-color: var(--main-color);
+	color: white;
+	font-family: "Playfair Display", serif;
+	font-size: 27px;
+	font-weight: 700;
+	cursor: pointer;
+	box-shadow: 0 5px 12px rgba(0, 0, 0, 0.25);
+}
+
+.sign-in-button:hover {
+	background-color: var(--hover-color);
+}
+
+.sign-in-button:active {
+	transform: scale(0.97);
+}
+
+@media screen and (max-width: 600px) {
+	.login-page {
+		padding: 35px 18px;
+	}
+
+	.login-page h1 {
+		margin-bottom: 45px;
+		font-size: 32px;
+	}
+
+	.login-card {
+		padding: 32px 22px;
+	}
+
+	.required-message {
+		font-size: 19px;
+	}
+
+	.input-group label {
+		left: 18px;
+		font-size: 20px;
+	}
+
+	.input-group input {
+		height: 68px;
+	}
+
+	.remember-section,
+	.help-links {
+		font-size: 18px;
+	}
+
+	.button-section {
+		margin-top: 50px;
+	}
+
+	.sign-in-button {
+		font-size: 22px;
+	}
 }
