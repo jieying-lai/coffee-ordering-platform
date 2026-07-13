@@ -1,0 +1,231 @@
+/* ============================================
+   COZY COFFEE CO. — LOGIN PAGE STYLES
+   Only used by login/index.php (and register/index.php
+   if you reuse this layout there).
+   Load AFTER mystyle.css:
+     <link rel="stylesheet" href="../style/mystyle.css">
+     <link rel="stylesheet" href="../style/login.css">
+   Every rule here is scoped under .login-page so it can
+   never leak out and affect menu/contact/other pages.
+   ============================================ */
+
+body.login-page {
+  margin: 0;
+  background-color: #FFF9F5;
+  color: #241814;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.login-page {
+  width: 100%;
+  max-width: 850px;
+  margin: 0 auto;
+  padding: 55px 30px;
+}
+
+.login-page h1 {
+  margin: 0 0 85px;
+  text-align: center;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 44px;
+  font-weight: bold;
+}
+
+.login-page .login-card {
+  width: 100%;
+  padding: 50px;
+  background-color: #FADAC8;
+  border-radius: 18px;
+  box-shadow: 0 2px 18px rgba(0, 0, 0, 0.14);
+}
+
+.login-page .required-message {
+  margin: 0 0 45px;
+  font-size: 24px;
+  font-family: "Nunito", sans-serif;
+}
+
+.login-page .required-star {
+  color: var(--main-color);
+  font-weight: bold;
+}
+
+.login-page .input-group {
+  position: relative;
+  margin-bottom: 42px;
+}
+
+.login-page .input-group label {
+  position: absolute;
+  top: 50%;
+  left: 35px;
+  transform: translateY(-50%);
+  font-size: 28px;
+  pointer-events: none;
+  transition: opacity 0.2s;
+  font-family: "Nunito", sans-serif;
+}
+
+.login-page .input-group input {
+  width: 100%;
+  height: 78px;
+  padding: 15px 25px;
+  border: 2px solid #999999;
+  border-radius: 20px;
+  background-color: transparent;
+  font-size: 21px;
+  outline: none;
+  font-family: "Nunito", sans-serif;
+}
+
+.login-page .input-group input:focus {
+  border-color: var(--main-color);
+  box-shadow: 0 0 0 3px rgba(200, 90, 62, 0.18);
+}
+
+/* Move the label upward when the input is focused or contains text */
+.login-page .input-group input:focus + label,
+.login-page .input-group input:not(:placeholder-shown) + label {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.login-page .show-password {
+  position: absolute;
+  top: 50%;
+  right: 24px;
+  transform: translateY(-50%);
+  width: 36px;
+  height: 36px;
+  padding: 4px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+.login-page .show-password svg {
+  width: 100%;
+  height: 100%;
+  fill: none;
+  stroke: #777777;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.login-page .remember-section {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 35px;
+  font-size: 23px;
+  font-family: "Nunito", sans-serif;
+}
+
+.login-page .remember-section input[type="checkbox"] {
+  width: 40px;
+  height: 40px;
+  margin: 0 5px 0 0;
+  accent-color: var(--main-color);
+  cursor: pointer;
+}
+
+.login-page .remember-section label {
+  cursor: pointer;
+}
+
+.login-page a {
+  color: var(--main-color);
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+.login-page .remember-section a {
+  font-size: 21px;
+}
+
+.login-page .help-links {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 18px;
+  font-size: 23px;
+  font-family: "Nunito", sans-serif;
+}
+
+.login-page .button-section {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 75px;
+}
+
+.login-page .sign-in-button {
+  min-width: 165px;
+  padding: 21px 35px;
+  border: none;
+  border-radius: 50px;
+  background-color: var(--main-color);
+  color: white;
+  font-family: "Playfair Display", serif;
+  font-size: 27px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 5px 12px rgba(0, 0, 0, 0.25);
+}
+
+.login-page .sign-in-button:hover {
+  background-color: var(--hover-color);
+}
+
+.login-page .sign-in-button:active {
+  transform: scale(0.97);
+}
+
+.login-page .back-link {
+  display: inline-block;
+  margin-bottom: 30px;
+  font-size: 16px;
+  font-family: "Nunito", sans-serif;
+}
+
+@media screen and (max-width: 600px) {
+  .login-page {
+    padding: 35px 18px;
+  }
+
+  .login-page h1 {
+    margin-bottom: 45px;
+    font-size: 32px;
+  }
+
+  .login-page .login-card {
+    padding: 32px 22px;
+  }
+
+  .login-page .required-message {
+    font-size: 19px;
+  }
+
+  .login-page .input-group label {
+    left: 18px;
+    font-size: 20px;
+  }
+
+  .login-page .input-group input {
+    height: 68px;
+  }
+
+  .login-page .remember-section,
+  .login-page .help-links {
+    font-size: 18px;
+  }
+
+  .login-page .button-section {
+    margin-top: 50px;
+  }
+
+  .login-page .sign-in-button {
+    font-size: 22px;
+  }
+}

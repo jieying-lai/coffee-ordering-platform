@@ -9,9 +9,9 @@
 
 <body>
 <nav>
-  <div class="logo"><a href="../index.php">Cozy Coffee Co.</a></div>
+  <div class="logo"><a href="../home/index.php">Cozy Coffee Co.</a></div>
   <ul class="nav-links">
-    <li><a href="../index.php">Home</a></li>
+    <li><a href="../home/index.php">Home</a></li>
     <li>
       <a href="../menu/index.php">Menu ▾</a>
       <div class="dropdown">
@@ -53,6 +53,7 @@
     </ul>
 
     <div class="contact-map">
+      <!-- TODO: replace with your actual Google Maps embed link -->
       <iframe
         src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d1346.744641350054!2d101.79352459067356!3d3.0400653684064136!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2smy!4v1783592577677!5m2!1sen!2smy"
         loading="lazy"

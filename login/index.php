@@ -3,17 +3,18 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link rel="stylesheet" href="style/mystyle.css">
+	<link rel="stylesheet" href="../style/mystyle.css">
+	<link rel="stylesheet" href="../style/login.css">
 	<title>Cozy Coffee Co. — Login Account</title>
 </head>
 	
+<body class="login-page">
 
-<body>
-<main class="login-page">
-
+		<a href="../index.php" class="back-link">← Back to Home</a>
+		
 		<h1>Sign in or create an account</h1>
 
-		<form class="login-card">
+		<form class="login-card" action="login_process.php" method="POST">
 
 			<p class="required-message">
 				<span class="required-star">*</span>
@@ -82,6 +83,7 @@
 			<div class="help-links">
 				<a href="#">Forgot your username?</a>
 				<a href="#">Forgot your password?</a>
+				<a href="../register/index.php">Don't have an account? Register</a>
 			</div>
 
 			<div class="button-section">
@@ -91,8 +93,6 @@
 			</div>
 
 		</form>
-
-	</main>
 
 	<script>
 		const showPasswordButton = document.getElementById("showPassword");

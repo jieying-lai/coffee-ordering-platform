@@ -22,7 +22,7 @@
   <div class="entry-actions">
     <a href="register/index.php" class="entry-btn entry-btn-primary">Register</a>
     <a href="login/index.php" class="entry-btn entry-btn-outline">Login</a>
-    <a href="menu/index.php" class="entry-link">Continue without login →</a>
+    <a href="home/index.php" class="entry-link">Continue without login →</a>
   </div>
 
 </div>

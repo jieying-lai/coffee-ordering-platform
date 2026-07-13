@@ -9,9 +9,9 @@
 
 <body>
 <nav>
-  <div class="logo"><a href="../index.php">Cozy Coffee Co.</a></div>
+  <div class="logo"><a href="../home/index.php">Cozy Coffee Co.</a></div>
   <ul class="nav-links">
-    <li><a href="../index.php">Home</a></li>
+    <li><a href="../home/index.php">Home</a></li>
     <li>
       <a href="index.php" class="active">Menu ▾</a>
       <div class="dropdown">
