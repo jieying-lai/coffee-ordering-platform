@@ -5,74 +5,676 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" href="style/mystyle.css">
 	<title>Cozy Coffee Co. — Cart</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --orange: #C85A3E;
+            --dark: #3d2019;
+            --gray: #8b7355;
+            --light: #fdf8f4;
+            --white: #ffffff;
+            --border: #ead5c7;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: var(--light);
+            padding: 15px;
+            color: var(--dark);
+        }
+
+        .container {
+            max-width: 750px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .header {
+            background: var(--white);
+            padding: 18px 22px;
+            border-radius: 14px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 26px;
+        }
+
+        .badge {
+            background: var(--orange);
+            color: var(--white);
+            padding: 7px 16px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        /* Buttons */
+        .btn {
+            font-family: 'Nunito', sans-serif;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 14px;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn-orange {
+            background: var(--orange);
+            color: var(--white);
+        }
+
+        .btn-orange:hover {
+            background: #b04a30;
+        }
+
+        .btn-outline {
+            background: var(--white);
+            color: var(--orange);
+            border: 2px solid var(--orange);
+        }
+
+        .btn-outline:hover {
+            background: var(--orange);
+            color: var(--white);
+        }
+
+        .btn-red {
+            background: none;
+            color: #c0392b;
+            border: 2px solid #c0392b;
+            padding: 5px 10px;
+            font-size: 13px;
+            border-radius: 8px;
+        }
+
+        .btn-red:hover {
+            background: #c0392b;
+            color: white;
+        }
+
+        .btn-full {
+            width: 100%;
+            padding: 14px;
+            font-size: 16px;
+        }
+
+        .btn-small {
+            padding: 7px 14px;
+            font-size: 13px;
+        }
+
+        /* Cart Box */
+        .cart-box {
+            background: var(--white);
+            border-radius: 14px;
+            margin-bottom: 15px;
+        }
+
+        /* Empty Cart */
+        .empty-cart {
+            text-align: center;
+            padding: 45px 20px;
+        }
+
+        .empty-cart .icon {
+            font-size: 65px;
+            display: block;
+            margin-bottom: 15px;
+        }
+
+        .empty-cart h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        .empty-cart p {
+            color: var(--gray);
+            font-size: 15px;
+            margin-bottom: 20px;
+        }
+
+        /* Cart Item */
+        .cart-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 18px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .cart-item:last-child {
+            border-bottom: none;
+        }
+
+        .item-img {
+            width: 55px;
+            height: 55px;
+            border-radius: 10px;
+            background: #f5e6d8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            flex-shrink: 0;
+        }
+
+        .item-info {
+            flex: 1;
+            min-width: 100px;
+        }
+
+        .item-info .name {
+            font-family: 'Playfair Display', serif;
+            font-size: 16px;
+            font-weight: 700;
+        }
+
+        .item-info .detail {
+            font-size: 12px;
+            color: var(--gray);
+            font-weight: 600;
+        }
+
+        .item-info .price {
+            font-family: 'Playfair Display', serif;
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--orange);
+        }
+
+        /* Quantity */
+        .qty-group {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .qty-btn {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            border: 2px solid var(--border);
+            background: white;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--orange);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .qty-btn:hover {
+            background: var(--orange);
+            color: white;
+            border-color: var(--orange);
+        }
+
+        .qty-num {
+            font-weight: 700;
+            font-size: 15px;
+            min-width: 20px;
+            text-align: center;
+        }
+
+        .item-total {
+            font-family: 'Playfair Display', serif;
+            font-size: 16px;
+            font-weight: 700;
+            min-width: 55px;
+            text-align: right;
+        }
+
+        /* Summary */
+        .summary-box {
+            background: var(--white);
+            border-radius: 14px;
+            padding: 20px 22px;
+        }
+
+        .summary-box h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 20px;
+            margin-bottom: 15px;
+        }
+
+        .promo-row {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .promo-row input {
+            flex: 1;
+            padding: 10px 14px;
+            border: 2px solid var(--border);
+            border-radius: 10px;
+            font-family: 'Nunito', sans-serif;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .promo-row input:focus {
+            border-color: var(--orange);
+        }
+
+        .price-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 7px 0;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .price-row.total {
+            border-top: 2px solid var(--border);
+            margin-top: 7px;
+            padding-top: 13px;
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .price-row.total .amount {
+            font-family: 'Playfair Display', serif;
+            font-size: 24px;
+            color: var(--orange);
+        }
+
+        .green {
+            color: #27ae60;
+        }
+
+        .menu-link {
+            display: block;
+            text-align: center;
+            color: var(--orange);
+            text-decoration: none;
+            font-weight: 700;
+            padding: 12px;
+            font-size: 14px;
+            margin-top: 8px;
+        }
+
+        .menu-link:hover {
+            text-decoration: underline;
+        }
+
+        /* Message */
+        .message {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #27ae60;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 14px;
+            display: none;
+            z-index: 999;
+        }
+
+        .message.show {
+            display: block;
+        }
+
+        .message.error {
+            background: #c0392b;
+        }
+
+        /* Responsive */
+        @media (max-width: 600px) {
+            .header h1 {
+                font-size: 22px;
+            }
+
+            .cart-item {
+                flex-wrap: wrap;
+                gap: 8px;
+                padding: 12px 14px;
+            }
+
+            .item-img {
+                width: 45px;
+                height: 45px;
+                font-size: 22px;
+            }
+
+            .item-info .name {
+                font-size: 15px;
+            }
+
+            .promo-row {
+                flex-direction: column;
+            }
+
+            .summary-box {
+                padding: 16px;
+            }
+
+            .price-row.total .amount {
+                font-size: 22px;
+            }
+        }
+
+        @media (max-width: 400px) {
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .cart-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .item-total {
+                align-self: flex-end;
+            }
+
+            .btn-red {
+                align-self: flex-end;
+            }
+        }
+    </style>
 </head>
 <body>
-<h1>Cart</h1>
- <!-- cart items – design only, no interaction -->
-  <div class="cart-list">
-    <!-- item 1 -->
-    <div class="cart-item">
-      <div class="item-info">
-        <span class="item-emoji">☕</span>
-        <span class="item-name">Espresso</span>
-        <span class="item-price">$3.50</span>
-      </div>
-      <div class="item-controls">
-        <div class="qty-selector">
-          <span class="qty-btn">−</span>
-          <span class="qty-value">2</span>
-          <span class="qty-btn">+</span>
+    <div class="container">
+
+        <!-- Header -->
+        <div class="header">
+            <h1>🛒 Your Cart</h1>
+            <span class="badge" id="cartCount">0 Items</span>
         </div>
-        <span class="item-total">$7.00</span>
-        <span class="remove-btn">✕</span>
-      </div>
+
+        <!-- Cart Items -->
+        <div class="cart-box" id="cartBox">
+            <div class="empty-cart" id="emptyState">
+                <span class="icon">🛒</span>
+                <h2>Cart is Empty</h2>
+                <p>You haven't added any coffee yet.<br>Browse our menu to get started!</p>
+                <a href="menu.html" class="btn btn-orange btn-full">
+                    ☕ Browse Menu & Order
+                </a>
+            </div>
+        </div>
+
+        <!-- Order Summary -->
+        <div class="summary-box" id="summaryBox" style="display: none;">
+            <h2>Order Summary</h2>
+
+            <div class="promo-row">
+                <input type="text" placeholder="Enter promo code" id="promoInput">
+                <button class="btn btn-outline btn-small" onclick="applyPromo()">Apply</button>
+            </div>
+
+            <div class="price-row">
+                <span>Subtotal</span>
+                <span id="subtotal">$0.00</span>
+            </div>
+            <div class="price-row">
+                <span>Delivery Fee</span>
+                <span id="delivery">$0.00</span>
+            </div>
+            <div class="price-row green" id="discountRow" style="display: none;">
+                <span>Discount</span>
+                <span id="discount">-$0.00</span>
+            </div>
+            <div class="price-row total">
+                <span>Total</span>
+                <span class="amount" id="total">$0.00</span>
+            </div>
+
+            <button class="btn btn-orange btn-full" onclick="checkout()" style="margin-top: 15px;">
+                Proceed to Checkout 💳
+            </button>
+            <a href="menu.html" class="menu-link">← Continue Ordering — Back to Menu</a>
+        </div>
+
     </div>
 
-    <!-- item 2 -->
-    <div class="cart-item">
-      <div class="item-info">
-        <span class="item-emoji">☕</span>
-        <span class="item-name">Cappuccino</span>
-        <span class="item-price">$4.20</span>
-      </div>
-      <div class="item-controls">
-        <div class="qty-selector">
-          <span class="qty-btn">−</span>
-          <span class="qty-value">1</span>
-          <span class="qty-btn">+</span>
-        </div>
-        <span class="item-total">$4.20</span>
-        <span class="remove-btn">✕</span>
-      </div>
-    </div>
+    <!-- Message -->
+    <div class="message" id="message"></div>
 
-    <!-- item 3 -->
-    <div class="cart-item">
-      <div class="item-info">
-        <span class="item-emoji">🍫</span>
-        <span class="item-name">Mocha</span>
-        <span class="item-price">$5.00</span>
-      </div>
-      <div class="item-controls">
-        <div class="qty-selector">
-          <span class="qty-btn">−</span>
-          <span class="qty-value">1</span>
-          <span class="qty-btn">+</span>
-        </div>
-        <span class="item-total">$5.00</span>
-        <span class="remove-btn">✕</span>
-      </div>
-    </div>
-  </div>
+    <script>
+        // Cart data
+        let cart = [];
+        let promo = null;
 
-  <!-- cart summary -->
-  <div class="cart-summary">
-    <span class="total-label">Total</span>
-    <span class="total-price">$16.20</span>
-    <span class="checkout-btn">🛒 Checkout</span>
-  </div>
-  <div style="text-align: right; margin-top: 0.6rem; font-size: 0.8rem; color: #8b7a69; padding-right: 0.3rem;">
-    <span>3 items</span>
-  </div>
-</div>
+        // Valid promo codes
+        const promos = {
+            'COFFEE10': 10,
+            'BREW20': 20,
+            'WELCOME15': 15
+        };
+
+        // Load cart from storage
+        function loadCart() {
+            const saved = localStorage.getItem('coffeeCart');
+            if (saved) cart = JSON.parse(saved);
+            showCart();
+        }
+
+        // Save cart
+        function saveCart() {
+            localStorage.setItem('coffeeCart', JSON.stringify(cart));
+        }
+
+        // Show cart on screen
+        function showCart() {
+            const cartBox = document.getElementById('cartBox');
+            const summaryBox = document.getElementById('summaryBox');
+
+            if (cart.length === 0) {
+                // Empty cart
+                cartBox.innerHTML = `
+                    <div class="empty-cart">
+                        <span class="icon">🛒</span>
+                        <h2>Cart is Empty</h2>
+                        <p>You haven't added any coffee yet.<br>Browse our menu to get started!</p>
+                        <a href="menu.html" class="btn btn-orange btn-full">
+                            ☕ Browse Menu & Order
+                        </a>
+                    </div>
+                `;
+                summaryBox.style.display = 'none';
+                document.getElementById('cartCount').textContent = '0 Items';
+            } else {
+                // Show items
+                let html = '';
+                cart.forEach((item, i) => {
+                    html += `
+                        <div class="cart-item">
+                            <div class="item-img">${item.image || '☕'}</div>
+                            <div class="item-info">
+                                <div class="name">${item.name}</div>
+                                ${item.detail ? `<div class="detail">${item.detail}</div>` : ''}
+                                <div class="price">$${item.price.toFixed(2)} each</div>
+                            </div>
+                            <div class="qty-group">
+                                <button class="qty-btn" onclick="changeQty(${i}, -1)">−</button>
+                                <span class="qty-num">${item.quantity}</span>
+                                <button class="qty-btn" onclick="changeQty(${i}, 1)">+</button>
+                            </div>
+                            <div class="item-total">$${(item.price * item.quantity).toFixed(2)}</div>
+                            <button class="btn btn-red" onclick="removeItem(${i})">✕</button>
+                        </div>
+                    `;
+                });
+                cartBox.innerHTML = html;
+                summaryBox.style.display = 'block';
+                updateSummary();
+            }
+        }
+
+        // Change quantity
+        function changeQty(index, amount) {
+            cart[index].quantity += amount;
+
+            if (cart[index].quantity <= 0) {
+                removeItem(index);
+                return;
+            }
+
+            if (cart[index].quantity > 10) {
+                cart[index].quantity = 10;
+                showMsg('Maximum 10 per item', 'error');
+            }
+
+            saveCart();
+            showCart();
+        }
+
+        // Remove item
+        function removeItem(index) {
+            const name = cart[index].name;
+            cart.splice(index, 1);
+            saveCart();
+            showCart();
+            showMsg(name + ' removed');
+        }
+
+        // Update price summary
+        function updateSummary() {
+            let subtotal = 0;
+            let totalItems = 0;
+
+            cart.forEach(item => {
+                subtotal += item.price * item.quantity;
+                totalItems += item.quantity;
+            });
+
+            const delivery = subtotal > 0 ? 2.99 : 0;
+            let discount = 0;
+
+            if (promo && subtotal > 0) {
+                discount = subtotal * (promo / 100);
+            }
+
+            const total = subtotal + delivery - discount;
+
+            document.getElementById('subtotal').textContent = '$' + subtotal.toFixed(2);
+            document.getElementById('delivery').textContent = '$' + delivery.toFixed(2);
+
+            if (discount > 0) {
+                document.getElementById('discountRow').style.display = 'flex';
+                document.getElementById('discount').textContent = '-$' + discount.toFixed(2);
+            } else {
+                document.getElementById('discountRow').style.display = 'none';
+            }
+
+            document.getElementById('total').textContent = '$' + Math.max(0, total).toFixed(2);
+            document.getElementById('cartCount').textContent = totalItems + ' Item' + (totalItems !== 1 ? 's' : '');
+        }
+
+        // Apply promo code
+        function applyPromo() {
+            const input = document.getElementById('promoInput');
+            const code = input.value.trim().toUpperCase();
+
+            if (!code) {
+                showMsg('Enter a promo code', 'error');
+                return;
+            }
+
+            if (cart.length === 0) {
+                showMsg('Add items first', 'error');
+                return;
+            }
+
+            if (promos[code]) {
+                promo = promos[code];
+                updateSummary();
+                showMsg(promo + '% discount applied!');
+            } else {
+                promo = null;
+                updateSummary();
+                showMsg('Invalid promo code', 'error');
+            }
+        }
+
+        // Checkout
+        function checkout() {
+            if (cart.length === 0) {
+                showMsg('Cart is empty!', 'error');
+                return;
+            }
+
+            const total = document.getElementById('total').textContent;
+            const count = cart.reduce((s, i) => s + i.quantity, 0);
+
+            alert('☕ Order Confirmed!\n\nItems: ' + count + '\nTotal: ' + total + '\n\nThank you for your order!');
+
+            // Clear cart
+            cart = [];
+            promo = null;
+            document.getElementById('promoInput').value = '';
+            saveCart();
+            showCart();
+            showMsg('Order placed!');
+        }
+
+        // Add item to cart (called from menu page)
+        function addToCart(item) {
+            const existing = cart.find(i => i.name === item.name);
+
+            if (existing) {
+                existing.quantity += 1;
+            } else {
+                cart.push({
+                    name: item.name,
+                    price: item.price,
+                    image: item.image || '☕',
+                    detail: item.detail || '',
+                    quantity: 1
+                });
+            }
+
+            saveCart();
+            showCart();
+            showMsg(item.name + ' added to cart!');
+        }
+
+        // Show message
+        function showMsg(text, type) {
+            const msg = document.getElementById('message');
+            msg.textContent = text;
+            msg.className = 'message ' + (type || '');
+            msg.classList.add('show');
+
+            clearTimeout(msg._timer);
+            msg._timer = setTimeout(function() {
+                msg.classList.remove('show');
+            }, 2500);
+        }
+
+        // Start
+        loadCart();
+        window.addToCart = addToCart;
+
+        // Enter key for promo
+        document.getElementById('promoInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') applyPromo();
+        });
+    </script>
 </body>
+</html>
