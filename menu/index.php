@@ -42,7 +42,7 @@
 
 <!-- ============ COFFEIN & SPECIALTY COFFEE ============ -->
 <div class="menu-category" data-category="specialty" id="specialty">
-  <h2 class="category-title">🌟 Coffein &amp; Specialty Coffee</h2>
+  <h2 class="category-title">🌟 Specialty Coffee</h2>
 
   <div class="menu-grid">
 
@@ -378,18 +378,6 @@
         <div class="item-footer">
           <span class="price">RM 20.90</span>
           <a href="../details/index.php?id=25"><button class="add-btn">View</button></a>
-        </div>
-      </div>
-    </div>
-
-    <div class="item-card">
-      <div class="item-image"><img src="../images/menu/26.png" alt="SMOKED BRISKET SLIDER TRIO"></div>
-      <div class="item-body">
-        <h3>Smoked Brisket Slider Trio</h3>
-        <p>Slow-cooked smoked beef brisket, caramelized onions, and house barbecue glaze in mini brioche buns.</p>
-        <div class="item-footer">
-          <span class="price">RM 24.90</span>
-          <a href="../details/index.php?id=26"><button class="add-btn">View</button></a>
         </div>
       </div>
     </div>

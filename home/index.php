@@ -9,18 +9,18 @@
 
 <body>
 <nav>
-  <div class="logo"><a href="../home/index.php">Cozy Coffee Co.</a></div>
+  <div class="logo"><a href="index.php">Cozy Coffee Co.</a></div>
   <ul class="nav-links">
-    <li><a href="../home/index.php">Home</a></li>
+    <li><a href="index.php" class="active">Home</a></li>
     <li>
-      <a href="index.php" class="active">Menu ▾</a>
+      <a href="../menu/index.php">Menu ▾</a>
       <div class="dropdown">
-        <a href="#specialty">Specialty</a>
-        <a href="#classic">Classic Coffee</a>
-        <a href="#noncoffein">Non-Coffein</a>
-        <a href="#smoothies">Smoothies &amp; Sodas</a>
-        <a href="#mains">Main Dishes</a>
-        <a href="#desserts">Desserts</a>
+        <a href="../menu/index.php?cat=specialty#specialty">Specialty</a>
+        <a href="../menu/index.php?cat=classic#classic">Classic Coffee</a>
+        <a href="../menu/index.php?cat=noncoffein#noncoffein">Non-Coffein</a>
+        <a href="../menu/index.php?cat=smoothies#smoothies">Smoothies &amp; Sodas</a>
+        <a href="../menu/index.php?cat=mains#mains">Main Dishes</a>
+        <a href="../menu/index.php?cat=desserts#desserts">Desserts</a>
       </div>
     </li>
     <li><a href="../contact/index.php">Contact</a></li>
@@ -33,7 +33,7 @@
 <section class="hero">
   <div class="eyebrow">Small Batch · Slow Roasted</div>
   <h1>Warm cups, cozy corners.</h1>
-  <p>Freshly roasted coffee and house-made pastries, ready for pickup or delivery.</p>
+  <p>all you need is love, or maybe coffee</p>
 
   <div class="hero-actions">
     <a href="../menu/index.php" class="cta-btn cta-btn-primary">Order Now</a>
@@ -46,9 +46,35 @@
   <p class="subtitle">Take a look around before you order.</p>
 
   <div class="gallery-grid">
-    <div class="gallery-photo">Our Roastery Corner</div>
-    <div class="gallery-photo">Fresh Brews Daily</div>
-    <div class="gallery-photo">Cozy Seating Area</div>
+    <div class="gallery-card">
+      <div class="gallery-photo">
+        <img src="../images/1.jpg" alt="Our Roastery Corner">
+      </div>
+      <div class="photo-info">
+        <h3>Our Roastery Corner</h3>
+        <p>Where the beans are freshly roasted every morning.</p>
+      </div>
+    </div>
+
+    <div class="gallery-card">
+      <div class="gallery-photo">
+        <img src="../images/2.jpg" alt="Fresh Brews Daily">
+      </div>
+      <div class="photo-info">
+        <h3>Fresh Brews Daily</h3>
+        <p>Handcrafted drinks made with love by our baristas.</p>
+      </div>
+    </div>
+
+    <div class="gallery-card">
+      <div class="gallery-photo">
+        <img src="../images/3.jpg" alt="Cozy Seating Area">
+      </div>
+      <div class="photo-info">
+        <h3>Cozy Seating Area</h3>
+        <p>A warm space for your quiet afternoon or catch-ups.</p>
+      </div>
+    </div>
   </div>
 </section>
 

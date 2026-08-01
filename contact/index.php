@@ -13,17 +13,17 @@
   <ul class="nav-links">
     <li><a href="../home/index.php">Home</a></li>
     <li>
-      <a href="index.php" class="active">Menu ▾</a>
+      <a href="../menu/index.php">Menu ▾</a>
       <div class="dropdown">
-        <a href="#specialty">Specialty</a>
-        <a href="#classic">Classic Coffee</a>
-        <a href="#noncoffein">Non-Coffein</a>
-        <a href="#smoothies">Smoothies &amp; Sodas</a>
-        <a href="#mains">Main Dishes</a>
-        <a href="#desserts">Desserts</a>
+        <a href="../menu/index.php?cat=specialty#specialty">Specialty</a>
+        <a href="../menu/index.php?cat=classic#classic">Classic Coffee</a>
+        <a href="../menu/index.php?cat=noncoffein#noncoffein">Non-Coffein</a>
+        <a href="../menu/index.php?cat=smoothies#smoothies">Smoothies &amp; Sodas</a>
+        <a href="../menu/index.php?cat=mains#mains">Main Dishes</a>
+        <a href="../menu/index.php?cat=desserts#desserts">Desserts</a>
       </div>
     </li>
-    <li><a href="../contact/index.php">Contact</a></li>
+    <li><a href="index.php" class="active">Contact</a></li>
     <li><a href="../cart/index.php">Cart</a></li>
     <li><a href="../login/index.php">Login</a></li>
   </ul>
@@ -32,15 +32,17 @@
 
 <!-- ============ ABOUT / INTRO ============ -->
 <section class="about-section">
-  <div class="eyebrow">Our Story</div>
-  <h2>About Cozy Coffee Co.</h2>
-  <p>
-    Cozy Coffee Co. started as a small neighbourhood roastery with one simple goal:
-    serve honest, carefully brewed coffee in a space that feels like home. Every bean
-    is roasted in small batches, every pastry is baked fresh each morning, and every
-    cup is made to order. Whether you're stopping by for a quiet moment or ordering
-    ahead for pickup, we're glad you're here.
-  </p>
+  <div class="about-content">
+    <div class="eyebrow">Our Story</div>
+    <h2>About Cozy Coffee Co.</h2>
+    <p>
+      Cozy Coffee Co. started as a small neighbourhood roastery with one simple goal:
+      serve honest, carefully brewed coffee in a space that feels like home. Every bean
+      is roasted in small batches, every pastry is baked fresh each morning, and every
+      cup is made to order. Whether you're stopping by for a quiet moment or ordering
+      ahead for pickup, we're glad you're here.
+    </p>
+  </div>
 </section>
 
 <!-- ============ CONTACT US ============ -->

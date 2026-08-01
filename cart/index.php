@@ -6,7 +6,7 @@
 	<link rel="stylesheet" href="style/mystyle.css">
 	<title>Cozy Coffee Co. — Cart</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700;800&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
-    
+    <link rel="stylesheet" href="../style/mystyle.css">
     <style>
         :root {
             --orange: #C85A3E;
@@ -398,6 +398,28 @@
     </style>
 </head>
 <body>
+    <nav>
+  <div class="logo"><a href="index.php">Cozy Coffee Co.</a></div>
+  <ul class="nav-links">
+    <li><a href="../home/index.php">Home</a></li>
+    <li>
+      <a href="../menu/index.php">Menu ▾</a>
+      <div class="dropdown">
+        <a href="../menu/index.php?cat=specialty#specialty">Specialty</a>
+        <a href="../menu/index.php?cat=classic#classic">Classic Coffee</a>
+        <a href="../menu/index.php?cat=noncoffein#noncoffein">Non-Coffein</a>
+        <a href="../menu/index.php?cat=smoothies#smoothies">Smoothies &amp; Sodas</a>
+        <a href="../menu/index.php?cat=mains#mains">Main Dishes</a>
+        <a href="../menu/index.php?cat=desserts#desserts">Desserts</a>
+      </div>
+    </li>
+    <li><a href="../contact/index.php">Contact</a></li>
+    <li><a href="../cart/index.php" class="active">Cart</a></li>
+    <li><a href="../login/index.php">Login</a></li>
+  </ul>
+  <button class="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+</nav>
+
     <div class="container">
 
         <!-- Header -->
