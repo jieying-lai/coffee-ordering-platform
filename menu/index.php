@@ -211,7 +211,7 @@
     <div class="item-card">
       <div class="item-image"><img src="../images/menu/gemini13.png" alt="HOUJICHA STRAWBERRY"></div>
       <div class="item-body">
-        <h3>I Suki Desu</h3>
+        <h3>Houjicha Strawberry</h3>
         <p>Niko-Neko's Tsubaki Houjicha | Jasmine Tea | Strawberry Cloud</p>
         <div class="item-footer">
           <span class="price">RM 15.90</span>
@@ -235,7 +235,7 @@
     <div class="item-card">
       <div class="item-image"><img src="../images/menu/gemini15.png" alt="SESAME LATTE"></div>
       <div class="item-body">
-        <h3>SESAME LATTE</h3>
+        <h3>Sesame Latte</h3>
         <p>Roasted black sesame | Creamy oatmilk — rich, nutty &amp; comforting.</p>
         <div class="item-footer">
           <span class="price">RM 13.90</span>
@@ -269,9 +269,9 @@
     </div>
 
     <div class="item-card">
-      <div class="item-image"><img src="../images/menu/gemini18.png" alt="BABYCCINO"></div>
+      <div class="item-image"><img src="../images/menu/gemini18.png" alt="BABYCINO"></div>
       <div class="item-body">
-        <h3>Babyccino</h3>
+        <h3>Babycino</h3>
         <p>Warm frothy steamed milk dusted with dark cocoa powder &amp; a tiny marshmallow topping.</p>
         <div class="item-footer">
           <span class="price">RM 8.90</span>
