@@ -47,7 +47,7 @@
   <div class="menu-grid">
 
     <div class="item-card">
-      <div class="item-image"><img src="../images/menu/gemini1.png" alt="OCEAN EYES"></div>
+      <div class="item-image"><img src="../images/menu/1.png" alt="OCEAN EYES"></div>
       <div class="item-body">
         <h3>Ocean Eyes</h3>
         <p>Iced Cafe Latte | Watermelon &amp; Peach | Butterfly Pea Flower infused salted cream.</p>
@@ -59,7 +59,7 @@
     </div>
 
     <div class="item-card">
-      <div class="item-image"><img src="../images/menu/gemini2.png" alt="CREAMY DREAMY"></div>
+      <div class="item-image"><img src="../images/menu/2.png" alt="CREAMY DREAMY"></div>
       <div class="item-body">
         <h3>Creamy Dreamy</h3>
         <p>It's fluffy, creamy, rich &amp; smooth. Strong iced coffee topped with a thick layer of cold cream &amp; a dusting of cocoa powder.</p>
@@ -71,7 +71,7 @@
     </div>
 
     <div class="item-card">
-      <div class="item-image"><img src="../images/menu/gemini3.png" alt="PEANUT BUTTER LATTE"></div>
+      <div class="item-image"><img src="../images/menu/3.png" alt="PEANUT BUTTER LATTE"></div>
       <div class="item-body">
         <h3>Peanut Butter Latte</h3>
         <p>Real peanut butter cream with a shot of espresso. </p>
@@ -83,7 +83,7 @@
     </div>
 
     <div class="item-card">
-      <div class="item-image"><img src="../images/menu/gemini4.png" alt="COCO LOCO LATTE"></div>
+      <div class="item-image"><img src="../images/menu/4.png" alt="COCO LOCO LATTE"></div>
       <div class="item-body">
         <h3>Coco Loco Latte</h3>
         <p>Barista coconut milk with luxurious creaminess and natural sweetness of imported coconut milk, with dried coconut on the side.</p>
@@ -95,7 +95,7 @@
     </div>
 
     <div class="item-card">
-      <div class="item-image"><img src="../images/menu/gemini5.jpeg" alt="AUSTRALIAN ICED COFFEE"></div>
+      <div class="item-image"><img src="../images/menu/5.jpeg" alt="AUSTRALIAN ICED COFFEE"></div>
       <div class="item-body">
         <h3>Australian Iced Coffee</h3>
         <p>Double shot espresso over chilled milk, served with a big scoop of premium vanilla ice-cream.</p>
@@ -107,7 +107,7 @@
     </div>
 
     <div class="item-card">
-      <div class="item-image"><img src="../images/menu/gemini6.jpeg" alt="AFFOGATO"></div>
+      <div class="item-image"><img src="../images/menu/6.jpeg" alt="AFFOGATO"></div>
       <div class="item-body">
         <h3>Affogato</h3>
         <p>Hot espresso poured over two scoops of velvety premium vanilla ice cream.</p>
@@ -128,7 +128,7 @@
   <div class="menu-grid">
 
     <div class="item-card">
-      <div class="item-image"><img src="../images/menu/gemini7.png" alt="VELVET FLAT WHITE"></div>
+      <div class="item-image"><img src="../images/menu/7.png" alt="VELVET FLAT WHITE"></div>
       <div class="item-body">
         <h3>Velvet Flat White</h3>
         <p>Ristretto double shot topped with velvety smooth microfoam. Silky and strong.</p>
@@ -140,7 +140,7 @@
     </div>
 
     <div class="item-card">
-      <div class="item-image"><img src="../images/menu/gemini8.png" alt="DIRTY LATTE"></div>
+      <div class="item-image"><img src="../images/menu/8.png" alt="DIRTY LATTE"></div>
       <div class="item-body">
         <h3>Dirty Latte</h3>
         <p>Hot espresso poured directly over ice-cold fresh milk. Pure contrast in every sip.</p>
@@ -152,7 +152,7 @@
     </div>
 
     <div class="item-card">
-      <div class="item-image"><img src="../images/menu/gemini9.png" alt="COZY CAPPUCCINO"></div>
+      <div class="item-image"><img src="../images/menu/9.png" alt="COZY CAPPUCCINO"></div>
       <div class="item-body">
         <h3>Cozy Cappuccino</h3>
         <p>Rich espresso layered with extra deep, fluffy milk foam and a dusting of dark cocoa powder.</p>
@@ -164,7 +164,7 @@
     </div>
 
     <div class="item-card">
-      <div class="item-image"><img src="../images/menu/gemini10.png" alt="PICCOLO LATTE"></div>
+      <div class="item-image"><img src="../images/menu/10.png" alt="PICCOLO LATTE"></div>
       <div class="item-body">
         <h3>Piccolo Latte</h3>
         <p>A small but mighty shot of espresso cut with a small amount of steamed milk. Pure coffee flavor!</p>
@@ -176,7 +176,7 @@
     </div>
 
     <div class="item-card">
-      <div class="item-image"><img src="../images/menu/gemini11.png" alt="CLASSIC CAFE LATTE"></div>
+      <div class="item-image"><img src="../images/menu/11.png" alt="CLASSIC CAFE LATTE"></div>
       <div class="item-body">
         <h3>Classic Cafe Latte</h3>
         <p>Smooth double shot espresso combined with perfectly steamed fresh milk.</p>
@@ -188,7 +188,7 @@
     </div>
 
     <div class="item-card">
-      <div class="item-image"><img src="../images/menu/gemini12.png" alt="MIDNIGHT LONG BLACK"></div>
+      <div class="item-image"><img src="../images/menu/12.png" alt="MIDNIGHT LONG BLACK"></div>
       <div class="item-body">
         <h3>Midnight Long Black</h3>
         <p>Double shot espresso extracted over hot or iced water for a rich, aromatic crema.</p>
@@ -209,7 +209,7 @@
   <div class="menu-grid">
 
     <div class="item-card">
-      <div class="item-image"><img src="../images/menu/gemini13.png" alt="HOUJICHA STRAWBERRY"></div>
+      <div class="item-image"><img src="../images/menu/13.png" alt="HOUJICHA STRAWBERRY"></div>
       <div class="item-body">
         <h3>Houjicha Strawberry</h3>
         <p>Niko-Neko's Tsubaki Houjicha | Jasmine Tea | Strawberry Cloud</p>
@@ -221,7 +221,7 @@
     </div>
 
     <div class="item-card">
-      <div class="item-image"><img src="../images/menu/gemini14.png" alt="HONEYCOMB ICED MATCHA"></div>
+      <div class="item-image"><img src="../images/menu/14.png" alt="HONEYCOMB ICED MATCHA"></div>
       <div class="item-body">
         <h3>Honeycomb Iced Matcha</h3>
         <p>Uji Matcha topped with crunchy homemade honeycomb candy for that sweet crisp bite.</p>
@@ -233,7 +233,7 @@
     </div>
 
     <div class="item-card">
-      <div class="item-image"><img src="../images/menu/gemini15.png" alt="SESAME LATTE"></div>
+      <div class="item-image"><img src="../images/menu/15.png" alt="SESAME LATTE"></div>
       <div class="item-body">
         <h3>Sesame Latte</h3>
         <p>Roasted black sesame | Creamy oatmilk — rich, nutty &amp; comforting.</p>
@@ -245,7 +245,7 @@
     </div>
 
     <div class="item-card">
-      <div class="item-image"><img src="../images/menu/gemini16.png" alt="SALTED APPLE ELIXIR"></div>
+      <div class="item-image"><img src="../images/menu/16.png" alt="SALTED APPLE ELIXIR"></div>
       <div class="item-body">
         <h3>Salted Apple Elixir</h3>
         <p>Salted green apple | Passion fruit | Mint | Soda water</p>
@@ -257,7 +257,7 @@
     </div>
 
     <div class="item-card">
-      <div class="item-image"><img src="../images/menu/gemini17.png" alt="SEASALT DARK CHOCO SPÄNNER"></div>
+      <div class="item-image"><img src="../images/menu/17.png" alt="SEASALT DARK CHOCO SPÄNNER"></div>
       <div class="item-body">
         <h3>Seasalt Dark Choco Spänner</h3>
         <p>Callebaut dark iced chocolate, topped with Solace's signature spänner topping</p>
@@ -269,7 +269,7 @@
     </div>
 
     <div class="item-card">
-      <div class="item-image"><img src="../images/menu/gemini18.png" alt="BABYCINO"></div>
+      <div class="item-image"><img src="../images/menu/18.png" alt="BABYCINO"></div>
       <div class="item-body">
         <h3>Babycino</h3>
         <p>Warm frothy steamed milk dusted with dark cocoa powder &amp; a tiny marshmallow topping.</p>
@@ -290,7 +290,7 @@
   <div class="menu-grid">
 
     <div class="item-card">
-      <div class="item-image"><img src="../images/menu/gemini19.png" alt="MORNING TRAFFIC"></div>
+      <div class="item-image"><img src="../images/menu/19.png" alt="MORNING TRAFFIC"></div>
       <div class="item-body">
         <h3>Morning Traffic</h3>
         <p>Strawberry | Lemon juice | Honey | Kiwi fruit | Yakult</p>
@@ -302,7 +302,7 @@
     </div>
 
     <div class="item-card">
-      <div class="item-image"><img src="../images/menu/gemini20.png" alt="PINK PASSION"></div>
+      <div class="item-image"><img src="../images/menu/20.png" alt="PINK PASSION"></div>
       <div class="item-body">
         <h3>Pink Passion</h3>
         <p>Dragonfruit | Passionfruit | Pineapple | Honey | Yogurt</p>
@@ -314,7 +314,7 @@
     </div>
 
     <div class="item-card">
-      <div class="item-image"><img src="../images/menu/gemini21.png" alt="BLUE MANGO BLISS"></div>
+      <div class="item-image"><img src="../images/menu/21.png" alt="BLUE MANGO BLISS"></div>
       <div class="item-body">
         <h3>Blue Mango Bliss</h3>
         <p>Sweet mango | Fresh milk | Butterfly pea flower tea</p>
@@ -326,7 +326,7 @@
     </div>
 
     <div class="item-card">
-      <div class="item-image"><img src="../images/menu/gemini22.png" alt="BUTTERFLY YUZUNADE"></div>
+      <div class="item-image"><img src="../images/menu/22.png" alt="BUTTERFLY YUZUNADE"></div>
       <div class="item-body">
         <h3>Butterfly Yuzunade</h3>
         <p>Refreshing yuzu | Crushed orange | Lemon juice | Butterfly pea soda</p>
@@ -347,7 +347,7 @@
   <div class="menu-grid">
 
     <div class="item-card">
-      <div class="item-image"><img src="../images/menu/gemini23.png" alt="TRUFFLE WILD MUSHROOM RISOTTO"></div>
+      <div class="item-image"><img src="../images/menu/23.png" alt="TRUFFLE WILD MUSHROOM RISOTTO"></div>
       <div class="item-body">
         <h3>Truffle Wild Mushroom Risotto</h3>
         <p>Arborio rice cooked in rich vegetable broth, sautéed wild mushrooms, and black truffle oil.</p>
@@ -359,7 +359,7 @@
     </div>
 
     <div class="item-card">
-      <div class="item-image"><img src="../images/menu/gemini24.png" alt="SUN-DRIED TOMATO & BURRATA PASTA"></div>
+      <div class="item-image"><img src="../images/menu/24.png" alt="SUN-DRIED TOMATO & BURRATA PASTA"></div>
       <div class="item-body">
         <h3>Sun-Dried Tomato &amp; Burrata Pasta</h3>
         <p>Al dente linguine tossed in garlic sun-dried tomato pesto, topped with fresh creamy burrata.</p>
@@ -371,7 +371,7 @@
     </div>
 
     <div class="item-card">
-      <div class="item-image"><img src="../images/menu/gemini25.png" alt="HERBED SEARING SALMON SKILLET"></div>
+      <div class="item-image"><img src="../images/menu/25.png" alt="HERBED SEARING SALMON SKILLET"></div>
       <div class="item-body">
         <h3>Herbed Searing Salmon Skillet</h3>
         <p>Pan-seared Atlantic salmon fillet on a bed of warm garlic mashed potato and dill cream sauce.</p>
@@ -383,7 +383,7 @@
     </div>
 
     <div class="item-card">
-      <div class="item-image"><img src="../images/menu/gemini26.png" alt="SMOKED BRISKET SLIDER TRIO"></div>
+      <div class="item-image"><img src="../images/menu/26.png" alt="SMOKED BRISKET SLIDER TRIO"></div>
       <div class="item-body">
         <h3>Smoked Brisket Slider Trio</h3>
         <p>Slow-cooked smoked beef brisket, caramelized onions, and house barbecue glaze in mini brioche buns.</p>
@@ -395,7 +395,7 @@
     </div>
 
     <div class="item-card">
-      <div class="item-image"><img src="../images/menu/gemini27.png" alt="COZY GARDEN GRAIN BOWL"></div>
+      <div class="item-image"><img src="../images/menu/27.png" alt="COZY GARDEN GRAIN BOWL"></div>
       <div class="item-body">
         <h3>Cozy Garden Grain Bowl</h3>
         <p>Warm quinoa, roasted sweet potato, edamame, and avocado drizzled with sesame tahini dressing.</p>
@@ -407,7 +407,7 @@
     </div>
 
     <div class="item-card">
-      <div class="item-image"><img src="../images/menu/gemini28.png" alt="ARTISANAL SMOKED SALMON AVOCADO TOAST"></div>
+      <div class="item-image"><img src="../images/menu/28.png" alt="ARTISANAL SMOKED SALMON AVOCADO TOAST"></div>
       <div class="item-body">
         <h3>Artisanal Smoked Salmon Avocado Toast</h3>
         <p>Smoked Atlantic salmon, smashed avocado, capers, and poached egg on toasted sourdough.</p>
@@ -419,7 +419,7 @@
     </div>
 
     <div class="item-card">
-      <div class="item-image"><img src="../images/menu/gemini29.png" alt="CITRUS CHICKEN WALDORF SALAD"></div>
+      <div class="item-image"><img src="../images/menu/29.png" alt="CITRUS CHICKEN WALDORF SALAD"></div>
       <div class="item-body">
         <h3>Citrus Chicken Waldorf Salad</h3>
         <p>Sous-vide chicken breast, crisp green apples, walnuts, and dried cranberries in a light yogurt dressing.</p>
@@ -431,7 +431,7 @@
     </div>
 
     <div class="item-card">
-      <div class="item-image"><img src="../images/menu/gemini30.png" alt="PROSCIUTTO & FIG SOURDOUGH TARTINE"></div>
+      <div class="item-image"><img src="../images/menu/30.png" alt="PROSCIUTTO & FIG SOURDOUGH TARTINE"></div>
       <div class="item-body">
         <h3>Prosciutto &amp; Fig Sourdough Tartine</h3>
         <p>Sliced prosciutto di Parma, fresh figs, whipped ricotta, and a drizzle of balsamic glaze on sourdough.</p>
@@ -452,7 +452,7 @@
   <div class="menu-grid">
 
     <div class="item-card">
-      <div class="item-image"><img src="../images/menu/gemini31.png" alt="WARM VALRHONA MOLTEN LAVA CAKE"></div>
+      <div class="item-image"><img src="../images/menu/31.png" alt="WARM VALRHONA MOLTEN LAVA CAKE"></div>
       <div class="item-body">
         <h3>Warm Valrhona Molten Lava Cake</h3>
         <p>Rich dark chocolate cake with a gooey molten center, served warm with Madagascar vanilla ice cream.</p>
@@ -464,7 +464,7 @@
     </div>
 
     <div class="item-card">
-      <div class="item-image"><img src="../images/menu/gemini32.png" alt="BURNT CINNAMON & APPLE CRUMBLE"></div>
+      <div class="item-image"><img src="../images/menu/32.png" alt="BURNT CINNAMON & APPLE CRUMBLE"></div>
       <div class="item-body">
         <h3>Burnt Cinnamon &amp; Apple Crumble</h3>
         <p>Spiced caramelized apples topped with a crunchy butter oat crumble, served hot with warm custard.</p>
@@ -476,7 +476,7 @@
     </div>
 
     <div class="item-card">
-      <div class="item-image"><img src="../images/menu/gemini33.png" alt="EARL GREY BASQUE BURNT CHEESECAKE"></div>
+      <div class="item-image"><img src="../images/menu/33.png" alt="EARL GREY BASQUE BURNT CHEESECAKE"></div>
       <div class="item-body">
         <h3>Earl Grey Basque Burnt Cheesecake</h3>
         <p>Creamy burnt cheesecake infused with aromatic Earl Grey tea leaves, served chilled.</p>
@@ -488,7 +488,7 @@
     </div>
 
     <div class="item-card">
-      <div class="item-image"><img src="../images/menu/gemini34.png" alt="ESPRESSO MISU TART"></div>
+      <div class="item-image"><img src="../images/menu/34.png" alt="ESPRESSO MISU TART"></div>
       <div class="item-body">
         <h3>Espresso Misu Tart</h3>
         <p>Butter pastry shell filled with coffee-soaked ladyfingers, velvety mascarpone cream, and cocoa powder.</p>
