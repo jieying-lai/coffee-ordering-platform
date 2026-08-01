@@ -13,14 +13,17 @@
   <ul class="nav-links">
     <li><a href="../home/index.php">Home</a></li>
     <li>
-      <a href="../menu/index.php">Menu ▾</a>
+      <a href="index.php" class="active">Menu ▾</a>
       <div class="dropdown">
-        <a href="../menu/index.php?cat=hot">Hot Coffee</a>
-        <a href="../menu/index.php?cat=cold">Cold Coffee</a>
-        <a href="../menu/index.php?cat=pastries">Pastries</a>
+        <a href="#specialty">Specialty</a>
+        <a href="#classic">Classic Coffee</a>
+        <a href="#noncoffein">Non-Coffein</a>
+        <a href="#smoothies">Smoothies &amp; Sodas</a>
+        <a href="#mains">Main Dishes</a>
+        <a href="#desserts">Desserts</a>
       </div>
     </li>
-    <li><a href="index.php" class="active">Contact</a></li>
+    <li><a href="../contact/index.php">Contact</a></li>
     <li><a href="../cart/index.php">Cart</a></li>
     <li><a href="../login/index.php">Login</a></li>
   </ul>

@@ -15,7 +15,7 @@
     <li>
       <a href="index.php" class="active">Menu ▾</a>
       <div class="dropdown">
-        <a href="#specialty">Coffein &amp; Specialty</a>
+        <a href="#specialty">Specialty</a>
         <a href="#classic">Classic Coffee</a>
         <a href="#noncoffein">Non-Coffein</a>
         <a href="#smoothies">Smoothies &amp; Sodas</a>
