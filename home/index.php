@@ -1,10 +1,14 @@
+<?php
+// Start session to access logged-in user details
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link rel="stylesheet" href="../style/mystyle.css">
-	<link rel="stylesheet" href="../style/home.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../style/mystyle.css">
+  <link rel="stylesheet" href="../style/home.css">
   <title>Cozy Coffee Co. — Home</title>
 </head>
 
@@ -26,7 +30,22 @@
     </li>
     <li><a href="../contact/index.php">Contact</a></li>
     <li><a href="../cart/index.php">Cart</a></li>
-    <li><a href="../login/index.php">Login</a></li>
+
+    <!-- DYNAMIC NAVIGATION LINK -->
+    <?php if (isset($_SESSION['user_id'])): ?>
+      <!-- Logged In State: Show Username & Profile Dropdown -->
+      <li>
+        <a href="../profile/index.php"><?php echo htmlspecialchars($_SESSION['username']); ?> ▾</a>
+        <div class="dropdown">
+          <a href="../profile/index.php">My Profile</a>
+          <a href="../logout.php">Logout</a>
+        </div>
+      </li>
+    <?php else: ?>
+      <!-- Guest State: Show Login Link -->
+      <li><a href="../login/index.php">Login</a></li>
+    <?php endif; ?>
+
   </ul>
   <button class="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
 </nav>

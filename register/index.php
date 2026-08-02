@@ -178,7 +178,7 @@
             }
         });
 
-        // Hide error message dynamically as the user types in confirm password
+        // Dynamic error hide when typing
         confirmPassword.addEventListener("input", function() {
             if (password.value === confirmPassword.value) {
                 passwordError.style.display = "none";

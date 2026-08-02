@@ -1,11 +1,15 @@
+<?php
+// Start the session to access logged-in user data
+session_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link rel="stylesheet" href="../style/mystyle.css">
-	<link rel="stylesheet" href="../style/menu.css">
-	<title>Cozy Coffee Co. — Menu</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../style/mystyle.css">
+  <link rel="stylesheet" href="../style/menu.css">
+  <title>Cozy Coffee Co. — Menu</title>
 </head>
 
 <body>
@@ -14,19 +18,34 @@
   <ul class="nav-links">
     <li><a href="../home/index.php">Home</a></li>
     <li>
-      <a href="index.php" class="active">Menu ▾</a>
+      <a href="../menu/index.php" class="active">Menu ▾</a>
       <div class="dropdown">
-        <a href="#specialty">Specialty</a>
-        <a href="#classic">Classic Coffee</a>
-        <a href="#noncoffein">Non-Coffein</a>
-        <a href="#smoothies">Smoothies &amp; Sodas</a>
-        <a href="#mains">Main Dishes</a>
-        <a href="#desserts">Desserts</a>
+        <a href="../menu/index.php?cat=specialty#specialty">Specialty</a>
+        <a href="../menu/index.php?cat=classic#classic">Classic Coffee</a>
+        <a href="../menu/index.php?cat=noncoffein#noncoffein">Non-Coffein</a>
+        <a href="../menu/index.php?cat=smoothies#smoothies">Smoothies &amp; Sodas</a>
+        <a href="../menu/index.php?cat=mains#mains">Main Dishes</a>
+        <a href="../menu/index.php?cat=desserts#desserts">Desserts</a>
       </div>
     </li>
     <li><a href="../contact/index.php">Contact</a></li>
     <li><a href="../cart/index.php">Cart</a></li>
-    <li><a href="../login/index.php">Login</a></li>
+
+    <!-- DYNAMIC NAVIGATION LINK -->
+    <?php if (isset($_SESSION['user_id'])): ?>
+      <!-- Logged In State: Show Username & Profile Dropdown -->
+      <li>
+        <a href="../profile/index.php"><?php echo htmlspecialchars($_SESSION['username']); ?> ▾</a>
+        <div class="dropdown">
+          <a href="../profile/index.php">My Profile</a>
+          <a href="../logout.php">Logout</a>
+        </div>
+      </li>
+    <?php else: ?>
+      <!-- Guest State: Show Login Link -->
+      <li><a href="../login/index.php">Login</a></li>
+    <?php endif; ?>
+
   </ul>
   <button class="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
 </nav>
