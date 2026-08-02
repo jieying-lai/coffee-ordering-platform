@@ -1,14 +1,15 @@
 <?php
-// db.php
-$host = "localhost";
-$user = "root";
-$password = ""; // Default XAMPP password is empty
-$dbname = "cozy_coffee_db"; // Make sure everyone uses this exact database name
+// db.php — Try adding 3306 or 3307 as the 5th parameter
 
-$conn = new mysqli($host, $user, $password, $dbname);
+$host = "127.0.0.1"; // Using IP instead of localhost often fixes Wamp socket issues
+$db_user = "root";
+$db_pass = "";
+$db_name = "cozy_coffee_db";
+$port = 3308; // Try 3306 first. If it fails, change to 3307
 
-// Check connection
+$conn = new mysqli($host, $db_user, $db_pass, $db_name, $port);
+
 if ($conn->connect_error) {
-    die("Database Connection Failed: " . $conn->connect_error);
+    die("Connection failed: " . $conn->connect_error);
 }
 ?>
