@@ -12,7 +12,7 @@ session_start();
   <title>Cozy Coffee Co. — Menu</title>
 </head>
 
-<body>
+<body class="menu-page">
 <nav>
   <div class="logo"><a href="../home/index.php">Cozy Coffee Co.</a></div>
   <ul class="nav-links">
