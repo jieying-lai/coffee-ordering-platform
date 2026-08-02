@@ -4,6 +4,7 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" href="../style/mystyle.css">
+	<link rel="stylesheet" href="../style/menu.css">
 	<title>Cozy Coffee Co. — Menu</title>
 </head>
 
@@ -285,7 +286,7 @@
 
 <!-- ============ SMOOTHIES & SODAS ============ -->
 <div class="menu-category" data-category="smoothies" id="smoothies">
-  <h2 class="category-title">Refreshing Smoothies &amp; Sodas</h2>
+  <h2 class="category-title">🍹 Refreshing Smoothies &amp; Sodas</h2>
 
   <div class="menu-grid">
 

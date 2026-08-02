@@ -1,0 +1,161 @@
+/* ============================================
+   COZY COFFEE CO. — CONTACT PAGE STYLES
+   Only used by contact/index.php.
+   Load AFTER mystyle.css:
+     <link rel="stylesheet" href="../style/mystyle.css">
+     <link rel="stylesheet" href="../style/contact.css">
+   ============================================ */
+
+/* ============ ABOUT SECTION ============ */
+.about-section {
+  width: 100%;
+  padding: 60px 6% 50px;
+  text-align: center;
+
+  background-image:
+    linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55)),
+    url('../images/about-bg.jpg');
+
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.about-section .eyebrow, .eyebrow {
+  font-size: 13px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #f5c08f;
+  font-weight: 700;
+}
+
+.about-section h2 {
+  font-size: 30px;
+  margin-bottom: 14px;
+  color: #ebd1b4;
+}
+
+.about-section p {
+  color: #dec8b1;
+  font-size: 16px;
+  line-height: 1.7;
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+/* ============ CONTACT SECTION ============ */
+.contact-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  padding: 40px 6% 60px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.contact-info {
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: 14px;
+  padding: 28px;
+}
+.contact-info h3 { font-size: 22px; margin-bottom: 18px; }
+.contact-info ul { list-style: none; }
+.contact-info li {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  font-size: 14px;
+  color: var(--color-text-soft);
+  margin-bottom: 14px;
+}
+.contact-info li strong { color: var(--color-text); font-weight: 700; min-width: 70px; }
+
+.contact-map {
+  margin-top: 20px;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+}
+.contact-map iframe { width: 100%; height: 220px; border: 0; display: block; }
+
+.social-links { display: flex; gap: 14px; margin-top: 18px; }
+.social-links a {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--color-accent-dark);
+  border: 1px solid var(--color-accent);
+  padding: 6px 14px;
+  border-radius: 999px;
+}
+.social-links a:hover { background: var(--color-accent); color: #fff; }
+
+.contact-form {
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 14px;
+  padding: 28px;
+}
+.contact-form h3 { font-size: 22px; margin-bottom: 18px; }
+.form-group { margin-bottom: 16px; }
+.form-group label {
+  display: block;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--color-text-soft);
+  margin-bottom: 6px;
+}
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid var(--color-border);
+  background: #fff;
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--color-text);
+}
+.form-group textarea { resize: vertical; min-height: 100px; }
+.form-group input:focus,
+.form-group textarea:focus { outline: 2px solid var(--color-accent); outline-offset: 1px; }
+
+.submit-btn {
+  background: var(--color-accent);
+  color: #fff;
+  border: none;
+  padding: 12px 28px;
+  border-radius: 8px;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 15px;
+  cursor: pointer;
+  width: 100%;
+}
+.submit-btn:hover { background: var(--color-accent-dark); }
+
+/* ============ REVIEWS SECTION ============ */
+.reviews-section { padding: 20px 6% 70px; max-width: 1100px; margin: 0 auto; }
+.reviews-section h2 { text-align: center; font-size: 28px; margin-bottom: 28px; }
+
+.reviews-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+
+.review-card {
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: 14px;
+  padding: 22px;
+}
+.review-stars { color: var(--color-gold); font-size: 15px; margin-bottom: 10px; }
+.review-text { font-size: 14px; color: var(--color-text-soft); margin-bottom: 14px; line-height: 1.6; }
+.review-author { font-family: var(--font-heading); font-weight: 700; font-size: 15px; }
+
+/* ============ RESPONSIVE ============ */
+@media (max-width: 900px) and (min-width: 641px) {
+  .reviews-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 640px) {
+  .contact-section { grid-template-columns: 1fr; }
+  .reviews-grid { grid-template-columns: 1fr; }
+}
