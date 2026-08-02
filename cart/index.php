@@ -36,7 +36,7 @@ session_start();
     <?php if (isset($_SESSION['user_id'])): ?>
       <!-- Logged In State: Show Username & Profile Dropdown -->
       <li>
-        <a href="../profile/index.php"><?php echo htmlspecialchars($_SESSION['username']); ?> ▾</a>
+        <a href="../profile/index.php"><?php echo htmlspecialchars($_SESSION['fullname']); ?> ▾</a>
         <div class="dropdown">
           <a href="../profile/index.php">My Profile</a>
           <a href="../logout.php">Logout</a>

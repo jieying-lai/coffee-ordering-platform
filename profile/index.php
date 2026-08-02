@@ -150,7 +150,7 @@ $avatar = (!empty($user['profile_pic']) && file_exists("../images/profiles/" . $
     <!-- DYNAMIC NAVIGATION LINK -->
     <?php if (isset($_SESSION['user_id'])): ?>
       <li>
-        <a href="index.php" class="active"><?php echo htmlspecialchars($_SESSION['username']); ?> ▾</a>
+        <a href="index.php" class="active"><?php echo htmlspecialchars($_SESSION['fullname']); ?> ▾</a>
         <div class="dropdown">
           <a href="index.php">My Profile</a>
           <a href="../logout.php">Logout</a>
