@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3308
--- Generation Time: Aug 02, 2026 at 06:36 AM
+-- Generation Time: Aug 02, 2026 at 06:39 AM
 -- Server version: 8.4.7
 -- PHP Version: 8.3.28
 
@@ -48,7 +48,7 @@ CREATE TABLE IF NOT EXISTS `users` (
 --
 
 INSERT INTO `users` (`id`, `fullname`, `email`, `username`, `password`, `created_at`, `birthday`, `gender`, `profile_pic`) VALUES
-(1, 'JIE YING LAI', 'jieying47@1utar.my', 'laijieying', '$2y$10$kNkzG8Ab1FuWgfVbtbz7P.aGvTAKgdEFHsuzrq5b71TtwwiRVbwxy', '2026-08-02 05:32:31', NULL, NULL, 'default.png');
+(1, 'Jie Ying', 'jieying47@1utar.my', 'laijieying', '$2y$10$kNkzG8Ab1FuWgfVbtbz7P.aGvTAKgdEFHsuzrq5b71TtwwiRVbwxy', '2026-08-02 05:32:31', '2006-04-07', 'Female', 'user_1_1785652687.jpg');
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
