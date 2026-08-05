@@ -43,6 +43,7 @@ $imgSrc = (stripos($rawImage, 'http://') === 0 || stripos($rawImage, 'https://')
   <ul class="nav-links">
     <li><a href="../home/index.php">Home</a></li>
     <li><a href="../menu/index.php" class="active">Menu ▾</a></li>
+    <li><a href="../blog/index.php">Blog</a></li>
     <li><a href="../contact/index.php">Contact</a></li>
     <li><a href="../cart/index.php">Cart</a></li>
     <?php if (isset($_SESSION['user_id'])): ?>

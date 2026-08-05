@@ -333,11 +333,21 @@ $feedResult = $conn->query($feedQuery);
     <li><a href="index.php" class="active">Blog</a></li>
     <li><a href="../contact/index.php">Contact</a></li>
     <li><a href="../cart/index.php">Cart</a></li>
-    <?php if ($isLoggedIn): ?>
-      <li><a href="../logout.php">Logout (<?php echo htmlspecialchars($currentUsername); ?>)</a></li>
+        <!-- DYNAMIC NAVIGATION LINK -->
+    <?php if (isset($_SESSION['user_id'])): ?>
+      <!-- Logged In State: Show Username & Profile Dropdown -->
+      <li>
+        <a href="../profile/index.php"><?php echo htmlspecialchars($_SESSION['fullname']); ?> ▾</a>
+        <div class="dropdown">
+          <a href="../profile/index.php">My Profile</a>
+          <a href="../logout.php">Logout</a>
+        </div>
+      </li>
     <?php else: ?>
+      <!-- Guest State: Show Login Link -->
       <li><a href="../login/index.php">Login</a></li>
     <?php endif; ?>
+
   </ul>
   <button class="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
 </nav>

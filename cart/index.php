@@ -29,6 +29,7 @@ session_start();
         <a href="../menu/index.php?cat=desserts#desserts">Desserts</a>
       </div>
     </li>
+    <li><a href="../blog/index.php">Blog</a></li>
     <li><a href="../contact/index.php">Contact</a></li>
     <li><a href="../cart/index.php" class="active">Cart</a></li>
 
