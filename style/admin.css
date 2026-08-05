@@ -1,0 +1,231 @@
+/* ============================================
+   COZY COFFEE CO. — ADMIN DASHBOARD STYLES
+   Used by admin/dashboard.php and every
+   admin/manage_*.php page.
+   Load AFTER mystyle.css:
+     <link rel="stylesheet" href="../style/mystyle.css">
+     <link rel="stylesheet" href="../style/admin.css">
+   ============================================ */
+
+body.admin-page {
+  background: var(--color-bg);
+  font-family: var(--font-body);
+  color: var(--color-text);
+}
+
+.admin-topbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 6%;
+  background: #fff;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.admin-topbar .admin-logo {
+  font-family: var(--font-heading);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--color-accent-dark);
+}
+
+.admin-topbar .admin-user {
+  font-size: 14px;
+  color: var(--color-text-soft);
+}
+
+.admin-topbar .logout-link {
+  color: var(--color-accent);
+  font-weight: 700;
+  font-size: 14px;
+  margin-left: 16px;
+}
+.admin-topbar .logout-link:hover { color: var(--color-accent-dark); }
+
+.admin-wrap {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 32px 6% 60px;
+}
+
+.admin-wrap h1 {
+  font-size: 28px;
+  margin-bottom: 8px;
+}
+
+.admin-wrap .admin-subtitle {
+  color: var(--color-text-soft);
+  font-size: 14px;
+  margin-bottom: 28px;
+}
+
+/* ============ DASHBOARD CARDS ============ */
+.admin-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+}
+
+.admin-card {
+  background: #fff;
+  border: 1px solid var(--color-border);
+  border-radius: 14px;
+  padding: 24px;
+  text-align: left;
+  transition: box-shadow 0.15s ease, transform 0.15s ease;
+}
+
+.admin-card:hover {
+  box-shadow: 0 6px 16px rgba(60,42,33,0.1);
+  transform: translateY(-2px);
+}
+
+.admin-card .icon { font-size: 28px; margin-bottom: 10px; display: block; }
+.admin-card h3 { font-size: 18px; margin-bottom: 6px; }
+.admin-card p { font-size: 13px; color: var(--color-text-soft); }
+
+/* ============ BACK LINK ============ */
+.admin-back {
+  display: inline-block;
+  margin-bottom: 20px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--color-accent-dark);
+}
+
+/* ============ TABLES ============ */
+.admin-table-wrap {
+  background: #fff;
+  border: 1px solid var(--color-border);
+  border-radius: 14px;
+  overflow: hidden;
+  margin-bottom: 24px;
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.admin-table th,
+.admin-table td {
+  padding: 12px 16px;
+  text-align: left;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.admin-table th {
+  background: var(--color-card);
+  font-weight: 700;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--color-text-soft);
+}
+
+.admin-table tr:last-child td { border-bottom: none; }
+
+.admin-table img {
+  width: 44px;
+  height: 44px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+/* ============ BUTTONS ============ */
+.admin-btn {
+  display: inline-block;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 13px;
+  border: none;
+  cursor: pointer;
+}
+
+.admin-btn-primary { background: var(--color-accent); color: #fff; }
+.admin-btn-primary:hover { background: var(--color-accent-dark); }
+
+.admin-btn-outline {
+  background: #fff;
+  border: 1.5px solid var(--color-accent);
+  color: var(--color-accent-dark);
+}
+.admin-btn-outline:hover { background: var(--color-card); }
+
+.admin-btn-danger {
+  background: #fff;
+  border: 1.5px solid #c0392b;
+  color: #c0392b;
+}
+.admin-btn-danger:hover { background: #c0392b; color: #fff; }
+
+.admin-btn-sm { padding: 5px 12px; font-size: 12px; }
+
+.admin-actions { display: flex; gap: 8px; }
+
+/* ============ FORMS ============ */
+.admin-form {
+  background: #fff;
+  border: 1px solid var(--color-border);
+  border-radius: 14px;
+  padding: 28px;
+  max-width: 560px;
+}
+
+.admin-form .form-row { margin-bottom: 16px; }
+
+.admin-form label {
+  display: block;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--color-text-soft);
+  margin-bottom: 6px;
+}
+
+.admin-form input,
+.admin-form select,
+.admin-form textarea {
+  width: 100%;
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: 1px solid var(--color-border);
+  background: var(--color-bg);
+  font-family: var(--font-body);
+  font-size: 14px;
+  color: var(--color-text);
+}
+
+.admin-form textarea { resize: vertical; min-height: 90px; }
+
+.admin-form input:focus,
+.admin-form select:focus,
+.admin-form textarea:focus {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 1px;
+}
+
+.admin-form .form-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+/* ============ ALERTS ============ */
+.admin-alert {
+  padding: 12px 18px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+.admin-alert-success { background: #E4F5E9; color: #1E7A3C; }
+.admin-alert-error { background: #FBE4E1; color: #B3261E; }
+
+/* ============ RESPONSIVE ============ */
+@media (max-width: 640px) {
+  .admin-table-wrap { overflow-x: auto; }
+  .admin-table { min-width: 560px; }
+}

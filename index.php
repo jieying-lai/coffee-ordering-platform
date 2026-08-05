@@ -25,6 +25,8 @@
     <a href="home/index.php" class="entry-link">Continue without login →</a>
   </div>
 
+  <a href="admin/index.php" class="admin-link">Staff Login</a>
+
 </div>
 
 </body>
