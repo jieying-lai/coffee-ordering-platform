@@ -1,11 +1,8 @@
 <?php
 require_once '../includes/db_connect.php';
 
-$categories = $conn->query('SELECT * FROM categories ORDER BY display_order');
-$categoryList = [];
-while ($row = $categories->fetch_assoc()) {
-    $categoryList[] = $row;
-}
+$about = $conn->query('SELECT * FROM about_us WHERE id = 1')->fetch_assoc();
+$info  = $conn->query('SELECT * FROM contact_info WHERE id = 1')->fetch_assoc();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -13,8 +10,8 @@ while ($row = $categories->fetch_assoc()) {
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="stylesheet" href="../style/mystyle.css">
-	<link rel="stylesheet" href="../style/menu.css">
-	<title>Cozy Coffee Co. — Menu</title>
+	<link rel="stylesheet" href="../style/contact.css">
+	<title>Cozy Coffee Co. — Contact Us</title>
 </head>
 
 <body>
@@ -23,76 +20,106 @@ while ($row = $categories->fetch_assoc()) {
   <ul class="nav-links">
     <li><a href="../home/index.php">Home</a></li>
     <li>
-      <a href="index.php" class="active">Menu ▾</a>
+      <a href="../menu/index.php">Menu ▾</a>
       <div class="dropdown">
-        <?php foreach ($categoryList as $cat): ?>
-          <a href="#<?php echo htmlspecialchars($cat['category_key']); ?>"><?php echo htmlspecialchars(preg_replace('/^\S+\s/', '', $cat['category_label'])); ?></a>
-        <?php endforeach; ?>
+        <a href="../menu/index.php#specialty">Specialty</a>
+        <a href="../menu/index.php#classic">Classic Coffee</a>
+        <a href="../menu/index.php#noncoffein">Non-Coffein</a>
+        <a href="../menu/index.php#smoothies">Smoothies &amp; Sodas</a>
+        <a href="../menu/index.php#mains">Main Dishes</a>
+        <a href="../menu/index.php#desserts">Desserts</a>
       </div>
     </li>
-    <li><a href="../contact/index.php">Contact</a></li>
+    <li><a href="index.php" class="active">Contact</a></li>
     <li><a href="../cart/index.php">Cart</a></li>
     <li><a href="../login/index.php">Login</a></li>
   </ul>
   <button class="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
 </nav>
 
-<div class="filters">
-  <button class="filter-btn active" data-filter="all">All</button>
-  <?php foreach ($categoryList as $cat): ?>
-    <button class="filter-btn" data-filter="<?php echo htmlspecialchars($cat['category_key']); ?>">
-      <?php echo htmlspecialchars($cat['category_label']); ?>
-    </button>
-  <?php endforeach; ?>
-</div>
+<!-- ============ ABOUT / INTRO ============ -->
+<section class="about-section">
+  <div class="eyebrow"><?php echo htmlspecialchars($about['eyebrow']); ?></div>
+  <h2><?php echo htmlspecialchars($about['heading']); ?></h2>
+  <p><?php echo nl2br(htmlspecialchars($about['body_text'])); ?></p>
+</section>
 
-<?php foreach ($categoryList as $cat): ?>
-  <div class="menu-category" data-category="<?php echo htmlspecialchars($cat['category_key']); ?>" id="<?php echo htmlspecialchars($cat['category_key']); ?>">
-    <h2 class="category-title"><?php echo htmlspecialchars($cat['category_label']); ?></h2>
+<!-- ============ CONTACT US ============ -->
+<section class="contact-section">
 
-    <div class="menu-grid">
-      <?php
-        $stmt = $conn->prepare('SELECT * FROM menu_items WHERE category_id = ? ORDER BY display_order');
-        $stmt->bind_param('i', $cat['category_id']);
-        $stmt->execute();
-        $items = $stmt->get_result();
-        while ($item = $items->fetch_assoc()):
-      ?>
-        <div class="item-card">
-          <div class="item-image">
-            <img src="../images/menu/<?php echo htmlspecialchars($item['image']); ?>" alt="<?php echo htmlspecialchars(strtoupper($item['name'])); ?>">
-          </div>
-          <div class="item-body">
-            <h3><?php echo htmlspecialchars($item['name']); ?></h3>
-            <p><?php echo htmlspecialchars($item['description']); ?></p>
-            <div class="item-footer">
-              <span class="price">RM <?php echo number_format($item['price'], 2); ?></span>
-              <a href="../details/index.php?id=<?php echo $item['item_id']; ?>"><button class="add-btn">View</button></a>
-            </div>
-          </div>
-        </div>
-      <?php endwhile; $stmt->close(); ?>
+  <div class="contact-info">
+    <h3>Get in Touch</h3>
+    <ul>
+      <li><strong>Address</strong> <?php echo htmlspecialchars($info['address']); ?></li>
+      <li><strong>Phone</strong> <?php echo htmlspecialchars($info['phone']); ?></li>
+      <li><strong>Email</strong> <?php echo htmlspecialchars($info['email']); ?></li>
+      <li><strong>Hours</strong> <?php echo htmlspecialchars($info['hours']); ?></li>
+    </ul>
+
+    <div class="contact-map">
+      <iframe
+        src="<?php echo htmlspecialchars($info['map_embed_url']); ?>"
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade">
+      </iframe>
+    </div>
+
+    <div class="social-links">
+      <a href="<?php echo htmlspecialchars($info['instagram_url']); ?>">Instagram</a>
+      <a href="<?php echo htmlspecialchars($info['facebook_url']); ?>">Facebook</a>
+      <a href="<?php echo htmlspecialchars($info['tiktok_url']); ?>">TikTok</a>
     </div>
   </div>
-<?php endforeach; ?>
+
+  <div class="contact-form">
+    <h3>Send Us a Message</h3>
+    <!-- TODO: point this form to a PHP handler that inserts into contact_messages -->
+    <form action="#" method="POST">
+      <div class="form-group">
+        <label for="name">Name</label>
+        <input type="text" id="name" name="name" required>
+      </div>
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" required>
+      </div>
+      <div class="form-group">
+        <label for="message">Message</label>
+        <textarea id="message" name="message" required></textarea>
+      </div>
+      <button type="submit" class="submit-btn">Send Message</button>
+    </form>
+  </div>
+
+</section>
+
+<!-- ============ REVIEWS ============ -->
+<section class="reviews-section">
+  <h2>What Our Customers Say</h2>
+  <div class="reviews-grid">
+
+    <div class="review-card">
+      <div class="review-stars">★★★★★</div>
+      <p class="review-text">"The honey oat latte is my go-to every morning. Consistent, warm, and the staff always remember my order."</p>
+      <div class="review-author">— Mei Ling</div>
+    </div>
+
+    <div class="review-card">
+      <div class="review-stars">★★★★★</div>
+      <p class="review-text">"Love that I can order ahead and just walk in to grab it. Saves me so much time before work."</p>
+      <div class="review-author">— Arif Hakim</div>
+    </div>
+
+    <div class="review-card">
+      <div class="review-stars">★★★★☆</div>
+      <p class="review-text">"Great coffee and cozy vibe. Would love to see more pastry options in the future!"</p>
+      <div class="review-author">— Priya Sharma</div>
+    </div>
+
+  </div>
+</section>
 
 <script>
-  // Category filter — shows/hides whole .menu-category blocks.
-  const filterBtns = document.querySelectorAll('.filter-btn');
-  const categories = document.querySelectorAll('.menu-category');
-
-  filterBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      filterBtns.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-
-      const target = btn.dataset.filter;
-      categories.forEach(cat => {
-        cat.style.display = (target === 'all' || cat.dataset.category === target) ? '' : 'none';
-      });
-    });
-  });
-
   document.querySelector('.hamburger').addEventListener('click', () => {
     const nav = document.querySelector('.nav-links');
     nav.style.display = nav.style.display === 'flex' ? 'none' : 'flex';
