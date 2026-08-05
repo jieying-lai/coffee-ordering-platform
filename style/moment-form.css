@@ -1,0 +1,281 @@
+/* ==========================================================================
+   COZY COFFEE CO. — BLOG & MOMENT FORM STYLES
+   Requires style/mystyle.css to be loaded first for design tokens.
+   ========================================================================== */
+
+/* ============ PAGE CONTAINER & HEADERS ============ */
+.blog-container {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 0 20px;
+}
+
+.blog-container h1 {
+  font-family: var(--font-heading);
+  color: var(--color-text);
+  font-size: 2.4rem;
+  margin-bottom: 6px;
+}
+
+.blog-container > p {
+  color: var(--color-text-soft);
+  font-size: 1.05rem;
+  margin-bottom: 30px;
+}
+
+.blog-container h2 {
+  font-family: var(--font-heading);
+  color: var(--color-text);
+  font-size: 1.8rem;
+  margin-bottom: 20px;
+}
+
+/* ============ AUTHENTICATION BANNER ============ */
+.auth-banner {
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  padding: 28px 20px;
+  text-align: center;
+  margin-bottom: 35px;
+}
+
+.auth-banner p {
+  color: var(--color-text);
+  font-size: 1.05rem;
+  margin: 4px 0;
+}
+
+.auth-banner a {
+  color: var(--color-accent-dark);
+  font-weight: 700;
+  text-decoration: underline;
+}
+
+.auth-banner a:hover {
+  color: var(--color-accent);
+}
+
+/* ============ MOMENT POST FORM ============ */
+.moment-section {
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  padding: 28px;
+  box-shadow: 0 4px 12px rgba(60, 42, 33, 0.05);
+}
+
+.moment-section h3 {
+  font-family: var(--font-heading);
+  color: var(--color-text);
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+/* Error Messages */
+.form-errors {
+  background-color: #fdf2f2;
+  border: 1px solid #f8b4b4;
+  border-radius: 8px;
+  padding: 12px 16px;
+  margin-bottom: 20px;
+}
+
+.form-errors p {
+  color: #c83e3e;
+  margin: 4px 0;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+/* Inputs & Labels */
+.moment-form .form-group {
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.moment-form label {
+  font-weight: 700;
+  color: var(--color-text);
+  margin-bottom: 8px;
+  font-size: 0.95rem;
+}
+
+.moment-form input[type="text"],
+.moment-form select,
+.moment-form textarea {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  box-sizing: border-box;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.moment-form input[type="text"]:focus,
+.moment-form select:focus,
+.moment-form textarea:focus {
+  outline: none;
+  border-color: var(--color-accent);
+  background-color: #ffffff;
+  box-shadow: 0 0 0 3px rgba(200, 90, 62, 0.15);
+}
+
+.moment-form textarea {
+  resize: vertical;
+  min-height: 110px;
+  line-height: 1.6;
+}
+
+/* File Upload Field */
+.moment-form input[type="file"] {
+  padding: 10px;
+  background-color: var(--color-bg);
+  border: 1px dashed var(--color-border);
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: var(--color-text-soft);
+  font-family: var(--font-body);
+}
+
+.moment-form input[type="file"]::file-selector-button {
+  background: var(--color-accent);
+  color: #ffffff;
+  border: none;
+  padding: 6px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-right: 12px;
+  font-weight: 700;
+  font-family: var(--font-body);
+  transition: background 0.15s ease;
+}
+
+.moment-form input[type="file"]::file-selector-button:hover {
+  background: var(--color-accent-dark);
+}
+
+/* Word Counter */
+#word_counter {
+  display: block;
+  margin-top: 6px;
+  font-size: 0.85rem;
+  text-align: right;
+  color: var(--color-text-soft);
+  font-weight: 600;
+}
+
+/* Submit Button */
+.submit-btn {
+  background-color: var(--color-accent);
+  color: #ffffff;
+  border: none;
+  padding: 14px 24px;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 700;
+  border-radius: 8px;
+  cursor: pointer;
+  width: 100%;
+  transition: background 0.15s ease, transform 0.15s ease;
+}
+
+.submit-btn:hover {
+  background-color: var(--color-accent-dark);
+}
+
+.submit-btn:active {
+  transform: translateY(1px);
+}
+
+/* ============ COMMUNITY FEED POST CARDS ============ */
+.post-card {
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  padding: 22px;
+  margin-bottom: 25px;
+  box-shadow: 0 2px 8px rgba(60, 42, 33, 0.04);
+}
+
+.post-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.post-author {
+  font-weight: 700;
+  color: var(--color-accent-dark);
+  text-decoration: none;
+  font-size: 1.1rem;
+  margin-right: 8px;
+}
+
+.post-author:hover {
+  text-decoration: underline;
+}
+
+.mood-badge {
+  background: var(--color-gold);
+  color: #ffffff;
+  padding: 3px 10px;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  display: inline-block;
+  font-weight: 700;
+}
+
+.ordered-tag {
+  font-style: italic;
+  color: var(--color-text-soft);
+  margin: 8px 0;
+  font-size: 0.95rem;
+}
+
+/* Photo Gallery Grid */
+.photo-gallery {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-top: 15px;
+}
+
+.photo-gallery img {
+  width: 130px;
+  height: 130px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid var(--color-border);
+  transition: transform 0.2s ease;
+}
+
+.photo-gallery img:hover {
+  transform: scale(1.03);
+}
+
+/* Responsive Overrides */
+@media (max-width: 640px) {
+  .blog-container {
+    padding: 0 15px;
+    margin: 20px auto;
+  }
+
+  .moment-section {
+    padding: 20px 16px;
+  }
+
+  .photo-gallery img {
+    width: calc(50% - 6px);
+    height: 140px;
+  }
+}
