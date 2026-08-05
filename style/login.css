@@ -302,3 +302,103 @@ body.login-page {
     font-size: 28px;
   }
 }
+
+/* ============================================
+   RESET PASSWORD SCREENS
+   ============================================ */
+
+.login-page .reset-instructions {
+  margin: 0 0 20px;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--color-text);
+}
+
+.login-page .reset-hint {
+  margin: 10px 0 0;
+  font-size: 13px;
+  color: var(--color-text-soft);
+}
+
+.login-page .reset-note {
+  margin: 20px 0 0;
+  padding: 14px 16px;
+  background-color: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--color-text-soft);
+}
+
+.login-page .reset-note strong {
+  color: var(--color-text);
+}
+
+/* Pill-shaped variant of the sign-in button, used for reset-password actions */
+.login-page .reset-button {
+  border-radius: 999px;
+}
+
+/* Confirmation card: no bottom-anchored button, so tighten spacing under help-links */
+.login-page .login-card .help-links:only-child,
+.login-page .login-card > .help-links:last-child {
+  margin-top: 20px;
+}
+
+/* ============================================
+   CUSTOM ALERT MODAL (branded replacement for native alert())
+   ============================================ */
+
+.cc-modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background-color: rgba(60, 42, 33, 0.45);
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  z-index: 1000;
+}
+
+.cc-modal-overlay.cc-modal-open {
+  display: flex;
+}
+
+.cc-modal {
+  width: 100%;
+  max-width: 380px;
+  padding: 28px 26px;
+  background-color: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  box-shadow: 0 12px 32px rgba(60, 42, 33, 0.25);
+  text-align: left;
+}
+
+.cc-modal-title {
+  margin: 0 0 10px;
+  font-family: var(--font-heading);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.cc-modal-message {
+  margin: 0;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--color-text);
+}
+
+.cc-modal-actions {
+  margin-top: 22px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.cc-modal-actions .sign-in-button {
+  width: auto;
+  padding: 10px 28px;
+}
+}
