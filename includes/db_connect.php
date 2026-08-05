@@ -9,7 +9,7 @@
 $db_host = "127.0.0.1";
 $db_user = "root";
 $db_pass = "";
-$db_name = "cozy_coffee_co";
+$db_name = "cozy_coffee_db";
 $db_port = 3308; 
 
 // Pass all 5 variables cleanly into mysqli
