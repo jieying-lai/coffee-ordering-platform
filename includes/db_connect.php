@@ -6,12 +6,14 @@
 //   require_once '../includes/db_connect.php';
 // ============================================
 
-$db_host = 'localhost';
-$db_name = 'cozy_coffee_co';
-$db_user = 'root';   // default WAMP username
-$db_pass = '';       // default WAMP password is blank
+$db_host = "127.0.0.1";
+$db_user = "root";
+$db_pass = "";
+$db_name = "cozy_coffee_co";
+$db_port = 3308; 
 
-$conn = new mysqli($db_host, $db_user, $db_pass, $db_name);
+// Pass all 5 variables cleanly into mysqli
+$conn = new mysqli($db_host, $db_user, $db_pass, $db_name, $db_port);
 
 if ($conn->connect_error) {
     die('Database connection failed: ' . $conn->connect_error);

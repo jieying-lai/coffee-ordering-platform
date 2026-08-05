@@ -92,7 +92,6 @@ INSERT INTO menu_items (category_id, name, description, price, image, display_or
 (5, 'Truffle Wild Mushroom Risotto', 'Arborio rice cooked in rich vegetable broth, sautéed wild mushrooms, and black truffle oil.', 19.90, '23.png', 1),
 (5, 'Sun-Dried Tomato & Burrata Pasta', 'Al dente linguine tossed in garlic sun-dried tomato pesto, topped with fresh creamy burrata.', 17.90, '24.png', 2),
 (5, 'Herbed Searing Salmon Skillet', 'Pan-seared Atlantic salmon fillet on a bed of warm garlic mashed potato and dill cream sauce.', 20.90, '25.png', 3),
-(5, 'Smoked Brisket Slider Trio', 'Slow-cooked smoked beef brisket, caramelized onions, and house barbecue glaze in mini brioche buns.', 19.90, '26.png', 4),
 (5, 'Cozy Garden Grain Bowl', 'Warm quinoa, roasted sweet potato, edamame, and avocado drizzled with sesame tahini dressing.', 17.90, '27.png', 5),
 (5, 'Artisanal Smoked Salmon Avocado Toast', 'Smoked Atlantic salmon, smashed avocado, capers, and poached egg on toasted sourdough.', 24.90, '28.png', 6),
 (5, 'Citrus Chicken Waldorf Salad', 'Sous-vide chicken breast, crisp green apples, walnuts, and dried cranberries in a light yogurt dressing.', 15.90, '29.png', 7),
