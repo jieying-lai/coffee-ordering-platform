@@ -88,8 +88,7 @@
             </div>
 
             <div class="help-links">
-                <a href="#">Forgot your username?</a>
-                <a href="#">Forgot your password?</a>
+                <a href="forgotPassword.php">Forgot your username or password?</a>
                 <a href="../register/index.php">Don't have an account? Register</a>
             </div>
 
@@ -116,4 +115,5 @@
         });
     </script>
 </body>
+</html>
 </html>
