@@ -158,7 +158,7 @@ $users = $conn->query('SELECT id, fullname, email, username, phone, gender, prof
         <?php endif; ?>
         <?php while ($u = $users->fetch_assoc()): ?>
           <tr>
-            <td><img src="../images/users/<?php echo htmlspecialchars($u['profile_pic'] ?: 'default.png'); ?>" alt=""></td>
+            <td><img src="../images/profiles/<?php echo htmlspecialchars($u['profile_pic'] ?: 'default.png'); ?>" alt=""></td>
             <td><?php echo htmlspecialchars($u['fullname']); ?></td>
             <td><?php echo htmlspecialchars($u['email']); ?></td>
             <td><?php echo htmlspecialchars($u['username']); ?></td>

@@ -10,11 +10,26 @@ while ($row = $categories->fetch_assoc()) {
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link rel="stylesheet" href="../style/mystyle.css">
-	<link rel="stylesheet" href="../style/menu.css">
-	<title>Cozy Coffee Co. — Menu</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../style/mystyle.css">
+  <link rel="stylesheet" href="../style/menu.css">
+  <title>Cozy Coffee Co. — Menu</title>
+  <style>
+    .badge-new {
+      background-color: #e74c3c;
+      color: #ffffff;
+      font-size: 0.65rem;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 4px;
+      margin-left: 8px;
+      vertical-align: middle;
+      display: inline-block;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+  </style>
 </head>
 
 <body>
@@ -52,18 +67,35 @@ while ($row = $categories->fetch_assoc()) {
 
     <div class="menu-grid">
       <?php
-        $stmt = $conn->prepare('SELECT * FROM menu_items WHERE category_id = ? ORDER BY display_order');
+        // Primary sort by created_at DESC, secondary fallback by item_id DESC (newest ID first)
+        $stmt = $conn->prepare('SELECT * FROM menu_items WHERE category_id = ? ORDER BY created_at DESC, item_id DESC');
         $stmt->bind_param('i', $cat['category_id']);
         $stmt->execute();
         $items = $stmt->get_result();
+
+        // 7 days window
+        $sevenDaysAgo = strtotime('-7 days');
+
         while ($item = $items->fetch_assoc()):
+            $isNew = false;
+            if (!empty($item['created_at'])) {
+                $itemCreatedTime = strtotime($item['created_at']);
+                if ($itemCreatedTime >= $sevenDaysAgo) {
+                    $isNew = true;
+                }
+            }
       ?>
         <div class="item-card">
           <div class="item-image">
             <img src="../images/menu/<?php echo htmlspecialchars($item['image']); ?>" alt="<?php echo htmlspecialchars(strtoupper($item['name'])); ?>">
           </div>
           <div class="item-body">
-            <h3><?php echo htmlspecialchars($item['name']); ?></h3>
+            <h3>
+              <?php echo htmlspecialchars($item['name']); ?>
+              <?php if ($isNew): ?>
+                <span class="badge-new">NEW</span>
+              <?php endif; ?>
+            </h3>
             <p><?php echo htmlspecialchars($item['description']); ?></p>
             <div class="item-footer">
               <span class="price">RM <?php echo number_format($item['price'], 2); ?></span>
@@ -77,7 +109,6 @@ while ($row = $categories->fetch_assoc()) {
 <?php endforeach; ?>
 
 <script>
-  // Category filter — shows/hides whole .menu-category blocks.
   const filterBtns = document.querySelectorAll('.filter-btn');
   const categories = document.querySelectorAll('.menu-category');
 
