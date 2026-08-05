@@ -127,6 +127,291 @@
 }
 .add-btn:hover { background: var(--color-accent-dark); }
 
+
+.badge-new {
+  background-color: #e74c3c;
+  color: #ffffff;
+  font-size: 0.65rem;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-left: 8px;
+  vertical-align: middle;
+  display: inline-block;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* Search Bar Styling */
+.search-container {
+  max-width: 600px;
+  margin: 25px auto 10px auto;
+  padding: 0 15px;
+}
+
+.search-input {
+  width: 100%;
+  padding: 12px 20px;
+  font-size: 1rem;
+  border: 2px solid #e0d8cf;
+  border-radius: 25px;
+  outline: none;
+  background-color: #ffffff;
+  color: #333;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  box-sizing: border-box;
+}
+
+.search-input:focus {
+  border-color: #a37252;
+  box-shadow: 0 0 8px rgba(163, 114, 82, 0.2);
+}
+
+.no-results {
+  text-align: center;
+  padding: 40px;
+  font-size: 1.1rem;
+  color: #777;
+  display: none;
+}
+
+/* ============ MODAL POPUP ============ */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.65);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.modal-content {
+  background: #ffffff;
+  width: 100%;
+  max-width: 650px;
+  border-radius: 16px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+
+.modal-close {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  background: rgba(0,0,0,0.1);
+  border: none;
+  font-size: 24px;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  cursor: pointer;
+  z-index: 10;
+  line-height: 1;
+}
+
+.modal-body {
+  display: flex;
+  flex-direction: column;
+  max-height: 85vh;
+  overflow-y: auto;
+}
+
+@media (min-width: 580px) {
+  .modal-body {
+    flex-direction: row;
+  }
+  .modal-img-wrap {
+    width: 45%;
+  }
+  .modal-details {
+    width: 55%;
+  }
+}
+
+.modal-img-wrap img {
+  width: 100%;
+  height: 100%;
+  max-height: 280px;
+  object-fit: cover;
+  display: block;
+}
+
+.modal-details {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.modal-details h2 {
+  margin: 0;
+  font-size: 1.4rem;
+  color: #333;
+}
+
+.modal-price {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--color-gold, #c9ae87);
+  margin: 0;
+}
+
+.modal-desc {
+  font-size: 0.9rem;
+  color: #666;
+  margin: 0;
+}
+
+/* ============ OPTION SELECTORS ============ */
+.option-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.option-label {
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: #444;
+}
+
+.radio-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.chip-btn input[type="radio"] {
+  display: none;
+}
+
+.chip-btn span {
+  display: inline-block;
+  padding: 6px 12px;
+  border: 1px solid #d0c4b8;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  background-color: #faf7f2;
+  transition: all 0.2s ease;
+}
+
+.chip-btn input[type="radio"]:checked + span {
+  background-color: #8c6d58;
+  color: #ffffff;
+  border-color: #8c6d58;
+}
+
+textarea#itemRemarks {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid #d0c4b8;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  outline: none;
+  box-sizing: border-box;
+}
+
+/* ============ QUANTITY & BUTTON ============ */
+.modal-action-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 10px;
+}
+
+.quantity-control {
+  display: flex;
+  align-items: center;
+  border: 1px solid #d0c4b8;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.quantity-control button {
+  background: #f0e6d8;
+  border: none;
+  padding: 6px 12px;
+  font-size: 1rem;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.quantity-control input {
+  width: 40px;
+  border: none;
+  text-align: center;
+  font-size: 0.95rem;
+  font-weight: bold;
+  outline: none;
+}
+
+.submit-cart-btn {
+  flex-grow: 1;
+  background: #8c6d58;
+  color: #fff;
+  border: none;
+  padding: 10px;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.submit-cart-btn:hover {
+  background: #6a503d;
+}
+
+/* Customization Options Layout inside Menu Modal */
+.custom-section {
+  margin-bottom: 12px;
+}
+
+.custom-section label {
+  display: block;
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: #4a3b32;
+  margin-bottom: 6px;
+}
+
+.option-group {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+/* Hide default radio input, style label as clickable pill */
+.option-group input[type="radio"] {
+  display: none;
+}
+
+.option-group label {
+  background: #f4efe9;
+  color: #634e42;
+  border: 1px solid #dcd1c4;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin: 0;
+}
+
+.option-group input[type="radio"]:checked + label {
+  background: #8c6d58;
+  color: #ffffff;
+  border-color: #8c6d58;
+}
+
 /* ============ RESPONSIVE ============ */
 
 /* Large desktop / wide monitors */

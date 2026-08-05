@@ -1,0 +1,35 @@
+<?php
+session_start();
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $itemId = isset($_POST['item_id']) ? (int)$_POST['item_id'] : 0;
+    $quantity = isset($_POST['quantity']) ? (int)$_POST['quantity'] : 1;
+    $temperature = isset($_POST['temperature']) ? trim($_POST['temperature']) : '';
+    $sweetness = isset($_POST['sweetness']) ? trim($_POST['sweetness']) : '';
+    $remarks = isset($_POST['remarks']) ? trim($_POST['remarks']) : '';
+
+    if ($itemId > 0 && $quantity > 0) {
+        if (!isset($_SESSION['cart'])) {
+            $_SESSION['cart'] = [];
+        }
+
+        // Create a unique key based on item ID and custom selections
+        $cartKey = md5($itemId . '|' . $temperature . '|' . $sweetness . '|' . $remarks);
+
+        if (isset($_SESSION['cart'][$cartKey])) {
+            $_SESSION['cart'][$cartKey]['quantity'] += $quantity;
+        } else {
+            $_SESSION['cart'][$cartKey] = [
+                'item_id' => $itemId,
+                'quantity' => $quantity,
+                'temperature' => $temperature,
+                'sweetness' => $sweetness,
+                'remarks' => $remarks
+            ];
+        }
+    }
+}
+
+// Redirect back to cart or menu page
+header('Location: ../cart/index.php');
+exit;

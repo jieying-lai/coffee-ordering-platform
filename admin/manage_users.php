@@ -56,11 +56,47 @@ $users = $conn->query('SELECT id, fullname, email, username, phone, gender, prof
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link rel="stylesheet" href="../style/mystyle.css">
-	<link rel="stylesheet" href="../style/admin.css">
-	<title>Cozy Coffee Co. — Manage Users</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../style/mystyle.css">
+  <link rel="stylesheet" href="../style/admin.css">
+  <title>Cozy Coffee Co. — Manage Users</title>
+  <style>
+    /* Expand wrapper width */
+    .admin-wrap {
+      max-width: 1400px !important;
+      width: 92%;
+      margin: 0 auto;
+      padding: 30px 0;
+    }
+
+    /* Search Control Bar */
+    .table-controls {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 20px;
+      width: 100%;
+    }
+
+    .table-controls input {
+      font-family: inherit;
+      font-size: 15px;
+      padding: 10px 16px;
+      background-color: #f7f4f0;
+      border: 1px solid #e0d8cf;
+      border-radius: 8px;
+      color: #333;
+      outline: none;
+      width: 100%;
+      max-width: 400px;
+      transition: border-color 0.2s ease, background-color 0.2s ease;
+    }
+
+    .table-controls input:focus {
+      border-color: #a37252;
+      background-color: #ffffff;
+    }
+  </style>
 </head>
 <body class="admin-page">
 
@@ -137,9 +173,14 @@ $users = $conn->query('SELECT id, fullname, email, username, phone, gender, prof
     </form>
   <?php endif; ?>
 
+  <!-- Search Control Bar -->
+  <div class="table-controls">
+    <input type="text" id="searchInput" onkeyup="filterUsers()" placeholder="Search name, email, or username...">
+  </div>
+
   <!-- ============ USERS TABLE ============ -->
   <div class="admin-table-wrap">
-    <table class="admin-table">
+    <table class="admin-table" id="usersTable">
       <thead>
         <tr>
           <th>Photo</th>
@@ -157,9 +198,9 @@ $users = $conn->query('SELECT id, fullname, email, username, phone, gender, prof
           <tr><td colspan="8">No registered users yet.</td></tr>
         <?php endif; ?>
         <?php while ($u = $users->fetch_assoc()): ?>
-          <tr>
-            <td><img src="../images/profiles/<?php echo htmlspecialchars($u['profile_pic'] ?: 'default.png'); ?>" alt=""></td>
-            <td><?php echo htmlspecialchars($u['fullname']); ?></td>
+          <tr class="user-row" data-search="<?php echo strtolower(htmlspecialchars($u['fullname'] . ' ' . $u['email'] . ' ' . $u['username'])); ?>">
+            <td><img src="../images/profiles/<?php echo htmlspecialchars($u['profile_pic'] ?: 'default.png'); ?>" alt="" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover;"></td>
+            <td><strong><?php echo htmlspecialchars($u['fullname']); ?></strong></td>
             <td><?php echo htmlspecialchars($u['email']); ?></td>
             <td><?php echo htmlspecialchars($u['username']); ?></td>
             <td><?php echo htmlspecialchars($u['phone'] ?? '—'); ?></td>
@@ -178,6 +219,22 @@ $users = $conn->query('SELECT id, fullname, email, username, phone, gender, prof
   </div>
 
 </div>
+
+<script>
+function filterUsers() {
+  const searchVal = document.getElementById('searchInput').value.toLowerCase().trim();
+  const rows = document.querySelectorAll('#usersTable .user-row');
+
+  rows.forEach(row => {
+    const searchData = row.getAttribute('data-search');
+    if (searchData.includes(searchVal)) {
+      row.style.display = '';
+    } else {
+      row.style.display = 'none';
+    }
+  });
+}
+</script>
 
 </body>
 </html>

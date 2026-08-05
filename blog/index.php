@@ -158,13 +158,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['form_type'] ?? '') === 'mo
     }
 }
 
-// Fetch all posts along with user profile pictures for Community Feed
 $feedQuery = "SELECT bp.*, u.username, u.profile_pic 
-              FROM blog_posts bp 
-              JOIN users u ON u.id = bp.user_id 
-              ORDER BY bp.created_at DESC";
+        FROM blog_posts bp 
+        JOIN users u ON u.id = bp.user_id 
+        WHERE bp.is_deleted = 0 
+          AND (bp.is_hidden = 0 OR bp.user_id = $currentUserId)
+        ORDER BY bp.created_at DESC";
 $feedResult = $conn->query($feedQuery);
+$currentUserId = $_SESSION['user_id'] ?? 0;
+
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>

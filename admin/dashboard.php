@@ -4,11 +4,11 @@ require_once '../includes/admin_auth_check.php';
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link rel="stylesheet" href="../style/mystyle.css">
-	<link rel="stylesheet" href="../style/admin.css">
-	<title>Cozy Coffee Co. — Admin Dashboard</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="../style/mystyle.css">
+  <link rel="stylesheet" href="../style/admin.css">
+  <title>Cozy Coffee Co. — Admin Dashboard</title>
 </head>
 <body class="admin-page">
 
@@ -36,6 +36,12 @@ require_once '../includes/admin_auth_check.php';
       <span class="icon">👤</span>
       <h3>Manage Users</h3>
       <p>View registered customers and remove accounts.</p>
+    </a>
+
+    <a href="manage_blog.php" class="admin-card">
+      <span class="icon">📸</span>
+      <h3>Manage Blog</h3>
+      <p>Moderate, edit, or remove community coffee moments.</p>
     </a>
 
     <a href="manage_contact.php" class="admin-card">
