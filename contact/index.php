@@ -91,28 +91,6 @@ $info  = $conn->query('SELECT * FROM contact_info WHERE id = 1')->fetch_assoc();
   </div>
 </section>
 
-<!-- ============ REVIEWS ============ -->
-<section class="reviews-section">
-  <h2>What Our Customers Say</h2>
-  <div class="reviews-grid">
-    <div class="review-card">
-      <div class="review-stars">★★★★★</div>
-      <p class="review-text">"The honey oat latte is my go-to every morning. Consistent, warm, and the staff always remember my order."</p>
-      <div class="review-author">— Mei Ling</div>
-    </div>
-    <div class="review-card">
-      <div class="review-stars">★★★★★</div>
-      <p class="review-text">"Love that I can order ahead and just walk in to grab it. Saves me so much time before work."</p>
-      <div class="review-author">— Arif Hakim</div>
-    </div>
-    <div class="review-card">
-      <div class="review-stars">★★★★☆</div>
-      <p class="review-text">"Great coffee and cozy vibe. Would love to see more pastry options in the future!"</p>
-      <div class="review-author">— Priya Sharma</div>
-    </div>
-  </div>
-</section>
-
 <script>
   document.querySelector('.hamburger').addEventListener('click', () => {
     const nav = document.querySelector('.nav-links');
