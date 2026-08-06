@@ -1,6 +1,6 @@
 <?php
+session_start();
 require_once '../includes/db_connect.php';
-
 $categories = $conn->query('SELECT * FROM categories ORDER BY display_order');
 $categoryList = [];
 while ($row = $categories->fetch_assoc()) {
@@ -22,18 +22,24 @@ while ($row = $categories->fetch_assoc()) {
   <div class="logo"><a href="../home/index.php">Cozy Coffee Co.</a></div>
   <ul class="nav-links">
     <li><a href="../home/index.php">Home</a></li>
-    <li>
-      <a href="index.php" class="active">Menu ▾</a>
-      <div class="dropdown">
-        <?php foreach ($categoryList as $cat): ?>
-          <a href="#<?php echo htmlspecialchars($cat['category_key']); ?>"><?php echo htmlspecialchars(preg_replace('/^\S+\s/', '', $cat['category_label'])); ?></a>
-        <?php endforeach; ?>
-      </div>
-    </li>
+    <li><a href="../menu/index.php" class="active">Menu ▾</a></li>
     <li><a href="../blog/index.php">Blog</a></li>
     <li><a href="../contact/index.php">Contact</a></li>
     <li><a href="../cart/index.php">Cart</a></li>
-    <li><a href="../login/index.php">Login</a></li>
+        <!-- DYNAMIC NAVIGATION LINK -->
+    <?php if (isset($_SESSION['user_id'])): ?>
+      <!-- Logged In State: Show Username & Profile Dropdown -->
+      <li>
+        <a href="../profile/index.php"><?php echo htmlspecialchars($_SESSION['fullname']); ?> ▾</a>
+        <div class="dropdown">
+          <a href="../profile/index.php">My Profile</a>
+          <a href="../logout.php">Logout</a>
+        </div>
+      </li>
+    <?php else: ?>
+      <!-- Guest State: Show Login Link -->
+      <li><a href="../login/index.php">Login</a></li>
+    <?php endif; ?>
   </ul>
   <button class="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
 </nav>
