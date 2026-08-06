@@ -2,6 +2,11 @@
 require_once '../includes/db_connect.php';
 require_once '../includes/auth_check.php'; // sets $isLoggedIn, $currentUserId, $currentUsername
 
+// FIX: this must be set BEFORE it's used to build the feed query below.
+// It was previously assigned after $feedQuery was built, so it was
+// empty at the time the query ran, producing invalid SQL.
+$currentUserId = $_SESSION['user_id'] ?? 0;
+
 $presetMoods = [
     'Happy'     => '😊 Happy',
     'Relaxed'   => '😌 Relaxed',
@@ -56,7 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['form_type'] ?? '') === 'mo
             }
         }
         $mood = implode(', ', $selectedMoods);
-        
+
         if (empty($mood)) {
             $momentErrors[] = 'Please select or enter a mood.';
         } elseif (mb_strlen($mood) > 50) {
@@ -89,7 +94,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['form_type'] ?? '') === 'mo
                 if (empty($momentErrors)) {
                     for ($i = 0; $i < $totalFiles; $i++) {
                         $fileError = $_FILES['photos']['error'][$i];
-                        
+
                         if ($fileError === UPLOAD_ERR_OK) {
                             $ext  = strtolower(pathinfo($_FILES['photos']['name'][$i], PATHINFO_EXTENSION));
                             $size = $_FILES['photos']['size'][$i];
@@ -126,7 +131,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['form_type'] ?? '') === 'mo
                 'INSERT INTO blog_posts (user_id, ordered_item, mood, description, created_at) VALUES (?, ?, ?, ?, NOW())'
             );
             $stmt->bind_param('isss', $currentUserId, $orderedItem, $mood, $description);
-            
+
             if ($stmt->execute()) {
                 $postId = $stmt->insert_id;
                 $stmt->close();
@@ -158,15 +163,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['form_type'] ?? '') === 'mo
     }
 }
 
-$feedQuery = "SELECT bp.*, u.username, u.profile_pic 
-        FROM blog_posts bp 
-        JOIN users u ON u.id = bp.user_id 
-        WHERE bp.is_deleted = 0 
-          AND (bp.is_hidden = 0 OR bp.user_id = $currentUserId)
-        ORDER BY bp.created_at DESC";
-$feedResult = $conn->query($feedQuery);
-$currentUserId = $_SESSION['user_id'] ?? 0;
-
+// FIX: converted to a prepared statement — $currentUserId is now
+// guaranteed to be set (see top of file) and is safely bound instead
+// of being concatenated directly into the SQL string.
+$feedStmt = $conn->prepare(
+    'SELECT bp.*, u.username, u.profile_pic
+     FROM blog_posts bp
+     JOIN users u ON u.id = bp.user_id
+     WHERE bp.is_deleted = 0
+       AND (bp.is_hidden = 0 OR bp.user_id = ?)
+     ORDER BY bp.created_at DESC'
+);
+$feedStmt->bind_param('i', $currentUserId);
+$feedStmt->execute();
+$feedResult = $feedStmt->get_result();
 ?>
 
 <!DOCTYPE html>
@@ -476,8 +486,11 @@ $currentUserId = $_SESSION['user_id'] ?? 0;
 
                 <!-- Display Attached Photos -->
                 <?php
-                $pid = (int)$post['id'];
-                $photoRes = $conn->query("SELECT image_path FROM blog_photos WHERE post_id = $pid");
+                $pid = (int) $post['id'];
+                $photoStmt = $conn->prepare('SELECT image_path FROM blog_photos WHERE post_id = ?');
+                $photoStmt->bind_param('i', $pid);
+                $photoStmt->execute();
+                $photoRes = $photoStmt->get_result();
                 if ($photoRes && $photoRes->num_rows > 0):
                 ?>
                     <div class="photo-gallery" id="gallery-<?php echo $pid; ?>">

@@ -76,8 +76,11 @@ $userPosts = $pStmt->get_result();
                 <?php endif; ?>
 
                 <?php
-                $pid = $post['id'];
-                $photoRes = $conn->query("SELECT image_path FROM blog_photos WHERE post_id = $pid");
+                $pid = (int) $post['id'];
+                $photoStmt = $conn->prepare('SELECT image_path FROM blog_photos WHERE post_id = ?');
+                $photoStmt->bind_param('i', $pid);
+                $photoStmt->execute();
+                $photoRes = $photoStmt->get_result();
                 if ($photoRes && $photoRes->num_rows > 0):
                 ?>
                     <div class="photo-gallery">

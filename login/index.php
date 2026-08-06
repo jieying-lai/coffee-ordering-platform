@@ -23,6 +23,8 @@
             <div class="brand-hero-image">
                 <img src="../images/coffee-hero.jpg" alt="Cozy Coffee Banner">
             </div>
+
+            <a href="../admin/index.php" class="admin-link" style="margin-top:16px;">Staff Login</a>
         </div>
 
         <!-- RIGHT COLUMN: LOGIN FORM CARD -->
@@ -115,5 +117,4 @@
         });
     </script>
 </body>
-</html>
 </html>
