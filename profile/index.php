@@ -105,7 +105,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['change_password'])) {
 // ----------------------------------------------------
 // 3. FETCH CURRENT USER DATA FROM DB
 // ----------------------------------------------------
-$user_stmt = $conn->prepare("SELECT fullname, username, email, birthday, gender, profile_pic FROM users WHERE id = ?");
+$user_stmt = $conn->prepare("SELECT fullname, username, email, birthday, gender, profile_pic, is_rewards_member, rewards_points, rewards_member_no FROM users WHERE id = ?");
 $user_stmt->bind_param("i", $user_id);
 $user_stmt->execute();
 $user = $user_stmt->get_result()->fetch_assoc();
@@ -144,6 +144,22 @@ $avatar = (!empty($user['profile_pic']) && file_exists("../images/profiles/" . $
         <a href="../menu/index.php?cat=desserts#desserts">Desserts</a>
       </div>
     </li>
+        <li><a href="../benefits/index.php">Benefits</a></li>
+    <li>
+      <a href="../offers/index.php">Offers ▾</a>
+      <div class="dropdown">
+        <a href="../offers/index.php#drinks">Drink Offers</a>
+        <a href="../offers/index.php#food">Food Offers</a>
+        <a href="../offers/index.php#partners">Partner Promotions</a>
+      </div>
+    </li>
+    <li>
+      <a href="../activities/index.php">Activities ▾</a>
+      <div class="dropdown">
+        <a href="../activities/index.php#workshops">Coffee Workshops</a>
+        <a href="../activities/index.php#giveback">Cozy Give-Back</a>
+      </div>
+    </li>
     <li><a href="../contact/index.php">Contact</a></li>
     <li><a href="../cart/index.php">Cart</a></li>
 
@@ -153,6 +169,7 @@ $avatar = (!empty($user['profile_pic']) && file_exists("../images/profiles/" . $
         <a href="index.php" class="active"><?php echo htmlspecialchars($_SESSION['fullname']); ?> ▾</a>
         <div class="dropdown">
           <a href="index.php">My Profile</a>
+          <a href="../rewards/index.php">Cozy Rewards</a>
           <a href="../logout.php">Logout</a>
         </div>
       </li>
@@ -169,6 +186,16 @@ $avatar = (!empty($user['profile_pic']) && file_exists("../images/profiles/" . $
   <div class="profile-card">
     
     <h2>👤 My Profile</h2>
+
+    <div class="alert" style="background: var(--color-bg); border: 1px solid var(--color-border); border-radius: 10px; padding: 14px 16px; margin-bottom: 18px; display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;">
+      <?php if ((int) ($user['is_rewards_member'] ?? 0) === 1): ?>
+        <span>☕ <strong>Cozy Rewards</strong> — Member <?php echo htmlspecialchars($user['rewards_member_no']); ?> · <?php echo (int) $user['rewards_points']; ?> points</span>
+        <a href="../rewards/index.php" style="font-weight: 700; color: var(--color-accent-dark);">View card &gt;</a>
+      <?php else: ?>
+        <span>☕ You haven't activated <strong>Cozy Rewards</strong> yet</span>
+        <a href="../rewards/join.php" style="font-weight: 700; color: var(--color-accent-dark);">Activate now &gt;</a>
+      <?php endif; ?>
+    </div>
 
     <?php if (!empty($message)): ?>
       <div class="alert alert-<?php echo $message_type; ?>">
