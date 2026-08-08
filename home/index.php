@@ -29,6 +29,22 @@ session_start();
       </div>
     </li>
     <li><a href="../blog/index.php">Blog</a></li>
+        <li><a href="../benefits/index.php">Benefits</a></li>
+    <li>
+      <a href="../offers/index.php">Offers ▾</a>
+      <div class="dropdown">
+        <a href="../offers/index.php#drinks">Drink Offers</a>
+        <a href="../offers/index.php#food">Food Offers</a>
+        <a href="../offers/index.php#partners">Partner Promotions</a>
+      </div>
+    </li>
+    <li>
+      <a href="../activities/index.php">Activities ▾</a>
+      <div class="dropdown">
+        <a href="../activities/index.php#workshops">Coffee Workshops</a>
+        <a href="../activities/index.php#giveback">Cozy Give-Back</a>
+      </div>
+    </li>
     <li><a href="../contact/index.php">Contact</a></li>
     <li><a href="../cart/index.php">Cart</a></li>
 
@@ -39,6 +55,7 @@ session_start();
         <a href="../profile/index.php"><?php echo htmlspecialchars($_SESSION['fullname']); ?> ▾</a>
         <div class="dropdown">
           <a href="../profile/index.php">My Profile</a>
+          <a href="../rewards/index.php">Cozy Rewards</a>
           <a href="../logout.php">Logout</a>
         </div>
       </li>
