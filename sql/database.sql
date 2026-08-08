@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3308
--- Generation Time: Aug 05, 2026 at 05:24 PM
+-- Generation Time: Aug 08, 2026 at 01:49 AM
 -- Server version: 8.4.7
 -- PHP Version: 8.3.28
 
@@ -322,6 +322,34 @@ CREATE TABLE IF NOT EXISTS `order_items` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `otp_verifications`
+--
+
+DROP TABLE IF EXISTS `otp_verifications`;
+CREATE TABLE IF NOT EXISTS `otp_verifications` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `user_id` int NOT NULL,
+  `phone` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `birthdate` date NOT NULL,
+  `activation_code` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `is_verified` tinyint(1) NOT NULL DEFAULT '0',
+  `attempt_count` int NOT NULL DEFAULT '0',
+  `expires_at` datetime NOT NULL,
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `user_id` (`user_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `otp_verifications`
+--
+
+INSERT INTO `otp_verifications` (`id`, `user_id`, `phone`, `birthdate`, `activation_code`, `is_verified`, `attempt_count`, `expires_at`, `created_at`) VALUES
+(1, 3, '+60192723941', '2006-08-08', '888953', 1, 0, '2026-08-08 01:51:47', '2026-08-08 01:48:47');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `users`
 --
 
@@ -337,20 +365,26 @@ CREATE TABLE IF NOT EXISTS `users` (
   `gender` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `phone` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `profile_pic` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT 'default.png',
+  `is_rewards_member` tinyint(1) NOT NULL DEFAULT '0',
+  `rewards_points` int NOT NULL DEFAULT '0',
+  `rewards_member_no` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `rewards_joined_at` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`),
   UNIQUE KEY `username` (`username`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `fullname`, `email`, `username`, `password`, `created_at`, `birthday`, `gender`, `phone`, `profile_pic`) VALUES
-(1, 'Jie Ying', 'jieying47@1utar.my', 'laijieying', '$2y$10$kNkzG8Ab1FuWgfVbtbz7P.aGvTAKgdEFHsuzrq5b71TtwwiRVbwxy', '2026-08-01 21:32:31', '2006-04-07', 'Female', NULL, 'user_1_1785652687.jpg'),
-(2, 'Chok Shi Ying', 'chokshiying06@gmail.com', 'yingchok', '$2y$10$Amklq4awtRbRlrfNk82VzuzhFOP1gJvuhvZIKXpXmu4k.nj.h2tKm', '2026-08-05 07:57:54', NULL, NULL, NULL, 'user_2_1785922625.jpg');
+INSERT INTO `users` (`id`, `fullname`, `email`, `username`, `password`, `created_at`, `birthday`, `gender`, `phone`, `profile_pic`, `is_rewards_member`, `rewards_points`, `rewards_member_no`, `rewards_joined_at`) VALUES
+(1, 'Jie Ying', 'jieying47@1utar.my', 'laijieying', '$2y$10$kNkzG8Ab1FuWgfVbtbz7P.aGvTAKgdEFHsuzrq5b71TtwwiRVbwxy', '2026-08-01 21:32:31', '2006-04-07', 'Female', NULL, 'user_1_1785652687.jpg', 0, 0, NULL, NULL),
+(2, 'Chok Shi Ying', 'chokshiying06@gmail.com', 'yingchok', '$2y$10$Amklq4awtRbRlrfNk82VzuzhFOP1gJvuhvZIKXpXmu4k.nj.h2tKm', '2026-08-05 07:57:54', NULL, NULL, NULL, 'user_2_1785922625.jpg', 0, 0, NULL, NULL),
+(3, 'Zhi Qing', 'changzhiqing1996@gmail.com', 'ZhiQing', '$2y$10$tsJdBo23ikIpXBLAYxbyfuOQe7C/yviTlDC54y9nttvNAgWcKOrbG', '2026-08-08 01:47:26', '2006-08-08', NULL, '+60192723941', 'default.png', 1, 50, 'CR000003', '2026-08-08 01:49:04');
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
