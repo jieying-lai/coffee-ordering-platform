@@ -44,6 +44,22 @@ $imgSrc = (stripos($rawImage, 'http://') === 0 || stripos($rawImage, 'https://')
     <li><a href="../home/index.php">Home</a></li>
     <li><a href="../menu/index.php" class="active">Menu ▾</a></li>
     <li><a href="../blog/index.php">Blog</a></li>
+        <li><a href="../benefits/index.php">Benefits</a></li>
+    <li>
+      <a href="../offers/index.php">Offers ▾</a>
+      <div class="dropdown">
+        <a href="../offers/index.php#drinks">Drink Offers</a>
+        <a href="../offers/index.php#food">Food Offers</a>
+        <a href="../offers/index.php#partners">Partner Promotions</a>
+      </div>
+    </li>
+    <li>
+      <a href="../activities/index.php">Activities ▾</a>
+      <div class="dropdown">
+        <a href="../activities/index.php#workshops">Coffee Workshops</a>
+        <a href="../activities/index.php#giveback">Cozy Give-Back</a>
+      </div>
+    </li>
     <li><a href="../contact/index.php">Contact</a></li>
     <li><a href="../cart/index.php">Cart</a></li>
     <?php if (isset($_SESSION['user_id'])): ?>
@@ -159,3 +175,4 @@ $imgSrc = (stripos($rawImage, 'http://') === 0 || stripos($rawImage, 'https://')
 
 </body>
 </html>
+
