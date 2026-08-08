@@ -1,0 +1,198 @@
+/* ============================================
+   COZY COFFEE CO. — COZY REWARDS STYLES
+   Load AFTER mystyle.css (and, on join.php, after login.css
+   since the form re-uses .login-page/.login-card/.input-group):
+     <link rel="stylesheet" href="../style/mystyle.css">
+     <link rel="stylesheet" href="../style/login.css">
+     <link rel="stylesheet" href="../style/rewards.css">
+   ============================================ */
+
+/* ============ STEP INDICATOR ============ */
+.otp-steps {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 22px;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--color-text-soft);
+}
+.otp-steps .step { display: flex; align-items: center; gap: 6px; opacity: 0.5; }
+.otp-steps .step.active { opacity: 1; color: var(--color-accent-dark); }
+.otp-steps .step-dot {
+  width: 20px; height: 20px; border-radius: 50%;
+  background: var(--color-border);
+  color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px;
+}
+.otp-steps .step.active .step-dot { background: var(--color-accent); }
+.otp-steps .step-sep { width: 18px; height: 1px; background: var(--color-border); }
+
+.otp-panel { display: none; }
+.otp-panel.visible { display: block; }
+
+/* ============ ACTIVATION CODE / OTP INPUT ============ */
+.otp-sent-banner {
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  padding: 14px 16px;
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: var(--color-text);
+  margin-bottom: 18px;
+}
+.otp-sent-banner strong { color: var(--color-accent-dark); }
+
+.otp-demo-code {
+  display: inline-block;
+  margin-top: 6px;
+  font-family: var(--font-heading);
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: 4px;
+  color: var(--color-accent-dark);
+}
+
+.otp-input-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 6px;
+}
+
+.otp-box {
+  width: 100%;
+  height: 54px;
+  text-align: center;
+  font-size: 22px;
+  font-weight: 700;
+  font-family: var(--font-heading);
+  border: 1.5px solid var(--color-border);
+  border-radius: 8px;
+  background: #fff;
+  color: var(--color-text);
+  outline: none;
+}
+.otp-box:focus {
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px rgba(200, 90, 62, 0.15);
+}
+
+.otp-countdown {
+  margin: 14px 0 4px;
+  font-size: 14px;
+  color: var(--color-text-soft);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.otp-countdown .clock {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  color: var(--color-accent-dark);
+}
+
+.otp-resend-btn {
+  background: none;
+  border: none;
+  font-weight: 700;
+  color: var(--color-accent-dark);
+  cursor: pointer;
+  font-size: 13.5px;
+}
+.otp-resend-btn:disabled {
+  color: var(--color-text-soft);
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.otp-error {
+  color: #B3261E;
+  font-size: 13px;
+  font-weight: 600;
+  margin: -6px 0 14px;
+  min-height: 16px;
+}
+
+.otp-back-step {
+  display: inline-block;
+  margin-top: 16px;
+  font-size: 13.5px;
+}
+
+/* ============ REWARDS HUB / MEMBER CARD ============ */
+.rewards-hub { max-width: 760px; margin: 0 auto; padding: 48px 6% 80px; }
+
+.member-card {
+  background: linear-gradient(135deg, var(--color-accent) 0%, var(--color-accent-dark) 100%);
+  color: #fff;
+  border-radius: 20px;
+  padding: 30px 32px;
+  box-shadow: 0 10px 30px rgba(60, 42, 33, 0.2);
+  margin-bottom: 30px;
+}
+
+.member-card .card-eyebrow {
+  font-size: 12.5px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  opacity: 0.85;
+  font-weight: 700;
+}
+
+.member-card h2 {
+  font-family: var(--font-heading);
+  font-size: 26px;
+  margin: 8px 0 18px;
+  color: #fff;
+}
+
+.member-card-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.member-card .member-no {
+  font-family: var(--font-heading);
+  font-size: 19px;
+  letter-spacing: 2px;
+}
+
+.member-card .points-value {
+  font-family: var(--font-heading);
+  font-size: 34px;
+  font-weight: 700;
+  line-height: 1;
+}
+.member-card .points-label { font-size: 12.5px; opacity: 0.85; }
+
+.rewards-cta-box {
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  padding: 32px;
+  text-align: center;
+}
+
+.rewards-cta-box h2 { font-size: 24px; margin-bottom: 10px; }
+.rewards-cta-box p { color: var(--color-text-soft); margin-bottom: 22px; line-height: 1.6; }
+
+.rewards-perks-mini {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin: 22px 0 26px;
+  text-align: left;
+}
+.rewards-perks-mini .perk { font-size: 13.5px; color: var(--color-text); }
+.rewards-perks-mini .perk .perk-icon { font-size: 18px; margin-right: 6px; }
+
+@media (max-width: 640px) {
+  .rewards-perks-mini { grid-template-columns: 1fr; }
+  .member-card { padding: 24px 22px; }
+}
