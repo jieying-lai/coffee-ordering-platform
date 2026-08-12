@@ -1,6 +1,6 @@
 <?php
 require_once '../includes/db_connect.php';
-require_once '../includes/auth_check.php'; // sets $isLoggedIn, $currentUserId, $currentUsername
+require_once '../includes/auth_check.php';
 
 $about = $conn->query('SELECT * FROM about_us WHERE id = 1')->fetch_assoc();
 $info  = $conn->query('SELECT * FROM contact_info WHERE id = 1')->fetch_assoc();
@@ -12,66 +12,16 @@ $info  = $conn->query('SELECT * FROM contact_info WHERE id = 1')->fetch_assoc();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../style/mystyle.css">
     <link rel="stylesheet" href="../style/contact.css">
-    <title>Cozy Coffee Co. — About & Contact</title>
+    <title>Cozy Coffee Co. — About &amp; Contact</title>
 </head>
 
 <body>
-<nav>
-  <div class="logo"><a href="../home/index.php">Cozy Coffee Co.</a></div>
-  <ul class="nav-links">
-    <li><a href="../home/index.php">Home</a></li>
-    <li>
-      <a href="../menu/index.php">Menu ▾</a>
-      <div class="dropdown">
-        <a href="../menu/index.php#specialty">Specialty</a>
-        <a href="../menu/index.php#classic">Classic Coffee</a>
-        <a href="../menu/index.php#noncoffein">Non-Coffein</a>
-        <a href="../menu/index.php#smoothies">Smoothies &amp; Sodas</a>
-        <a href="../menu/index.php#mains">Main Dishes</a>
-        <a href="../menu/index.php#desserts">Desserts</a>
-      </div>
-    </li>
-    <li><a href="../blog/index.php">Blog</a></li>
-        <li><a href="../benefits/index.php">Benefits</a></li>
-    <li>
-      <a href="../offers/index.php">Offers ▾</a>
-      <div class="dropdown">
-        <a href="../offers/index.php#drinks">Drink Offers</a>
-        <a href="../offers/index.php#food">Food Offers</a>
-        <a href="../offers/index.php#partners">Partner Promotions</a>
-      </div>
-    </li>
-    <li>
-      <a href="../activities/index.php">Activities ▾</a>
-      <div class="dropdown">
-        <a href="../activities/index.php#workshops">Coffee Workshops</a>
-        <a href="../activities/index.php#giveback">Cozy Give-Back</a>
-      </div>
-    </li>
-    <li><a href="index.php" class="active">Contact</a></li>
-    <li><a href="../cart/index.php">Cart</a></li>
-        <!-- DYNAMIC NAVIGATION LINK -->
-    <?php if (isset($_SESSION['user_id'])): ?>
-      <!-- Logged In State: Show Username & Profile Dropdown -->
-      <li>
-        <a href="../profile/index.php"><?php echo htmlspecialchars($_SESSION['fullname']); ?> ▾</a>
-        <div class="dropdown">
-          <a href="../profile/index.php">My Profile</a>
-          <a href="../rewards/index.php">Cozy Rewards</a>
-          <a href="../logout.php">Logout</a>
-        </div>
-      </li>
-    <?php else: ?>
-      <!-- Guest State: Show Login Link -->
-      <li><a href="../login/index.php">Login</a></li>
-    <?php endif; ?>
+<?php 
+  $activePage = 'contact';
+  require_once '../includes/header_nav.php'; 
+?>
 
-  </ul>
-  
-  <button class="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
-</nav>
-
-<!-- ============ ABOUT / INTRO ============ -->
+<!-- ============ ABOUT / HERO ============ -->
 <section class="about-section">
   <div class="eyebrow"><?php echo htmlspecialchars($about['eyebrow'] ?? 'Our Story'); ?></div>
   <h2><?php echo htmlspecialchars($about['heading'] ?? 'Crafting Cozy Moments Daily'); ?></h2>
@@ -79,9 +29,9 @@ $info  = $conn->query('SELECT * FROM contact_info WHERE id = 1')->fetch_assoc();
 </section>
 
 <!-- ============ CONTACT INFO & LOCATION ============ -->
-<section class="contact-section" style="display: block; max-width: 900px; margin: 0 auto;">
-  <div class="contact-info" style="width: 100%;">
-    <h3>Get in Touch & Visit Us</h3>
+<section class="contact-section">
+  <div class="contact-info" style="grid-column: 1 / -1; max-width: 900px; margin: 0 auto; width: 100%;">
+    <h3>Get in Touch &amp; Visit Us</h3>
     <ul>
       <li><strong>Address:</strong> <?php echo htmlspecialchars($info['address'] ?? ''); ?></li>
       <li><strong>Phone:</strong> <?php echo htmlspecialchars($info['phone'] ?? ''); ?></li>
@@ -90,30 +40,22 @@ $info  = $conn->query('SELECT * FROM contact_info WHERE id = 1')->fetch_assoc();
     </ul>
 
     <?php if (!empty($info['map_embed_url'])): ?>
-      <div class="contact-map" style="margin-top: 20px;">
+      <div class="contact-map">
         <iframe
           src="<?php echo htmlspecialchars($info['map_embed_url']); ?>"
           loading="lazy"
-          style="width: 100%; height: 350px; border: 0; border-radius: 8px;"
           referrerpolicy="no-referrer-when-downgrade">
         </iframe>
       </div>
     <?php endif; ?>
 
-    <div class="social-links" style="margin-top: 20px;">
+    <div class="social-links">
       <?php if (!empty($info['instagram_url'])): ?><a href="<?php echo htmlspecialchars($info['instagram_url']); ?>">Instagram</a><?php endif; ?>
       <?php if (!empty($info['facebook_url'])): ?><a href="<?php echo htmlspecialchars($info['facebook_url']); ?>">Facebook</a><?php endif; ?>
       <?php if (!empty($info['tiktok_url'])): ?><a href="<?php echo htmlspecialchars($info['tiktok_url']); ?>">TikTok</a><?php endif; ?>
     </div>
   </div>
 </section>
-
-<script>
-  document.querySelector('.hamburger').addEventListener('click', () => {
-    const nav = document.querySelector('.nav-links');
-    nav.style.display = nav.style.display === 'flex' ? 'none' : 'flex';
-  });
-</script>
 
 </body>
 </html>

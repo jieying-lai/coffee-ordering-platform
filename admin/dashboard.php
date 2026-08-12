@@ -26,6 +26,12 @@ require_once '../includes/admin_auth_check.php';
 
   <div class="admin-grid">
 
+    <a href="manage_orders.php" class="admin-card" style="border-left: 4px solid var(--color-accent-dark);">
+      <span class="icon">📋</span>
+      <h3>Manage Orders</h3>
+      <p>Track customer orders, drink customizations & update statuses.</p>
+    </a>
+
     <a href="manage_menu.php" class="admin-card">
       <span class="icon">☕</span>
       <h3>Manage Menu</h3>

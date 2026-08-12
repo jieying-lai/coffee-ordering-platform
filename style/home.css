@@ -7,7 +7,7 @@
    ============================================ */
 
 /* ============ HERO ============ */
-.hero { text-align: center; padding: 60px 6%; background-color: #e7cdb4cd; }
+.hero { text-align: center; padding: 60px 6%; background: transparent; }
 .hero h1 { font-size: clamp(28px, 5.5vw, 44px); margin: 12px 0 16px; }
 .hero p { color: var(--color-text-soft); max-width: 480px; margin: 0 auto; font-size: clamp(14px, 2.5vw, 16px); }
 
@@ -123,9 +123,27 @@
   .gallery-grid { grid-template-columns: 1fr; }
 }
 
-@media (max-width: 640px) {
-  .hero { padding: 40px 6% 32px; }
-  .gallery-grid { grid-template-columns: 1fr; }
+/* ============ COFFEE MATCH QUIZ MODAL STYLING ============ */
+.quiz-opt, .quiz-final {
+  padding: 12px 18px;
+  border-radius: 999px;
+  border: 1.5px solid #d0c4b8;
+  background: #ffffff;
+  color: #4a3b32;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.92rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+.quiz-opt:hover, .quiz-final:hover {
+  background: var(--color-accent-dark, #8c6d58);
+  color: #ffffff;
+  border-color: var(--color-accent-dark, #8c6d58);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(140, 109, 88, 0.25);
 }
 
 @media (max-width: 380px) {

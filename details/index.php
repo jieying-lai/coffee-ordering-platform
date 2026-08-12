@@ -93,6 +93,33 @@ $imgSrc = (stripos($rawImage, 'http://') === 0 || stripos($rawImage, 'https://')
         RM <?php echo number_format($item['price'], 2); ?>
       </div>
 
+      <div class="details-options" style="margin: 18px 0; text-align: left;">
+        <div style="margin-bottom: 12px;">
+          <label style="font-weight: 600; font-size: 0.9em; display: block; margin-bottom: 4px;">Temperature Option:</label>
+          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <label class="chip-btn"><input type="radio" name="details_temp" value="Regular Ice" checked> <span>Regular Ice</span></label>
+            <label class="chip-btn"><input type="radio" name="details_temp" value="Less Ice"> <span>Less Ice</span></label>
+            <label class="chip-btn"><input type="radio" name="details_temp" value="No Ice"> <span>No Ice</span></label>
+            <label class="chip-btn"><input type="radio" name="details_temp" value="Warm"> <span>Warm</span></label>
+            <label class="chip-btn"><input type="radio" name="details_temp" value="Hot"> <span>Hot</span></label>
+          </div>
+        </div>
+
+        <div style="margin-bottom: 12px;">
+          <label style="font-weight: 600; font-size: 0.9em; display: block; margin-bottom: 4px;">Sweetness Level:</label>
+          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <label class="chip-btn"><input type="radio" name="details_sweet" value="Regular Sugar" checked> <span>Regular</span></label>
+            <label class="chip-btn"><input type="radio" name="details_sweet" value="Less Sugar"> <span>Less Sugar</span></label>
+            <label class="chip-btn"><input type="radio" name="details_sweet" value="No Sugar"> <span>No Sugar</span></label>
+          </div>
+        </div>
+
+        <div>
+          <label for="detailsRemarks" style="font-weight: 600; font-size: 0.9em; display: block; margin-bottom: 4px;">Special Remarks:</label>
+          <input type="text" id="detailsRemarks" placeholder="e.g. Extra hot, oat milk..." style="width: 100%; padding: 8px 12px; border: 1px solid #d4c5b3; border-radius: 8px;">
+        </div>
+      </div>
+
       <div class="details-qty">
         <button type="button" class="qty-btn" id="qtyMinus">&minus;</button>
         <span id="qtyValue">1</span>
@@ -117,10 +144,10 @@ $imgSrc = (stripos($rawImage, 'http://') === 0 || stripos($rawImage, 'https://')
 <script>
   document.querySelector('.hamburger').addEventListener('click', () => {
     const nav = document.querySelector('.nav-links');
-    nav.style.display = nav.style.display === 'flex' ? 'none' : 'flex';
+    nav.classList.toggle('nav-active');
   });
 
-  // ---- Quantity stepper (also updates the displayed price = unit price × qty) ----
+  // ---- Quantity stepper ----
   let qty = 1;
   const qtyValue = document.getElementById('qtyValue');
   const priceEl = document.getElementById('detailsPrice');
@@ -142,34 +169,51 @@ $imgSrc = (stripos($rawImage, 'http://') === 0 || stripos($rawImage, 'https://')
     updatePriceDisplay();
   });
 
-  // ---- Add to cart ----
-  // NOTE: This stores the cart in localStorage under the key "cart" as an
-  // array of { id, name, price, image, qty }. If your cart page (cart/index.php)
-  // already reads cart data from somewhere else (a different localStorage key,
-  // a session, or a database table), tell me how it's stored and I'll update
-  // this to match instead of introducing a second cart mechanism.
+  // ---- Add to cart via AJAX (PHP session) ----
   document.getElementById('addToCartBtn').addEventListener('click', function () {
     const btn = this;
-    const item = {
-      id: btn.dataset.id,
-      name: btn.dataset.name,
-      price: parseFloat(btn.dataset.price),
-      image: btn.dataset.image
-    };
+    const itemId = btn.dataset.id;
+    const itemName = btn.dataset.name;
 
-    let cart = JSON.parse(localStorage.getItem('cart') || '[]');
-    const existing = cart.find(c => c.id === item.id);
-    if (existing) {
-      existing.qty += qty;
-    } else {
-      cart.push({ ...item, qty });
-    }
-    localStorage.setItem('cart', JSON.stringify(cart));
+    const tempEl = document.querySelector('input[name="details_temp"]:checked');
+    const tempVal = tempEl ? tempEl.value : '';
 
-    const msg = document.getElementById('message');
-    msg.textContent = `${item.name} added to cart ✓`;
-    msg.classList.add('show');
-    setTimeout(() => msg.classList.remove('show'), 2000);
+    const sweetEl = document.querySelector('input[name="details_sweet"]:checked');
+    const sweetVal = sweetEl ? sweetEl.value : '';
+
+    const remarksVal = document.getElementById('detailsRemarks').value.trim();
+
+    const formData = new FormData();
+    formData.append('item_id', itemId);
+    formData.append('quantity', qty);
+    formData.append('temperature', tempVal);
+    formData.append('sweetness', sweetVal);
+    formData.append('remarks', remarksVal);
+    formData.append('ajax', '1');
+
+    btn.disabled = true;
+    btn.textContent = 'Adding...';
+
+    fetch('../cart/add_to_cart.php', {
+      method: 'POST',
+      body: formData,
+      headers: { 'X-Requested-With': 'XMLHttpRequest' }
+    })
+    .then(res => res.json())
+    .then(data => {
+      btn.disabled = false;
+      btn.textContent = 'Add to Cart 🛒';
+      if (data.status === 'success') {
+        const msg = document.getElementById('message');
+        msg.textContent = `${itemName} added to cart ☕`;
+        msg.classList.add('show');
+        setTimeout(() => msg.classList.remove('show'), 3000);
+      }
+    })
+    .catch(() => {
+      btn.disabled = false;
+      btn.textContent = 'Add to Cart 🛒';
+    });
   });
 </script>
 

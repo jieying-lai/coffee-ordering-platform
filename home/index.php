@@ -13,60 +13,10 @@ session_start();
 </head>
 
 <body>
-<nav>
-  <div class="logo"><a href="index.php">Cozy Coffee Co.</a></div>
-  <ul class="nav-links">
-    <li><a href="index.php" class="active">Home</a></li>
-    <li>
-      <a href="../menu/index.php">Menu ▾</a>
-      <div class="dropdown">
-        <a href="../menu/index.php?cat=specialty#specialty">Specialty</a>
-        <a href="../menu/index.php?cat=classic#classic">Classic Coffee</a>
-        <a href="../menu/index.php?cat=noncoffein#noncoffein">Non-Coffein</a>
-        <a href="../menu/index.php?cat=smoothies#smoothies">Smoothies &amp; Sodas</a>
-        <a href="../menu/index.php?cat=mains#mains">Main Dishes</a>
-        <a href="../menu/index.php?cat=desserts#desserts">Desserts</a>
-      </div>
-    </li>
-    <li><a href="../blog/index.php">Blog</a></li>
-        <li><a href="../benefits/index.php">Benefits</a></li>
-    <li>
-      <a href="../offers/index.php">Offers ▾</a>
-      <div class="dropdown">
-        <a href="../offers/index.php#drinks">Drink Offers</a>
-        <a href="../offers/index.php#food">Food Offers</a>
-        <a href="../offers/index.php#partners">Partner Promotions</a>
-      </div>
-    </li>
-    <li>
-      <a href="../activities/index.php">Activities ▾</a>
-      <div class="dropdown">
-        <a href="../activities/index.php#workshops">Coffee Workshops</a>
-        <a href="../activities/index.php#giveback">Cozy Give-Back</a>
-      </div>
-    </li>
-    <li><a href="../contact/index.php">Contact</a></li>
-    <li><a href="../cart/index.php">Cart</a></li>
-
-    <!-- DYNAMIC NAVIGATION LINK -->
-    <?php if (isset($_SESSION['user_id'])): ?>
-      <!-- Logged In State: Show Username & Profile Dropdown -->
-      <li>
-        <a href="../profile/index.php"><?php echo htmlspecialchars($_SESSION['fullname']); ?> ▾</a>
-        <div class="dropdown">
-          <a href="../profile/index.php">My Profile</a>
-          <a href="../rewards/index.php">Cozy Rewards</a>
-          <a href="../logout.php">Logout</a>
-        </div>
-      </li>
-    <?php else: ?>
-      <!-- Guest State: Show Login Link -->
-      <li><a href="../login/index.php">Login</a></li>
-    <?php endif; ?>
-
-  </ul>
-  <button class="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
-</nav>
+<?php 
+  $activePage = 'home';
+  require_once '../includes/header_nav.php'; 
+?>
 
 <section class="hero">
   <div class="eyebrow">Small Batch · Slow Roasted</div>
@@ -75,9 +25,42 @@ session_start();
 
   <div class="hero-actions">
     <a href="../menu/index.php" class="cta-btn cta-btn-primary">Order Now</a>
-    <a href="#gallery" class="cta-btn cta-btn-outline">Explore More</a>
+    <button type="button" class="cta-btn cta-btn-outline" id="exploreQuizBtn">☕ Coffee Match Quiz</button>
   </div>
 </section>
+
+<!-- COFFEE MATCH QUIZ MODAL -->
+<div id="quizModal" class="modal-overlay">
+  <div class="modal-content" style="max-width: 520px; padding: 30px; text-align: center;">
+    <button class="modal-close" id="closeQuizModal">&times;</button>
+    <div style="font-size: 2.8rem; margin-bottom: 10px;">☕</div>
+    <h2 style="font-family: var(--font-heading); color: var(--color-primary); margin-bottom: 8px;">Find Your Perfect Brew</h2>
+    <p style="color: #666; font-size: 0.95rem; margin-bottom: 20px;">Tell us what you're craving and we'll match you with your ideal drink!</p>
+    
+    <div id="quizStep1">
+      <h3 style="font-size: 1rem; margin-bottom: 12px; color: #4a3b32;">1. What temperature do you prefer right now?</h3>
+      <div style="display: flex; gap: 12px; justify-content: center; margin-bottom: 20px;">
+        <button type="button" class="btn btn-outline quiz-opt" data-temp="iced" style="flex:1;">❄️ Refreshing Iced</button>
+        <button type="button" class="btn btn-outline quiz-opt" data-temp="hot" style="flex:1;">🔥 Cozy Hot Brew</button>
+      </div>
+    </div>
+
+    <div id="quizStep2" style="display: none;">
+      <h3 style="font-size: 1rem; margin-bottom: 12px; color: #4a3b32;">2. How sweet or strong do you like it?</h3>
+      <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px;">
+        <button type="button" class="btn btn-outline quiz-final" data-rec="Dirty Latte" data-desc="Espresso layered over cold fresh milk — bold and silky." data-link="../menu/index.php">☕ Bold &amp; Strong (Dirty Latte)</button>
+        <button type="button" class="btn btn-outline quiz-final" data-rec="Caramel Macchiato" data-desc="Rich espresso with creamy vanilla and sweet caramel drizzle." data-link="../menu/index.php">🍯 Sweet &amp; Creamy (Caramel Macchiato)</button>
+        <button type="button" class="btn btn-outline quiz-final" data-rec="Matcha Green Tea Latte" data-desc="Ceremonial Uji matcha with steamed milk." data-link="../menu/index.php">🍃 Smooth Non-Coffee (Matcha Latte)</button>
+      </div>
+    </div>
+
+    <div id="quizResult" style="display: none; background: #faf5ee; padding: 20px; border-radius: 12px; border: 1px solid #e0d5c4;">
+      <h3 id="recTitle" style="color: var(--color-accent-dark); font-size: 1.3rem;"></h3>
+      <p id="recDesc" style="color: #666; font-size: 0.9rem; margin: 8px 0 16px;"></p>
+      <a href="../menu/index.php" class="cta-btn cta-btn-primary" style="display: inline-block;">Order This Now 🛒</a>
+    </div>
+  </div>
+</div>
 
 <section class="gallery-section" id="gallery">
   <h2>A Peek Inside</h2>
@@ -117,9 +100,36 @@ session_start();
 </section>
 
 <script>
-  document.querySelector('.hamburger').addEventListener('click', () => {
-    const nav = document.querySelector('.nav-links');
-    nav.style.display = nav.style.display === 'flex' ? 'none' : 'flex';
+  const quizModal = document.getElementById('quizModal');
+  const quizBtn = document.getElementById('exploreQuizBtn');
+  const closeQuizBtn = document.getElementById('closeQuizModal');
+  const quizStep1 = document.getElementById('quizStep1');
+  const quizStep2 = document.getElementById('quizStep2');
+  const quizResult = document.getElementById('quizResult');
+
+  quizBtn?.addEventListener('click', () => {
+    quizStep1.style.display = 'block';
+    quizStep2.style.display = 'none';
+    quizResult.style.display = 'none';
+    quizModal.style.display = 'flex';
+  });
+
+  closeQuizBtn?.addEventListener('click', () => { quizModal.style.display = 'none'; });
+
+  document.querySelectorAll('.quiz-opt').forEach(btn => {
+    btn.addEventListener('click', () => {
+      quizStep1.style.display = 'none';
+      quizStep2.style.display = 'block';
+    });
+  });
+
+  document.querySelectorAll('.quiz-final').forEach(btn => {
+    btn.addEventListener('click', function() {
+      quizStep2.style.display = 'none';
+      document.getElementById('recTitle').textContent = '🌟 Recommended: ' + this.dataset.rec;
+      document.getElementById('recDesc').textContent = this.dataset.desc;
+      quizResult.style.display = 'block';
+    });
   });
 </script>
 

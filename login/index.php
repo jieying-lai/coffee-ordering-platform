@@ -47,6 +47,7 @@
                     <span class="required-star">*</span>
                     Username or email address
                 </label>
+                <div id="usernameHint" style="font-size: 0.78rem; margin-top: 4px; display: none;"></div>
             </div>
 
             <div class="input-group password-group">
@@ -75,6 +76,7 @@
                     </svg>
                 </button>
             </div>
+            <div id="passwordHint" style="font-size: 0.78rem; margin-top: -10px; margin-bottom: 12px; display: none;"></div>
 
             <div class="remember-section">
                 <div class="remember-option">
@@ -95,7 +97,7 @@
             </div>
 
             <div class="button-section">
-                <button type="submit" class="sign-in-button">
+                <button type="submit" class="sign-in-button" id="signInBtn">
                     Sign in
                 </button>
             </div>
@@ -107,7 +109,11 @@
     <script>
         const showPasswordButton = document.getElementById("showPassword");
         const passwordInput = document.getElementById("password");
+        const usernameInput = document.getElementById("username");
+        const usernameHint = document.getElementById("usernameHint");
+        const passwordHint = document.getElementById("passwordHint");
 
+        // Toggle Password Visibility Only (No live password error hints on login)
         showPasswordButton.addEventListener("click", function () {
             if (passwordInput.type === "password") {
                 passwordInput.type = "text";

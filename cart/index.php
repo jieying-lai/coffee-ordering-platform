@@ -2,10 +2,23 @@
 session_start();
 require_once '../includes/db_connect.php';
 
-// Handle AJAX requests for Cart Updates & Deletions
+// Handle AJAX requests for Cart Updates, Deletions, and Promo Applications
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
     header('Content-Type: application/json');
     $cartKey = $_POST['cart_key'] ?? '';
+
+    if ($_POST['action'] === 'apply_promo') {
+        $code = trim($_POST['promo_code'] ?? '');
+        $discount = (float)($_POST['discount'] ?? 0);
+        $fulfillment = trim($_POST['fulfillment'] ?? 'Dine-In');
+        $_SESSION['applied_promo'] = [
+            'code' => $code,
+            'discount' => $discount,
+            'fulfillment' => $fulfillment
+        ];
+        echo json_encode(['status' => 'success']);
+        exit;
+    }
 
     if ($_POST['action'] === 'update_qty') {
         $newQty = (int)($_POST['quantity'] ?? 1);
@@ -92,57 +105,10 @@ if (!empty($_SESSION['cart']) && is_array($_SESSION['cart'])) {
 
 <body class="cart-page">
 
-<nav>
-  <div class="logo"><a href="../home/index.php">Cozy Coffee Co.</a></div>
-  <ul class="nav-links">
-    <li><a href="../home/index.php">Home</a></li>
-    <li>
-      <a href="../menu/index.php">Menu ▾</a>
-      <div class="dropdown">
-        <a href="../menu/index.php?cat=specialty#specialty">Specialty</a>
-        <a href="../menu/index.php?cat=classic#classic">Classic Coffee</a>
-        <a href="../menu/index.php?cat=noncoffein#noncoffein">Non-Coffein</a>
-        <a href="../menu/index.php?cat=smoothies#smoothies">Smoothies &amp; Sodas</a>
-        <a href="../menu/index.php?cat=mains#mains">Main Dishes</a>
-        <a href="../menu/index.php?cat=desserts#desserts">Desserts</a>
-      </div>
-    </li>
-    <li><a href="../blog/index.php">Blog</a></li>
-        <li><a href="../benefits/index.php">Benefits</a></li>
-    <li>
-      <a href="../offers/index.php">Offers ▾</a>
-      <div class="dropdown">
-        <a href="../offers/index.php#drinks">Drink Offers</a>
-        <a href="../offers/index.php#food">Food Offers</a>
-        <a href="../offers/index.php#partners">Partner Promotions</a>
-      </div>
-    </li>
-    <li>
-      <a href="../activities/index.php">Activities ▾</a>
-      <div class="dropdown">
-        <a href="../activities/index.php#workshops">Coffee Workshops</a>
-        <a href="../activities/index.php#giveback">Cozy Give-Back</a>
-      </div>
-    </li>
-    <li><a href="../contact/index.php">Contact</a></li>
-    <li><a href="../cart/index.php" class="active">Cart</a></li>
-
-    <?php if (isset($_SESSION['user_id'])): ?>
-      <li>
-        <a href="../profile/index.php"><?php echo htmlspecialchars($_SESSION['fullname']); ?> ▾</a>
-        <div class="dropdown">
-          <a href="../profile/index.php">My Profile</a>
-          <a href="../rewards/index.php">Cozy Rewards</a>
-          <a href="../logout.php">Logout</a>
-        </div>
-      </li>
-    <?php else: ?>
-      <li><a href="../login/index.php">Login</a></li>
-    <?php endif; ?>
-
-  </ul>
-  <button class="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
-</nav>
+<?php 
+  $activePage = 'cart';
+  require_once '../includes/header_nav.php'; 
+?>
 
 <div class="container">
 
@@ -172,18 +138,18 @@ if (!empty($_SESSION['cart']) && is_array($_SESSION['cart'])) {
                         <div class="cart-item-details">
                             <h3><?php echo htmlspecialchars($item['name']); ?></h3>
                             
-                            <!-- Display Custom Choices -->
-                            <div class="item-options">
-                                <?php if ($item['temperature']): ?>
-                                    <span class="option-tag"><?php echo htmlspecialchars($item['temperature']); ?></span>
+                            <!-- Display Custom Choices as Tag Chips -->
+                            <div class="item-options" style="margin-top:4px;">
+                                <?php if (!empty($item['temperature'])): ?>
+                                    <span class="tag-chip tag-chip-temp"><?php echo htmlspecialchars($item['temperature']); ?></span>
                                 <?php endif; ?>
-                                <?php if ($item['sweetness']): ?>
-                                    <span class="option-tag"><?php echo htmlspecialchars($item['sweetness']); ?></span>
+                                <?php if (!empty($item['sweetness'])): ?>
+                                    <span class="tag-chip tag-chip-sweet"><?php echo htmlspecialchars($item['sweetness']); ?></span>
                                 <?php endif; ?>
                             </div>
 
-                            <?php if ($item['remarks']): ?>
-                                <p class="item-remarks"><em>Note: "<?php echo htmlspecialchars($item['remarks']); ?>"</em></p>
+                            <?php if (!empty($item['remarks'])): ?>
+                                <p class="item-remarks" style="margin-top:4px;"><em>Note: "<?php echo htmlspecialchars($item['remarks']); ?>"</em></p>
                             <?php endif; ?>
 
                             <div class="cart-item-bottom">
@@ -207,8 +173,16 @@ if (!empty($_SESSION['cart']) && is_array($_SESSION['cart'])) {
     <div class="summary-box" id="summaryBox" style="<?php echo empty($cartItems) ? 'display: none;' : ''; ?>">
         <h2>Order Summary</h2>
 
+        <div style="background: #faf5ee; padding: 12px; border-radius: 10px; font-size: 0.88rem; margin-bottom: 14px; border: 1px solid #e0d5c4;">
+          <label style="font-weight: 700; color: var(--color-primary); display: block; margin-bottom: 6px;">🍽️ Order Fulfillment Option:</label>
+          <select id="fulfillmentSelect" style="width: 100%; padding: 8px 12px; border-radius: 8px; border: 1px solid #d0c4b8; font-weight: 600;">
+            <option value="Dine-In" selected>🍽️ Dine-In (Table Service)</option>
+            <option value="Takeaway Pickup">🛍️ Takeaway Pickup (Self Collect)</option>
+          </select>
+        </div>
+
         <div class="promo-row">
-            <input type="text" placeholder="Enter promo code" id="promoInput">
+            <input type="text" placeholder="Enter coupon code (e.g. COZY3OFF)" id="promoInput">
             <button class="btn btn-outline btn-small" onclick="applyPromo()">Apply</button>
         </div>
 
@@ -217,17 +191,17 @@ if (!empty($_SESSION['cart']) && is_array($_SESSION['cart'])) {
             <span id="subtotal">RM <?php echo number_format($subtotal, 2); ?></span>
         </div>
         <div class="price-row">
-            <span>Delivery Fee</span>
-            <span id="delivery">RM <?php echo number_format(empty($cartItems) ? 0 : 5, 2); ?></span>
+            <span>Fulfillment Type</span>
+            <span id="fulfillmentLabel">Dine-In (Table Service)</span>
         </div>
         <div class="price-row green" id="discountRow" style="display: none;">
-            <span>Discount</span>
+            <span>Coupon Discount</span>
             <span id="discount">-RM 0.00</span>
         </div>
         <div class="price-row total">
             <span>Total</span>
             <span class="amount" id="total">
-                RM <?php echo number_format(empty($cartItems) ? 0 : ($subtotal + 5), 2); ?>
+                RM <?php echo number_format($subtotal, 2); ?>
             </span>
         </div>
 
@@ -268,11 +242,9 @@ if (!empty($_SESSION['cart']) && is_array($_SESSION['cart'])) {
             subtotal += price * qty;
         });
 
-        const deliveryFee = items.length > 0 ? 5.00 : 0.00;
-        const total = Math.max(0, subtotal + deliveryFee - currentDiscount);
+        const total = Math.max(0, subtotal - currentDiscount);
 
         document.getElementById('subtotal').textContent = 'RM ' + subtotal.toFixed(2);
-        document.getElementById('delivery').textContent = 'RM ' + deliveryFee.toFixed(2);
         document.getElementById('total').textContent = 'RM ' + total.toFixed(2);
         document.getElementById('cartCount').textContent = items.length + ' Items';
 
@@ -339,21 +311,63 @@ if (!empty($_SESSION['cart']) && is_array($_SESSION['cart'])) {
         });
     }
 
+    let currentPromoCode = '';
+
+    document.getElementById('fulfillmentSelect')?.addEventListener('change', function() {
+        document.getElementById('fulfillmentLabel').textContent = this.options[this.selectedIndex].text;
+    });
+
+    function saveCartState(callback) {
+        const code = document.getElementById('promoInput').value.trim().toUpperCase() || currentPromoCode;
+        const fulfillment = document.getElementById('fulfillmentSelect')?.value || 'Dine-In';
+        
+        const formData = new FormData();
+        formData.append('action', 'apply_promo');
+        formData.append('promo_code', code);
+        formData.append('discount', currentDiscount);
+        formData.append('fulfillment', fulfillment);
+
+        fetch('index.php', { method: 'POST', body: formData })
+            .then(res => res.json())
+            .then(() => { if (callback) callback(); });
+    }
+
     function applyPromo() {
         const code = document.getElementById('promoInput').value.trim().toUpperCase();
-        if (code === 'COZY10') {
+        let subtotalVal = 0;
+        document.querySelectorAll('.cart-item').forEach(item => {
+            subtotalVal += parseFloat(item.dataset.price) * parseInt(item.querySelector('.qty-val').textContent);
+        });
+
+        if (code === 'COZY3OFF' || code === 'COZY10') {
             currentDiscount = 3.00;
+            currentPromoCode = code;
             document.getElementById('discountRow').style.display = 'flex';
             document.getElementById('discount').textContent = '-RM ' + currentDiscount.toFixed(2);
-            showMessage('Promo code COZY10 applied (-RM 3.00)!');
+            showMessage('Voucher COZY3OFF applied (-RM 3.00)!');
+        } else if (code === 'COZYPASTRY') {
+            currentDiscount = 8.00;
+            currentPromoCode = code;
+            document.getElementById('discountRow').style.display = 'flex';
+            document.getElementById('discount').textContent = '-RM ' + currentDiscount.toFixed(2);
+            showMessage('Voucher COZYPASTRY applied (-RM 8.00 Free Pastry)!');
+        } else if (code === 'COZY50OFF') {
+            currentDiscount = subtotalVal * 0.50;
+            currentPromoCode = code;
+            document.getElementById('discountRow').style.display = 'flex';
+            document.getElementById('discount').textContent = '-RM ' + currentDiscount.toFixed(2);
+            showMessage('Voucher COZY50OFF applied (50% OFF Coffee)!');
         } else {
-            showMessage('Invalid promo code.');
+            showMessage('Invalid or expired voucher code.');
         }
         calculateTotals();
+        saveCartState();
     }
 
     function checkout() {
-        window.location.href = '../checkout/index.php';
+        saveCartState(() => {
+            window.location.href = '../checkout/index.php';
+        });
     }
 </script>
 

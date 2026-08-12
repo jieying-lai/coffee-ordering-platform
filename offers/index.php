@@ -15,8 +15,9 @@ if ($isLoggedIn) {
 
 // Featured "member price" drinks & food — pulled live from the menu so
 // prices always match what's actually on sale.
-$drinkIds = [43, 35, 58, 69];
-$foodIds  = [84, 79, 33, 91];
+// Featured 3 "member price" drinks & 3 food offers — curated highlights
+$drinkIds = [43, 35, 58];
+$foodIds  = [84, 79, 33];
 
 function fetchFeatured($conn, $ids) {
     if (empty($ids)) return [];
@@ -50,56 +51,10 @@ $memberDiscountRate = 0.15; // 15% member price, shown for browsing
 </head>
 
 <body>
-<nav>
-  <div class="logo"><a href="../home/index.php">Cozy Coffee Co.</a></div>
-  <ul class="nav-links">
-    <li><a href="../home/index.php">Home</a></li>
-    <li>
-      <a href="../menu/index.php">Menu ▾</a>
-      <div class="dropdown">
-        <a href="../menu/index.php?cat=specialty#specialty">Specialty</a>
-        <a href="../menu/index.php?cat=classic#classic">Classic Coffee</a>
-        <a href="../menu/index.php?cat=noncoffein#noncoffein">Non-Coffein</a>
-        <a href="../menu/index.php?cat=smoothies#smoothies">Smoothies &amp; Sodas</a>
-        <a href="../menu/index.php?cat=mains#mains">Main Dishes</a>
-        <a href="../menu/index.php?cat=desserts#desserts">Desserts</a>
-      </div>
-    </li>
-    <li><a href="../benefits/index.php">Benefits</a></li>
-    <li>
-      <a href="index.php" class="active">Offers ▾</a>
-      <div class="dropdown">
-        <a href="index.php#drinks">Drink Offers</a>
-        <a href="index.php#food">Food Offers</a>
-        <a href="index.php#partners">Partner Promotions</a>
-      </div>
-    </li>
-    <li>
-      <a href="../activities/index.php">Activities ▾</a>
-      <div class="dropdown">
-        <a href="../activities/index.php#workshops">Coffee Workshops</a>
-        <a href="../activities/index.php#giveback">Cozy Give-Back</a>
-      </div>
-    </li>
-    <li><a href="../blog/index.php">Blog</a></li>
-    <li><a href="../contact/index.php">Contact</a></li>
-    <li><a href="../cart/index.php">Cart</a></li>
-
-    <?php if ($isLoggedIn): ?>
-      <li>
-        <a href="../profile/index.php"><?php echo htmlspecialchars($_SESSION['fullname']); ?> ▾</a>
-        <div class="dropdown">
-          <a href="../profile/index.php">My Profile</a>
-          <a href="../rewards/index.php">Cozy Rewards</a>
-          <a href="../logout.php">Logout</a>
-        </div>
-      </li>
-    <?php else: ?>
-      <li><a href="../login/index.php">Login</a></li>
-    <?php endif; ?>
-  </ul>
-  <button class="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
-</nav>
+<?php 
+  $activePage = 'offers';
+  require_once '../includes/header_nav.php'; 
+?>
 
 <section class="program-hero">
   <div class="eyebrow">Cozy Rewards</div>

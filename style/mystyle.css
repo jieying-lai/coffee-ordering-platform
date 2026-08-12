@@ -40,16 +40,17 @@
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
-html { background: var(--color-bg); }
+html { background: linear-gradient(135deg, #F9F4EC 0%, #EFE5D6 50%, #F5ECDF 100%); }
 
 body {
-  background: var(--color-bg);
+  background: linear-gradient(135deg, #F9F4EC 0%, #EFE5D6 50%, #F5ECDF 100%);
   color: var(--color-text);
   font-family: var(--font-body);
   line-height: 1.5;
   max-width: 1600px;
   margin: 0 auto;
   overflow-x: hidden;
+  min-height: 100vh;
 }
 
 h1, h2, h3 { font-family: var(--font-heading); font-weight: 700; }
@@ -61,12 +62,13 @@ nav {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 18px 6%;
-  background: var(--color-bg);
+  padding: 16px 5%;
+  background: rgba(246, 241, 233, 0.92);
+  backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--color-border);
   position: sticky;
   top: 0;
-  z-index: 10;
+  z-index: 1000;
 }
 
 .logo {
@@ -84,7 +86,8 @@ nav {
 
 .nav-links {
   display: flex;
-  gap: 32px;
+  align-items: center;
+  gap: 16px;
   font-weight: 600;
   font-size: 15px;
   list-style: none;
@@ -92,40 +95,122 @@ nav {
 
 .nav-links li { position: relative; }
 
+/* Bubble Navigation Link Style (No Underline) */
 .nav-links > li > a {
-  padding-bottom: 4px;
-  border-bottom: 2px solid transparent;
-  transition: color 0.15s ease, font-weight 0.15s ease;
+  padding: 8px 14px;
+  border-radius: 20px;
+  border-bottom: none !important;
+  text-decoration: none !important;
+  transition: all 0.2s ease;
 }
 
 .nav-links > li > a:hover {
+  background: rgba(200, 90, 62, 0.12);
   color: var(--color-accent-dark);
-  font-weight: 800;
 }
 
 .nav-links > li > a.active {
-  color: var(--color-accent-dark);
-  font-weight: 800;
-  border-bottom: 2px solid var(--color-accent);
+  background: var(--color-accent-dark);
+  color: #ffffff !important;
+  font-weight: 700;
+  box-shadow: 0 4px 10px rgba(168, 71, 47, 0.25);
 }
 
 .dropdown {
   display: none;
   position: absolute;
-  top: 28px;
+  top: 100%;
   left: 0;
-  background: var(--color-card);
+  margin-top: 4px;
+  background: #ffffff;
   border: 1px solid var(--color-border);
-  border-radius: 6px;
-  min-width: 160px;
+  border-radius: 12px;
+  min-width: 180px;
   padding: 8px 0;
-  box-shadow: 0 6px 16px rgba(60,42,33,0.12);
+  box-shadow: 0 8px 24px rgba(60,42,33,0.15);
+  z-index: 1001;
+}
+
+.dropdown::before {
+  content: "";
+  position: absolute;
+  top: -12px;
+  left: 0;
+  right: 0;
+  height: 12px;
+  background: transparent;
 }
 
 .nav-links li:hover .dropdown { display: block; }
 
-.dropdown a { display: block; padding: 8px 16px; font-weight: 400; }
+.dropdown a { display: block; padding: 10px 18px; font-size: 14px; border-radius: 0; }
 .dropdown a:hover { background: var(--color-bg); color: var(--color-accent-dark); }
+
+/* Notification Bell Dropdown */
+.notif-bell-btn {
+  background: transparent;
+  border: 1px solid var(--color-border);
+  padding: 6px 12px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+}
+.notif-bell-btn:hover {
+  background: rgba(200, 90, 62, 0.12);
+}
+.notif-badge-count {
+  background: var(--color-accent);
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 800;
+  border-radius: 10px;
+  padding: 1px 6px;
+}
+.notif-dropdown {
+  display: none;
+  position: absolute;
+  right: 0;
+  top: 40px;
+  width: 320px;
+  background: #ffffff;
+  border: 1px solid var(--color-border);
+  border-radius: 14px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+  z-index: 1002;
+  padding: 14px;
+}
+.notif-dropdown.show { display: block; }
+.notif-item {
+  padding: 10px;
+  border-bottom: 1px solid #f0e8dd;
+  font-size: 0.88rem;
+  border-radius: 8px;
+  transition: background 0.15s;
+}
+.notif-item:hover { background: #faf5ee; }
+.notif-item:last-child { border-bottom: none; }
+.notif-title { font-weight: 700; color: var(--color-primary); margin-bottom: 2px; }
+.notif-time { font-size: 0.75rem; color: #888; margin-top: 4px; }
+
+/* Tag Chips System */
+.tag-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  border-radius: 14px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  margin: 2px 3px;
+  border: 1px solid transparent;
+}
+.tag-chip-mood { background: #f3ece4; color: #5a4332; border-color: #e2d5c5; }
+.tag-chip-option { background: #eef2ff; color: #3730a3; border-color: #c7d2fe; }
+.tag-chip-temp { background: #eff6ff; color: #1e40af; border-color: #bfdbfe; }
+.tag-chip-sweet { background: #fdf2f8; color: #9d174d; border-color: #fbcfe8; }
 
 .hamburger {
   display: none;
@@ -200,6 +285,144 @@ nav {
 }
 .admin-link:hover { opacity: 1; color: var(--color-accent-dark); }
 
+/* ============ CART BADGE & TOAST NOTIFICATIONS ============ */
+.cart-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-accent);
+  color: #fff;
+  font-size: 0.72rem;
+  font-weight: 800;
+  border-radius: 12px;
+  padding: 2px 7px;
+  margin-left: 5px;
+  vertical-align: middle;
+  animation: badgePulse 0.3s ease;
+}
+
+@keyframes badgePulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.3); }
+  100% { transform: scale(1); }
+}
+
+.message {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background: var(--color-text);
+  color: #fff;
+  padding: 12px 22px;
+  border-radius: 30px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  z-index: 9999;
+  opacity: 0;
+  transform: translateY(20px);
+  pointer-events: none;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.message.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ============ GLOBAL BUTTON UTILITIES ============ */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 20px;
+  border-radius: 999px;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.9rem;
+  cursor: pointer;
+  text-decoration: none !important;
+  transition: all 0.2s ease;
+  border: none;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+}
+
+.btn-orange {
+  background: var(--color-accent-dark, #8c6d58);
+  color: #ffffff !important;
+}
+.btn-orange:hover {
+  background: var(--color-accent, #c85a3e);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(200, 90, 62, 0.3);
+}
+
+.btn-outline {
+  background: #ffffff;
+  border: 1.5px solid var(--color-accent-dark, #8c6d58);
+  color: var(--color-accent-dark, #8c6d58) !important;
+}
+.btn-outline:hover {
+  background: var(--color-accent-dark, #8c6d58);
+  color: #ffffff !important;
+}
+
+.btn-small {
+  padding: 6px 14px;
+  font-size: 0.8rem;
+}
+
+.btn-full {
+  width: 100%;
+}
+
+/* ============ GLOBAL MODAL OVERLAY ============ */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(4px);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.modal-content {
+  background: #ffffff;
+  width: 100%;
+  max-width: 540px;
+  border-radius: 20px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 16px 40px rgba(0,0,0,0.22);
+}
+
+.modal-close {
+  position: absolute;
+  top: 14px;
+  right: 18px;
+  background: rgba(0,0,0,0.08);
+  border: none;
+  font-size: 22px;
+  border-radius: 50%;
+  width: 34px;
+  height: 34px;
+  cursor: pointer;
+  z-index: 10;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s ease;
+}
+.modal-close:hover { background: rgba(0,0,0,0.18); }
+
 /* ============ RESPONSIVE (nav + entry page only) ============ */
 @media (max-width: 640px) {
   nav { padding: 14px 5%; position: relative; }
@@ -219,13 +442,15 @@ nav {
     box-shadow: 0 8px 16px rgba(60,42,33,0.08);
   }
 
+  .nav-links.nav-active {
+    display: flex !important;
+  }
+
   .nav-links > li { width: 100%; }
   .nav-links > li > a { display: block; padding: 10px 0; }
 
   .hamburger { display: flex; }
 
-  /* On touch devices there's no hover, so always reveal the Menu
-     dropdown items in-line instead of relying on :hover */
   .dropdown {
     position: static;
     display: block !important;

@@ -2,11 +2,16 @@
 session_start();
 require_once '../includes/db_connect.php';
 
-// Redirect if not logged in
-if (!isset($_SESSION['user_id'])) {
-    $_SESSION['redirect_after_login'] = '../checkout/index.php';
-    header('Location: ../login/index.php');
-    exit;
+$userId = $_SESSION['user_id'] ?? 0;
+$isLoggedIn = $userId > 0;
+$user = ['fullname' => '', 'email' => '', 'phone' => ''];
+
+if ($isLoggedIn) {
+    $stmt = $conn->prepare("SELECT id, fullname, email, phone FROM users WHERE id = ?");
+    $stmt->bind_param("i", $userId);
+    $stmt->execute();
+    $user = $stmt->get_result()->fetch_assoc() ?: $user;
+    $stmt->close();
 }
 
 // Redirect if cart is empty
@@ -15,18 +20,10 @@ if (empty($_SESSION['cart'])) {
     exit;
 }
 
-// Fetch user details
-$userId = $_SESSION['user_id'];
-$stmt = $conn->prepare("SELECT id, fullname, email, phone FROM users WHERE id = ?");
-$stmt->bind_param("i", $userId);
-$stmt->execute();
-$user = $stmt->get_result()->fetch_assoc();
-$stmt->close();
-
 // Fetch cart items with details
 $cartItems = [];
 $subtotal = 0;
-$deliveryFee = 5.00;
+$deliveryFee = 0.00; // Takeaway Pickup mode (No Delivery Fee)
 
 if (!empty($_SESSION['cart'])) {
     $itemIds = array_column($_SESSION['cart'], 'item_id');
@@ -69,15 +66,20 @@ if (!empty($_SESSION['cart'])) {
     }
 }
 
+// Applied Promo Code & Discount from Cart
+$appliedDiscount = $_SESSION['applied_promo']['discount'] ?? 0.00;
+$appliedCode = $_SESSION['applied_promo']['code'] ?? '';
+$fulfillmentType = $_SESSION['applied_promo']['fulfillment'] ?? 'Dine-In';
+
 // Handle order submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['place_order'])) {
-    $deliveryAddress = trim($_POST['delivery_address'] ?? '');
+    $deliveryAddress = trim($_POST['delivery_address'] ?? 'Dine-In Table Service');
     $contactNumber = trim($_POST['contact_number'] ?? '');
     $specialInstructions = trim($_POST['special_instructions'] ?? '');
-    $paymentMethod = $_POST['payment_method'] ?? 'cash';
+    $paymentMethod = $_POST['payment_method'] ?? 'Pay at Counter';
     
-    // Calculate total (subtotal + delivery fee)
-    $totalAmount = $subtotal + $deliveryFee;
+    // Calculate total (subtotal - discount)
+    $totalAmount = max(0.00, $subtotal - $appliedDiscount);
     
     $errors = [];
     if (empty($deliveryAddress)) $errors[] = "Delivery address is required.";
@@ -106,9 +108,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['place_order'])) {
                 $orderId = $conn->insert_id;
                 $stmt->close();
                 
-                // Insert order items with customizations in a note
+                // Insert order items with customizations saved in item_options column
                 $allItemsInserted = true;
-                $stmt = $conn->prepare("INSERT INTO order_items (order_id, item_id, quantity, price_at_order) VALUES (?, ?, ?, ?)");
+                $stmt = $conn->prepare("INSERT INTO order_items (order_id, item_id, quantity, price_at_order, item_options) VALUES (?, ?, ?, ?, ?)");
                 
                 if ($stmt === false) {
                     $error = "Database error: " . $conn->error;
@@ -116,11 +118,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['place_order'])) {
                     $conn->query("DELETE FROM orders WHERE order_id = $orderId");
                 } else {
                     foreach ($cartItems as $item) {
-                        $stmt->bind_param("iiid", 
+                        $optsArr = [];
+                        if (!empty($item['temperature'])) $optsArr[] = $item['temperature'];
+                        if (!empty($item['sweetness'])) $optsArr[] = $item['sweetness'];
+                        if (!empty($item['remarks'])) $optsArr[] = 'Note: ' . $item['remarks'];
+                        $optsStr = implode(', ', $optsArr);
+
+                        $stmt->bind_param("iiids", 
                             $orderId, 
                             $item['item_id'], 
                             $item['quantity'], 
-                            $item['price']
+                            $item['price'],
+                            $optsStr
                         );
                         
                         if (!$stmt->execute()) {
@@ -132,6 +141,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['place_order'])) {
                     $stmt->close();
                     
                     if ($allItemsInserted) {
+                        // Award Cozy Points to user if logged in (1 point per RM 1 spent)
+                        if ($userId > 0) {
+                            $earnedPoints = (int)floor($totalAmount);
+                            if ($earnedPoints > 0) {
+                                // Update user balance
+                                $pUpd = $conn->prepare("UPDATE users SET rewards_points = rewards_points + ? WHERE id = ?");
+                                $pUpd->bind_param("ii", $earnedPoints, $userId);
+                                $pUpd->execute();
+                                $pUpd->close();
+
+                                // Record transaction history
+                                $pLog = $conn->prepare("INSERT INTO points_history (user_id, points, description) VALUES (?, ?, ?)");
+                                $desc = "Earned from Takeaway Order #{$orderId}";
+                                $pLog->bind_param("iis", $userId, $earnedPoints, $desc);
+                                $pLog->execute();
+                                $pLog->close();
+
+                                // Add notification record
+                                $nLog = $conn->prepare("INSERT INTO notifications (user_id, title, message, type, link) VALUES (?, ?, ?, 'order', '../profile/index.php')");
+                                $nTitle = "☕ Order #{$orderId} Placed!";
+                                $nMsg = "Your takeaway order was placed successfully. You earned +{$earnedPoints} Cozy Points!";
+                                $nLog->bind_param("iss", $userId, $nTitle, $nMsg);
+                                $nLog->execute();
+                                $nLog->close();
+                            }
+                        }
+
                         // Store the extra order info in session for the confirmation page
                         $_SESSION['order_delivery_info'] = [
                             'address' => $deliveryAddress,
@@ -178,79 +214,43 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['place_order'])) {
 
 <body class="checkout-page">
 
-<nav>
-  <div class="logo"><a href="../home/index.php">Cozy Coffee Co.</a></div>
-  <ul class="nav-links">
-    <li><a href="../home/index.php">Home</a></li>
-    <li>
-      <a href="../menu/index.php">Menu ▾</a>
-      <div class="dropdown">
-        <a href="../menu/index.php?cat=specialty#specialty">Specialty</a>
-        <a href="../menu/index.php?cat=classic#classic">Classic Coffee</a>
-        <a href="../menu/index.php?cat=noncoffein#noncoffein">Non-Coffein</a>
-        <a href="../menu/index.php?cat=smoothies#smoothies">Smoothies &amp; Sodas</a>
-        <a href="../menu/index.php?cat=mains#mains">Main Dishes</a>
-        <a href="../menu/index.php?cat=desserts#desserts">Desserts</a>
-      </div>
-    </li>
-    <li><a href="../blog/index.php">Blog</a></li>
-        <li><a href="../benefits/index.php">Benefits</a></li>
-    <li>
-      <a href="../offers/index.php">Offers ▾</a>
-      <div class="dropdown">
-        <a href="../offers/index.php#drinks">Drink Offers</a>
-        <a href="../offers/index.php#food">Food Offers</a>
-        <a href="../offers/index.php#partners">Partner Promotions</a>
-      </div>
-    </li>
-    <li>
-      <a href="../activities/index.php">Activities ▾</a>
-      <div class="dropdown">
-        <a href="../activities/index.php#workshops">Coffee Workshops</a>
-        <a href="../activities/index.php#giveback">Cozy Give-Back</a>
-      </div>
-    </li>
-    <li><a href="../contact/index.php">Contact</a></li>
-    <li><a href="../cart/index.php">Cart</a></li>
-
-    <?php if (isset($_SESSION['user_id'])): ?>
-      <li>
-        <a href="../profile/index.php"><?php echo htmlspecialchars($_SESSION['fullname']); ?> ▾</a>
-        <div class="dropdown">
-          <a href="../profile/index.php">My Profile</a>
-          <a href="../rewards/index.php">Cozy Rewards</a>
-          <a href="../logout.php">Logout</a>
-        </div>
-      </li>
-    <?php else: ?>
-      <li><a href="../login/index.php">Login</a></li>
-    <?php endif; ?>
-
-  </ul>
-  <button class="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
-</nav>
+<?php 
+  $activePage = 'cart';
+  require_once '../includes/header_nav.php'; 
+?>
 
 <div class="container">
 
     <!-- Header -->
     <div class="header">
-        <h1>Checkout</h1>
+        <h1>Takeaway Pickup Checkout</h1>
         <span class="badge"><?php echo count($cartItems); ?> Items</span>
     </div>
+
+    <?php if (!$isLoggedIn): ?>
+      <div style="background: #fff8eb; border: 1px solid #fcd34d; padding: 14px 18px; border-radius: 12px; margin-bottom: 20px; color: #92400e; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+        <span>💡 <strong>Tip:</strong> Logging in or creating an account earns you <strong>1 Cozy Point per RM1 spent</strong> + unlocks instant member discounts!</span>
+        <div>
+          <a href="../login/index.php" class="btn btn-orange btn-small" style="font-weight: 700;">Login</a>
+          <a href="../register/index.php" class="btn btn-outline btn-small" style="margin-left: 6px;">Register</a>
+        </div>
+      </div>
+    <?php endif; ?>
 
     <?php if (isset($error)): ?>
         <div class="alert alert-error"><?php echo $error; ?></div>
     <?php endif; ?>
 
     <form method="POST" action="" class="checkout-form">
-        <!-- Delivery & Payment Section -->
+        <!-- Fulfillment & Contact Details Section -->
         <div class="section-box">
-            <h2>Delivery Details</h2>
+            <h2>Order Fulfillment Contact &amp; Table / Pickup Notes</h2>
             
             <div class="form-group">
-                <label for="delivery_address">Delivery Address *</label>
-                <textarea id="delivery_address" name="delivery_address" required 
-                          placeholder="Enter your full delivery address"><?php echo htmlspecialchars($deliveryAddress ?? ''); ?></textarea>
+                <label for="delivery_address">Table No. / Pickup Contact Name *</label>
+                <input type="text" id="delivery_address" name="delivery_address" required 
+                       value="<?php echo htmlspecialchars($deliveryAddress ?? 'Table / Self-Collect'); ?>"
+                       placeholder="e.g. Table #5 or Pickup Name">
             </div>
 
             <div class="form-group">
@@ -272,26 +272,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['place_order'])) {
             <h2>Payment Method</h2>
             <div class="payment-methods">
                 <label class="payment-option">
-                    <input type="radio" name="payment_method" value="cash" checked>
+                    <input type="radio" name="payment_method" value="Pay at Counter" checked>
                     <span class="payment-label">
                         <span class="payment-icon">💵</span>
-                        Cash on Delivery
+                        Pay at Counter (Cash / Counter QR)
+                    </span>
+                </label>
+
+                <label class="payment-option">
+                    <input type="radio" name="payment_method" value="Online Banking (FPX)">
+                    <span class="payment-label">
+                        <span class="payment-icon">🏦</span>
+                        Online Banking (FPX)
                     </span>
                 </label>
                 
                 <label class="payment-option">
-                    <input type="radio" name="payment_method" value="card">
+                    <input type="radio" name="payment_method" value="Credit/Debit Card">
                     <span class="payment-label">
                         <span class="payment-icon">💳</span>
-                        Credit/Debit Card
+                        Credit / Debit Card
                     </span>
                 </label>
                 
                 <label class="payment-option">
-                    <input type="radio" name="payment_method" value="ewallet">
+                    <input type="radio" name="payment_method" value="Touch 'n Go E-Wallet">
                     <span class="payment-label">
                         <span class="payment-icon">📱</span>
-                        E-Wallet
+                        Touch 'n Go E-Wallet
                     </span>
                 </label>
             </div>
@@ -309,18 +317,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['place_order'])) {
                                 <?php echo htmlspecialchars($item['name']); ?>
                                 <span class="item-qty">×<?php echo $item['quantity']; ?></span>
                             </span>
-                            <?php if ($item['temperature'] || $item['sweetness']): ?>
-                                <div class="item-options">
-                                    <?php if ($item['temperature']): ?>
-                                        <span class="option-tag"><?php echo htmlspecialchars($item['temperature']); ?></span>
-                                    <?php endif; ?>
-                                    <?php if ($item['sweetness']): ?>
-                                        <span class="option-tag"><?php echo htmlspecialchars($item['sweetness']); ?></span>
-                                    <?php endif; ?>
-                                </div>
-                            <?php endif; ?>
-                            <?php if ($item['remarks']): ?>
-                                <p class="item-remarks"><em>Note: "<?php echo htmlspecialchars($item['remarks']); ?>"</em></p>
+                            <div class="item-options" style="margin-top: 4px; display:flex; gap:4px; flex-wrap:wrap;">
+                                <?php if (!empty($item['temperature'])): ?>
+                                    <span class="tag-chip tag-chip-temp"><?php echo htmlspecialchars($item['temperature']); ?></span>
+                                <?php endif; ?>
+                                <?php if (!empty($item['sweetness'])): ?>
+                                    <span class="tag-chip tag-chip-sweet"><?php echo htmlspecialchars($item['sweetness']); ?></span>
+                                <?php endif; ?>
+                            </div>
+                            <?php if (!empty($item['remarks'])): ?>
+                                <p class="item-remarks" style="margin-top: 4px;"><em>Note: "<?php echo htmlspecialchars($item['remarks']); ?>"</em></p>
                             <?php endif; ?>
                         </div>
                         <span class="item-price">RM <?php echo number_format($item['item_total'], 2); ?></span>
@@ -334,12 +340,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['place_order'])) {
                     <span>RM <?php echo number_format($subtotal, 2); ?></span>
                 </div>
                 <div class="price-row">
-                    <span>Delivery Fee</span>
-                    <span>RM <?php echo number_format($deliveryFee, 2); ?></span>
+                    <span>Fulfillment Mode</span>
+                    <span><?php echo htmlspecialchars($fulfillmentType); ?></span>
                 </div>
+                <?php if ($appliedDiscount > 0): ?>
+                    <div class="price-row green" style="color: #059669; font-weight: 700;">
+                        <span>Voucher Discount (<?php echo htmlspecialchars($appliedCode); ?>)</span>
+                        <span>-RM <?php echo number_format($appliedDiscount, 2); ?></span>
+                    </div>
+                <?php endif; ?>
                 <div class="price-row total">
-                    <span>Total</span>
-                    <span class="amount">RM <?php echo number_format($subtotal + $deliveryFee, 2); ?></span>
+                    <span>Total Payable</span>
+                    <span class="amount">RM <?php echo number_format(max(0, $subtotal - $appliedDiscount), 2); ?></span>
                 </div>
             </div>
 

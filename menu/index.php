@@ -18,48 +18,10 @@ while ($row = $categories->fetch_assoc()) {
 </head>
 
 <body>
-<nav>
-  <div class="logo"><a href="../home/index.php">Cozy Coffee Co.</a></div>
-  <ul class="nav-links">
-    <li><a href="../home/index.php">Home</a></li>
-    <li><a href="../menu/index.php" class="active">Menu ▾</a></li>
-    <li><a href="../blog/index.php">Blog</a></li>
-        <li><a href="../benefits/index.php">Benefits</a></li>
-    <li>
-      <a href="../offers/index.php">Offers ▾</a>
-      <div class="dropdown">
-        <a href="../offers/index.php#drinks">Drink Offers</a>
-        <a href="../offers/index.php#food">Food Offers</a>
-        <a href="../offers/index.php#partners">Partner Promotions</a>
-      </div>
-    </li>
-    <li>
-      <a href="../activities/index.php">Activities ▾</a>
-      <div class="dropdown">
-        <a href="../activities/index.php#workshops">Coffee Workshops</a>
-        <a href="../activities/index.php#giveback">Cozy Give-Back</a>
-      </div>
-    </li>
-    <li><a href="../contact/index.php">Contact</a></li>
-    <li><a href="../cart/index.php">Cart</a></li>
-        <!-- DYNAMIC NAVIGATION LINK -->
-    <?php if (isset($_SESSION['user_id'])): ?>
-      <!-- Logged In State: Show Username & Profile Dropdown -->
-      <li>
-        <a href="../profile/index.php"><?php echo htmlspecialchars($_SESSION['fullname']); ?> ▾</a>
-        <div class="dropdown">
-          <a href="../profile/index.php">My Profile</a>
-          <a href="../rewards/index.php">Cozy Rewards</a>
-          <a href="../logout.php">Logout</a>
-        </div>
-      </li>
-    <?php else: ?>
-      <!-- Guest State: Show Login Link -->
-      <li><a href="../login/index.php">Login</a></li>
-    <?php endif; ?>
-  </ul>
-  <button class="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
-</nav>
+<?php 
+  $activePage = 'menu';
+  require_once '../includes/header_nav.php'; 
+?>
 
 <!-- Search Control -->
 <div class="search-container">
@@ -101,7 +63,16 @@ while ($row = $categories->fetch_assoc()) {
                 ? $item['image']
                 : '../images/menu/' . $item['image'];
       ?>
-        <div class="item-card" data-name="<?php echo htmlspecialchars(strtolower($item['name'])); ?>" data-description="<?php echo htmlspecialchars(strtolower($item['description'])); ?>">
+        <div class="item-card view-details-btn" 
+             style="cursor: pointer;"
+             data-id="<?php echo $item['item_id']; ?>"
+             data-name="<?php echo htmlspecialchars($item['name']); ?>"
+             data-price="<?php echo number_format($item['price'], 2); ?>"
+             data-image="<?php echo htmlspecialchars($imagePath); ?>"
+             data-description="<?php echo htmlspecialchars($item['description']); ?>"
+             data-category="<?php echo htmlspecialchars(strtolower($cat['category_key'])); ?>"
+             data-search-name="<?php echo htmlspecialchars(strtolower($item['name'])); ?>" 
+             data-search-desc="<?php echo htmlspecialchars(strtolower($item['description'])); ?>">
           <div class="item-image">
             <img src="<?php echo htmlspecialchars($imagePath); ?>" alt="<?php echo htmlspecialchars(strtoupper($item['name'])); ?>">
           </div>
@@ -113,15 +84,9 @@ while ($row = $categories->fetch_assoc()) {
               <?php endif; ?>
             </h3>
             <p><?php echo htmlspecialchars($item['description']); ?></p>
-            <div class="item-footer">
-              <span class="price">RM <?php echo number_format($item['price'], 2); ?></span>
-              <button class="add-btn view-details-btn" 
-                      data-id="<?php echo $item['item_id']; ?>"
-                      data-name="<?php echo htmlspecialchars($item['name']); ?>"
-                      data-price="<?php echo number_format($item['price'], 2); ?>"
-                      data-image="<?php echo htmlspecialchars($imagePath); ?>"
-                      data-description="<?php echo htmlspecialchars($item['description']); ?>"
-                      data-category="<?php echo htmlspecialchars(strtolower($cat['category_key'])); ?>">View</button>
+            <div class="item-footer" style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-top: 8px;">
+              <span class="price" style="font-size: 1.05rem;">RM <?php echo number_format($item['price'], 2); ?></span>
+              <button type="button" class="add-btn" style="width: 34px; height: 34px; border-radius: 50%; padding: 0; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; background: var(--color-accent-dark); border: none; color: #fff; cursor: pointer; transition: transform 0.2s ease; box-shadow: 0 4px 10px rgba(140,109,88,0.3);" title="Customize &amp; Add">+</button>
             </div>
           </div>
         </div>
@@ -134,7 +99,7 @@ while ($row = $categories->fetch_assoc()) {
 <div id="itemModal" class="modal-overlay">
   <div class="modal-content">
     <button class="modal-close" id="closeModal">&times;</button>
-    <form action="../cart/add_to_cart.php" method="POST">
+    <form id="addToCartForm" action="../cart/add_to_cart.php" method="POST">
       <input type="hidden" name="item_id" id="modalItemId">
       
       <div class="modal-body">
@@ -149,23 +114,23 @@ while ($row = $categories->fetch_assoc()) {
 
           <!-- DRINK OPTIONS (ONLY FOR DRINKS) -->
           <div id="drinkOptionsSection" class="custom-section">
-            <div class="option-group">
+            <div class="custom-section" style="margin-bottom: 14px;">
               <label class="option-label">Temperature Option:</label>
-              <div class="radio-group">
-                <label class="chip-btn"><input type="radio" name="temperature" value="Regular Ice" checked> <span>Regular Ice</span></label>
-                <label class="chip-btn"><input type="radio" name="temperature" value="Less Ice"> <span>Less Ice</span></label>
-                <label class="chip-btn"><input type="radio" name="temperature" value="No Ice"> <span>No Ice</span></label>
-                <label class="chip-btn"><input type="radio" name="temperature" value="Warm"> <span>Warm</span></label>
-                <label class="chip-btn"><input type="radio" name="temperature" value="Hot"> <span>Hot</span></label>
+              <div class="option-group">
+                <input type="radio" name="temperature" id="temp1" value="Regular Ice" checked><label for="temp1">Regular Ice</label>
+                <input type="radio" name="temperature" id="temp2" value="Less Ice"><label for="temp2">Less Ice</label>
+                <input type="radio" name="temperature" id="temp3" value="No Ice"><label for="temp3">No Ice</label>
+                <input type="radio" name="temperature" id="temp4" value="Warm"><label for="temp4">Warm</label>
+                <input type="radio" name="temperature" id="temp5" value="Hot"><label for="temp5">Hot</label>
               </div>
             </div>
 
-            <div class="option-group">
+            <div class="custom-section" style="margin-bottom: 14px;">
               <label class="option-label">Sweetness Level:</label>
-              <div class="radio-group">
-                <label class="chip-btn"><input type="radio" name="sweetness" value="Regular Sugar" checked> <span>Regular</span></label>
-                <label class="chip-btn"><input type="radio" name="sweetness" value="Less Sugar"> <span>Less Sugar</span></label>
-                <label class="chip-btn"><input type="radio" name="sweetness" value="No Sugar"> <span>No Sugar</span></label>
+              <div class="option-group">
+                <input type="radio" name="sweetness" id="sweet1" value="Regular Sugar" checked><label for="sweet1">Regular Sugar</label>
+                <input type="radio" name="sweetness" id="sweet2" value="Less Sugar"><label for="sweet2">Less Sugar</label>
+                <input type="radio" name="sweetness" id="sweet3" value="No Sugar"><label for="sweet3">No Sugar</label>
               </div>
             </div>
           </div>
@@ -183,13 +148,15 @@ while ($row = $categories->fetch_assoc()) {
               <input type="number" name="quantity" id="itemQty" value="1" min="1" max="99" readonly>
               <button type="button" id="qtyPlus">+</button>
             </div>
-            <button type="submit" class="submit-cart-btn">Add to Cart</button>
+            <button type="submit" class="submit-cart-btn" id="submitCartBtn">Add to Cart</button>
           </div>
         </div>
       </div>
     </form>
   </div>
 </div>
+
+<div class="message" id="message"></div>
 
 <script>
   // Filter & Search Logic
@@ -213,8 +180,8 @@ while ($row = $categories->fetch_assoc()) {
       const cardsInCategory = categorySection.querySelectorAll('.item-card');
 
       cardsInCategory.forEach(card => {
-        const name = card.dataset.name;
-        const description = card.dataset.description;
+        const name = card.dataset.searchName || '';
+        const description = card.dataset.searchDesc || '';
         const matchesSearch = name.includes(query) || description.includes(query);
 
         if (matchesCategory && matchesSearch) {
@@ -259,7 +226,7 @@ while ($row = $categories->fetch_assoc()) {
 
       // Check category to display drink options
       const cat = this.dataset.category;
-      if (cat.includes('coffee') || cat.includes('drink') || cat.includes('beverage') || cat.includes('tea')) {
+      if (cat.includes('coffee') || cat.includes('drink') || cat.includes('beverage') || cat.includes('tea') || cat.includes('specialty') || cat.includes('classic') || cat.includes('noncoffein') || cat.includes('smoothies')) {
         drinkOptionsSection.style.display = 'block';
       } else {
         drinkOptionsSection.style.display = 'none';
@@ -283,10 +250,55 @@ while ($row = $categories->fetch_assoc()) {
     qtyInput.value = val + 1;
   });
 
+  // AJAX Add to Cart Submission
+  const addToCartForm = document.getElementById('addToCartForm');
+  const submitCartBtn = document.getElementById('submitCartBtn');
+
+  addToCartForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+    const formData = new FormData(addToCartForm);
+    formData.append('ajax', '1');
+
+    submitCartBtn.disabled = true;
+    submitCartBtn.textContent = 'Adding...';
+
+    fetch('../cart/add_to_cart.php', {
+      method: 'POST',
+      body: formData,
+      headers: { 'X-Requested-With': 'XMLHttpRequest' }
+    })
+    .then(res => res.json())
+    .then(data => {
+      submitCartBtn.disabled = false;
+      submitCartBtn.textContent = 'Add to Cart';
+      modal.style.display = 'none';
+
+      if (data.status === 'success') {
+        const itemName = document.getElementById('modalItemName').textContent;
+        const msg = document.getElementById('message');
+        msg.textContent = `${itemName} added to cart ☕`;
+        msg.classList.add('show');
+        setTimeout(() => msg.classList.remove('show'), 3000);
+
+        // Update nav cart badge if present
+        const cartBadge = document.querySelector('.nav-cart-badge');
+        if (cartBadge) {
+          cartBadge.textContent = data.cart_count;
+          cartBadge.style.display = data.cart_count > 0 ? 'inline-flex' : 'none';
+        }
+      }
+    })
+    .catch(() => {
+      submitCartBtn.disabled = false;
+      submitCartBtn.textContent = 'Add to Cart';
+      modal.style.display = 'none';
+    });
+  });
+
   // Hamburger menu toggle
   document.querySelector('.hamburger').addEventListener('click', () => {
     const nav = document.querySelector('.nav-links');
-    nav.style.display = nav.style.display === 'flex' ? 'none' : 'flex';
+    nav.classList.toggle('nav-active');
   });
 </script>
 

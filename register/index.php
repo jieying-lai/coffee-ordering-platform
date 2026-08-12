@@ -60,6 +60,7 @@
                     <span class="required-star">*</span>
                     Email address
                 </label>
+                <div id="regEmailHint" style="font-size: 0.78rem; margin-top: 4px; display: none;"></div>
             </div>
 
             <div class="input-group">
@@ -74,6 +75,7 @@
                     <span class="required-star">*</span>
                     Username
                 </label>
+                <div id="regUserHint" style="font-size: 0.78rem; margin-top: 4px; display: none;"></div>
             </div>
 
             <div class="input-group password-group">
@@ -87,7 +89,7 @@
                 >
                 <label for="password">
                     <span class="required-star">*</span>
-                    Password
+                    Password (min 8 chars)
                 </label>
                 <button
                     type="button"
@@ -102,6 +104,7 @@
                     </svg>
                 </button>
             </div>
+            <div id="regPassHint" style="font-size: 0.78rem; margin-top: -10px; margin-bottom: 12px; display: none;"></div>
 
             <div class="input-group password-group">
                 <input
@@ -129,10 +132,15 @@
                     </svg>
                 </button>
             </div>
+            <div id="passwordError" style="font-size: 0.78rem; margin-top: -10px; margin-bottom: 12px; display: none;"></div>
 
-            <p class="password-error" id="passwordError" style="display:none;">
-                Passwords do not match.
-            </p>
+            <!-- TERMS CONSENT CHECKBOX -->
+            <div style="margin: 14px 0; font-size: 0.85rem; color: #555;">
+              <label style="display: flex; align-items: flex-start; gap: 8px; cursor: pointer;">
+                <input type="checkbox" id="termsCheck" required style="margin-top: 3px;">
+                <span>I agree to the <a href="#" style="color: var(--color-accent-dark); font-weight:700;">Terms of Service</a> and consent to personal data processing for Cozy Rewards.</span>
+              </label>
+            </div>
 
             <div class="help-links">
                 <a href="../login/index.php">Already have an account? Login</a>
@@ -140,7 +148,7 @@
 
             <div class="button-section">
                 <button type="submit" class="sign-in-button" id="registerBtn">
-                    Register
+                    Create Account
                 </button>
             </div>
 
@@ -149,11 +157,9 @@
     </main>
 
     <script>
-        // Password Visibility Toggle Handler
         function toggleVisibility(buttonId, inputId) {
             const btn = document.getElementById(buttonId);
             const input = document.getElementById(inputId);
-            
             btn.addEventListener("click", function () {
                 input.type = input.type === "password" ? "text" : "password";
             });
@@ -162,26 +168,80 @@
         toggleVisibility("showPassword", "password");
         toggleVisibility("showConfirmPassword", "confirm_password");
 
-        // Client-side Match Validation
         const form = document.querySelector(".login-card");
-        const password = document.getElementById("password");
-        const confirmPassword = document.getElementById("confirm_password");
-        const passwordError = document.getElementById("passwordError");
+        const emailInput = document.getElementById("email");
+        const usernameInput = document.getElementById("username");
+        const passwordInput = document.getElementById("password");
+        const confirmInput = document.getElementById("confirm_password");
+        const emailHint = document.getElementById("regEmailHint");
+        const userHint = document.getElementById("regUserHint");
+        const passHint = document.getElementById("regPassHint");
+        const passError = document.getElementById("passwordError");
 
-        form.addEventListener("submit", function (e) {
-            if (password.value !== confirmPassword.value) {
-                e.preventDefault();
-                passwordError.style.display = "block";
-                confirmPassword.focus();
+        // Live typing validators
+        emailInput.addEventListener("input", function() {
+            const val = this.value.trim();
+            emailHint.style.display = "block";
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (val.length === 0) {
+                emailHint.style.display = "none";
+            } else if (!emailRegex.test(val)) {
+                emailHint.style.color = "#dc2626";
+                emailHint.textContent = "✖ Please enter a valid email address (e.g. name@domain.com)";
             } else {
-                passwordError.style.display = "none";
+                emailHint.style.color = "#059669";
+                emailHint.textContent = "✓ Valid email format";
             }
         });
 
-        // Dynamic error hide when typing
-        confirmPassword.addEventListener("input", function() {
-            if (password.value === confirmPassword.value) {
-                passwordError.style.display = "none";
+        usernameInput.addEventListener("input", function() {
+            const val = this.value.trim();
+            userHint.style.display = "block";
+            if (val.length === 0) {
+                userHint.style.display = "none";
+            } else if (val.length < 3) {
+                userHint.style.color = "#dc2626";
+                userHint.textContent = "✖ Username must be at least 3 characters";
+            } else {
+                userHint.style.color = "#059669";
+                userHint.textContent = "✓ Username available";
+            }
+        });
+
+        passwordInput.addEventListener("input", function() {
+            const val = this.value;
+            passHint.style.display = "block";
+            if (val.length === 0) {
+                passHint.style.display = "none";
+            } else if (val.length < 8) {
+                passHint.style.color = "#dc2626";
+                passHint.textContent = "✖ Password must be at least 8 characters";
+            } else {
+                passHint.style.color = "#059669";
+                passHint.textContent = "✓ Strong password length";
+            }
+        });
+
+        confirmInput.addEventListener("input", function() {
+            passError.style.display = "block";
+            if (this.value === 0 || this.value === "") {
+                passError.style.display = "none";
+            } else if (this.value !== passwordInput.value) {
+                passError.style.color = "#dc2626";
+                passError.textContent = "✖ Passwords do not match";
+            } else {
+                passError.style.color = "#059669";
+                passError.textContent = "✓ Passwords match!";
+            }
+        });
+
+        form.addEventListener("submit", function (e) {
+            if (passwordInput.value !== confirmInput.value) {
+                e.preventDefault();
+                passError.style.display = "block";
+                passError.style.color = "#dc2626";
+                passError.textContent = "✖ Passwords do not match";
+                confirmInput.focus();
             }
         });
     </script>

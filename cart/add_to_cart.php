@@ -28,8 +28,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             ];
         }
     }
+    $isAjax = (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest') 
+              || isset($_POST['ajax']) || (isset($_SERVER['HTTP_ACCEPT']) && strpos($_SERVER['HTTP_ACCEPT'], 'application/json') !== false);
+
+    if ($isAjax) {
+        header('Content-Type: application/json');
+        $totalItems = 0;
+        if (!empty($_SESSION['cart'])) {
+            foreach ($_SESSION['cart'] as $c) {
+                $totalItems += (int)($c['quantity'] ?? 1);
+            }
+        }
+        echo json_encode([
+            'status' => 'success',
+            'message' => 'Item added to cart!',
+            'cart_count' => count($_SESSION['cart']),
+            'total_quantity' => $totalItems
+        ]);
+        exit;
+    }
 }
 
-// Redirect back to cart or menu page
+// Fallback redirect for standard form submissions
 header('Location: ../cart/index.php');
 exit;

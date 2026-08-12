@@ -18,18 +18,30 @@ $presetMoods = [
 
 $momentErrors = [];
 
-// =========================================================================
-// USER PURCHASED ITEMS (PLACEHOLDER & FALLBACK)
-// =========================================================================
-$userPurchases = [];
-
+// Query actual user past ordered items if logged in, falling back to top menu items
 if ($isLoggedIn) {
-    // Pulls top menu items so blog inputs/dropdowns work
-    $placeholderSql = "SELECT name FROM menu_items ORDER BY display_order ASC LIMIT 10";
-    $result = $conn->query($placeholderSql);
-    if ($result && $result->num_rows > 0) {
-        while ($row = $result->fetch_assoc()) {
-            $userPurchases[] = $row['name'];
+    $orderSql = "SELECT DISTINCT m.name 
+                 FROM orders o 
+                 JOIN order_items oi ON oi.order_id = o.order_id 
+                 JOIN menu_items m ON m.item_id = oi.item_id 
+                 WHERE o.user_id = ? 
+                 ORDER BY o.order_date DESC";
+    $oStmt = $conn->prepare($orderSql);
+    $oStmt->bind_param("i", $currentUserId);
+    $oStmt->execute();
+    $oRes = $oStmt->get_result();
+    while ($r = $oRes->fetch_assoc()) {
+        $userPurchases[] = $r['name'];
+    }
+    $oStmt->close();
+
+    if (empty($userPurchases)) {
+        $placeholderSql = "SELECT name FROM menu_items ORDER BY display_order ASC LIMIT 10";
+        $result = $conn->query($placeholderSql);
+        if ($result && $result->num_rows > 0) {
+            while ($row = $result->fetch_assoc()) {
+                $userPurchases[] = $row['name'];
+            }
         }
     }
 }
@@ -163,6 +175,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['form_type'] ?? '') === 'mo
     }
 }
 
+// HANDLE POST EDITING
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['form_type'] ?? '') === 'edit_post') {
+    $editId = (int)($_POST['edit_post_id'] ?? 0);
+    $editDesc = trim($_POST['edit_description'] ?? '');
+    $editItem = trim($_POST['edit_ordered_item'] ?? '');
+
+    if ($isLoggedIn && $editId > 0) {
+        $uStmt = $conn->prepare("UPDATE blog_posts SET ordered_item = ?, description = ? WHERE id = ? AND user_id = ?");
+        $uStmt->bind_param("ssii", $editItem, $editDesc, $editId, $currentUserId);
+        $uStmt->execute();
+        $uStmt->close();
+        header('Location: index.php');
+        exit;
+    }
+}
+
 // FIX: converted to a prepared statement — $currentUserId is now
 // guaranteed to be set (see top of file) and is safely bound instead
 // of being concatenated directly into the SQL string.
@@ -188,6 +216,7 @@ $feedResult = $feedStmt->get_result();
     <link rel="stylesheet" href="../style/moment-form.css">
     <title>Cozy Coffee Co. — Coffee Memories</title>
     <style>
+        body { background: linear-gradient(135deg, #F9F4EC 0%, #EFE5D6 50%, #F5ECDF 100%) !important; min-height: 100vh; }
         .blog-container { max-width: 1200px; margin: 30px auto; padding: 0 20px; }
         .blog-header { text-align: center; margin-bottom: 35px; }
 
@@ -329,59 +358,10 @@ $feedResult = $feedStmt->get_result();
 </head>
 
 <body>
-<nav>
-  <div class="logo"><a href="../home/index.php">Cozy Coffee Co.</a></div>
-  <ul class="nav-links">
-    <li><a href="../home/index.php">Home</a></li>
-    <li>
-      <a href="../menu/index.php">Menu ▾</a>
-      <div class="dropdown">
-        <a href="../menu/index.php#specialty">Specialty</a>
-        <a href="../menu/index.php#classic">Classic Coffee</a>
-        <a href="../menu/index.php#noncoffein">Non-Coffein</a>
-        <a href="../menu/index.php#smoothies">Smoothies &amp; Sodas</a>
-        <a href="../menu/index.php#mains">Main Dishes</a>
-        <a href="../menu/index.php#desserts">Desserts</a>
-      </div>
-    </li>
-    <li><a href="index.php" class="active">Blog</a></li>
-        <li><a href="../benefits/index.php">Benefits</a></li>
-    <li>
-      <a href="../offers/index.php">Offers ▾</a>
-      <div class="dropdown">
-        <a href="../offers/index.php#drinks">Drink Offers</a>
-        <a href="../offers/index.php#food">Food Offers</a>
-        <a href="../offers/index.php#partners">Partner Promotions</a>
-      </div>
-    </li>
-    <li>
-      <a href="../activities/index.php">Activities ▾</a>
-      <div class="dropdown">
-        <a href="../activities/index.php#workshops">Coffee Workshops</a>
-        <a href="../activities/index.php#giveback">Cozy Give-Back</a>
-      </div>
-    </li>
-    <li><a href="../contact/index.php">Contact</a></li>
-    <li><a href="../cart/index.php">Cart</a></li>
-        <!-- DYNAMIC NAVIGATION LINK -->
-    <?php if (isset($_SESSION['user_id'])): ?>
-      <!-- Logged In State: Show Username & Profile Dropdown -->
-      <li>
-        <a href="../profile/index.php"><?php echo htmlspecialchars($_SESSION['fullname']); ?> ▾</a>
-        <div class="dropdown">
-          <a href="../profile/index.php">My Profile</a>
-          <a href="../rewards/index.php">Cozy Rewards</a>
-          <a href="../logout.php">Logout</a>
-        </div>
-      </li>
-    <?php else: ?>
-      <!-- Guest State: Show Login Link -->
-      <li><a href="../login/index.php">Login</a></li>
-    <?php endif; ?>
-
-  </ul>
-  <button class="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
-</nav>
+<?php 
+  $activePage = 'blog';
+  require_once '../includes/header_nav.php'; 
+?>
 
 <div class="blog-container">
 
@@ -470,31 +450,52 @@ $feedResult = $feedStmt->get_result();
 
         <!-- RIGHT COLUMN: COMMUNITY CHECK-INS FEED -->
 <div class="feed-column">
-    <h2>Community Check-ins</h2>
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+      <h2 style="margin: 0;">Community Check-ins</h2>
+      <div style="display: flex; gap: 8px;">
+        <button type="button" class="btn btn-small btn-orange feed-filter-btn" data-filter="all">All Moments</button>
+        <?php if ($isLoggedIn): ?>
+          <button type="button" class="btn btn-small btn-outline feed-filter-btn" data-filter="my" data-user="<?php echo $currentUserId; ?>">My Memories</button>
+        <?php endif; ?>
+      </div>
+    </div>
 
     <?php if ($feedResult && $feedResult->num_rows > 0): ?>
         <?php while ($post = $feedResult->fetch_assoc()): ?>
-            <div class="post-card">
+            <div class="post-card" data-user-id="<?php echo $post['user_id']; ?>">
                 <div class="post-header">
                     <div class="author-info">
                     <!-- Clickable Profile Picture -->
-                    <a href="user_posts.php?user_id=<?php echo $post['user_id']; ?>">
+                    <a href="javascript:void(0)" onclick="openAuthorModal(<?php echo $post['user_id']; ?>, '<?php echo htmlspecialchars(addslashes($post['username'])); ?>', '../images/profiles/<?php echo htmlspecialchars($post['profile_pic'] ?: 'default.png'); ?>')">
                         <img src="../images/profiles/<?php echo htmlspecialchars($post['profile_pic'] ?: 'default.png'); ?>" 
                             alt="<?php echo htmlspecialchars($post['username']); ?>'s profile picture" 
                             class="profile-avatar">
                     </a>
                     <div>
-                        <a href="user_posts.php?user_id=<?php echo $post['user_id']; ?>" class="post-author">
+                        <a href="javascript:void(0)" onclick="openAuthorModal(<?php echo $post['user_id']; ?>, '<?php echo htmlspecialchars(addslashes($post['username'])); ?>', '../images/profiles/<?php echo htmlspecialchars($post['profile_pic'] ?: 'default.png'); ?>')" class="post-author">
                             <?php echo htmlspecialchars($post['username']); ?>
                         </a>
-                        <span class="mood-badge"><?php echo htmlspecialchars($post['mood']); ?></span>
+                        <div style="margin-top: 4px; display:flex; gap: 4px; flex-wrap:wrap;">
+                          <?php 
+                            $moodList = array_map('trim', explode(',', $post['mood']));
+                            foreach ($moodList as $mTag):
+                              if (empty($mTag)) continue;
+                          ?>
+                            <span class="tag-chip tag-chip-mood"><?php echo htmlspecialchars($mTag); ?></span>
+                          <?php endforeach; ?>
+                        </div>
                     </div>
                 </div>
-                    <small style="color: #888;"><?php echo date('M d, Y · g:i A', strtotime($post['created_at'])); ?></small>
+                    <div style="text-align: right;">
+                      <small style="color: #888; display:block;"><?php echo date('M d, Y · g:i A', strtotime($post['created_at'])); ?></small>
+                      <?php if ($isLoggedIn && $post['user_id'] == $currentUserId): ?>
+                        <button type="button" class="btn btn-outline btn-small" onclick="openEditPostModal(<?php echo $post['id']; ?>, '<?php echo htmlspecialchars(addslashes($post['ordered_item'] ?? '')); ?>', '<?php echo htmlspecialchars(addslashes($post['description'] ?? '')); ?>')" style="margin-top:4px; padding: 2px 8px; font-size:0.75rem;">✏️ Edit</button>
+                      <?php endif; ?>
+                    </div>
                 </div>
 
                 <?php if (!empty($post['ordered_item'])): ?>
-                    <p class="ordered-tag">☕ Ordered: <strong><?php echo htmlspecialchars($post['ordered_item']); ?></strong></p>
+                    <p class="ordered-tag" style="margin-top: 8px;">☕ Ordered: <span class="tag-chip tag-chip-sweet"><?php echo htmlspecialchars($post['ordered_item']); ?></span></p>
                 <?php endif; ?>
 
                 <?php if (!empty($post['description'])): ?>
@@ -535,6 +536,43 @@ $feedResult = $feedStmt->get_result();
     <button class="lightbox-prev" onclick="changePhoto(-1)">&#10094;</button>
     <img class="lightbox-content" id="lightboxImg" src="" alt="Enlarged photo view">
     <button class="lightbox-next" onclick="changePhoto(1)">&#10095;</button>
+</div>
+
+<!-- EDIT POST MODAL -->
+<div id="editPostModal" class="modal-overlay">
+  <div class="modal-content" style="max-width: 480px; padding: 25px;">
+    <button class="modal-close" onclick="document.getElementById('editPostModal').style.display='none'">&times;</button>
+    <h3 style="color: var(--color-primary); margin-bottom: 15px;">✏️ Edit Coffee Moment</h3>
+    <form action="" method="POST">
+      <input type="hidden" name="form_type" value="edit_post">
+      <input type="hidden" name="edit_post_id" id="editPostId">
+      
+      <div class="form-group" style="margin-bottom: 12px;">
+        <label style="font-size:0.9rem; color:#444;">Ordered Item Name</label>
+        <input type="text" name="edit_ordered_item" id="editOrderedItem" class="search-input" style="width:100%; border-radius:8px; padding:8px 12px;" required>
+      </div>
+
+      <div class="form-group" style="margin-bottom: 16px;">
+        <label style="font-size:0.9rem; color:#444;">Thoughts / Experience</label>
+        <textarea name="edit_description" id="editDescription" rows="4" style="width:100%; border-radius:8px; padding:8px 12px; border: 1px solid var(--color-border);" required></textarea>
+      </div>
+
+      <button type="submit" class="btn btn-orange btn-full">Save Changes</button>
+    </form>
+  </div>
+</div>
+
+<!-- AUTHOR PROFILE MODAL -->
+<div id="authorModal" class="modal-overlay">
+  <div class="modal-content" style="max-width: 420px; padding: 25px; text-align: center;">
+    <button class="modal-close" onclick="document.getElementById('authorModal').style.display='none'">&times;</button>
+    <img id="authorPic" src="" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 3px solid var(--color-accent); margin-bottom: 10px;">
+    <h3 id="authorName" style="color: var(--color-primary); margin-bottom: 4px;"></h3>
+    <p style="color: #666; font-size: 0.88rem; margin-bottom: 15px;">☕ Cozy Coffee Community Member</p>
+    <div style="background: #faf5ee; padding: 12px; border-radius: 10px; border: 1px solid #e0d5c4; font-size: 0.88rem; color: #555;">
+      Member shares coffee moments, ratings &amp; reviews with fellow enthusiasts!
+    </div>
+  </div>
 </div>
 
 <script>
@@ -589,6 +627,47 @@ function updateLightboxImage() {
         nextBtn.style.display = 'block';
     }
 }
+
+function openEditPostModal(id, item, desc) {
+    document.getElementById('editPostId').value = id;
+    document.getElementById('editOrderedItem').value = item;
+    document.getElementById('editDescription').value = desc;
+    document.getElementById('editPostModal').style.display = 'flex';
+}
+
+function openAuthorModal(userId, username, picSrc) {
+    document.getElementById('authorName').textContent = username;
+    document.getElementById('authorPic').src = picSrc;
+    document.getElementById('authorModal').style.display = 'flex';
+}
+
+// Feed Filter JS (All Moments vs My Memories)
+document.querySelectorAll('.feed-filter-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+        document.querySelectorAll('.feed-filter-btn').forEach(b => {
+            b.classList.remove('btn-orange');
+            b.classList.add('btn-outline');
+        });
+        this.classList.remove('btn-outline');
+        this.classList.add('btn-orange');
+
+        const filter = this.dataset.filter;
+        const currentUserId = this.dataset.user;
+        const posts = document.querySelectorAll('.post-card');
+
+        posts.forEach(post => {
+            if (filter === 'all') {
+                post.style.display = 'block';
+            } else if (filter === 'my') {
+                if (post.dataset.userId === currentUserId) {
+                    post.style.display = 'block';
+                } else {
+                    post.style.display = 'none';
+                }
+            }
+        });
+    });
+});
 
 document.addEventListener('keydown', function(event) {
     const modal = document.getElementById('lightboxModal');
@@ -647,11 +726,6 @@ function validateForm() {
 
     return true;
 }
-
-document.querySelector('.hamburger').addEventListener('click', () => {
-    const nav = document.querySelector('.nav-links');
-    nav.style.display = nav.style.display === 'flex' ? 'none' : 'flex';
-});
 </script>
 
 </body>
