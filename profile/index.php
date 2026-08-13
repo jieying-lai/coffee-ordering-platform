@@ -172,7 +172,7 @@ foreach ($userOrders as $ord) {
   if ($st === 'preparing') { $stepPercent = 66; $statusMsg = 'Barista is Handcrafting Your Order ☕'; }
   if ($st === 'ready') { $stepPercent = 100; $statusMsg = 'Order Ready for Pickup / Table Service! 🎉'; }
 ?>
-  <div id="stickyLiveOrderBanner" style="position: sticky; top: 70px; z-index: 990; background: #ffffff; border: 2px solid var(--color-accent); border-radius: 14px; margin: 16px auto; max-width: 960px; padding: 16px 20px; box-shadow: 0 8px 24px rgba(168,71,47,0.15); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;">
+  <a href="order_detail.php?id=<?php echo $activeOrder['order_id']; ?>" id="stickyLiveOrderBanner" style="text-decoration: none; color: inherit; position: sticky; top: 70px; z-index: 990; background: #ffffff; border: 2px solid var(--color-accent); border-radius: 14px; margin: 16px auto; max-width: 960px; padding: 16px 20px; box-shadow: 0 8px 24px rgba(168,71,47,0.15); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; cursor: pointer;">
     <div>
       <div style="display: flex; align-items: center; gap: 8px;">
         <span style="font-size: 1.3rem;">⚡</span>
@@ -187,7 +187,7 @@ foreach ($userOrders as $ord) {
         <div style="height: 100%; width: <?php echo $stepPercent; ?>%; background: var(--color-accent-dark); transition: width 0.4s ease;"></div>
       </div>
     </div>
-  </div>
+  </a>
 <?php endif; ?>
 
 <!-- MAIN CONTENT WRAPPER -->
@@ -292,7 +292,10 @@ foreach ($userOrders as $ord) {
           if ($statusLower === 'ready') { $statusColor = '#3730a3'; $statusBg = '#e0e7ff'; }
           if ($statusLower === 'completed') { $statusColor = '#065f46'; $statusBg = '#d1fae5'; }
         ?>
-          <div style="border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; margin-bottom: 16px; background: #fff;">
+          <a href="order_detail.php?id=<?php echo $ord['order_id']; ?>"
+             style="text-decoration: none; color: inherit; display: block; border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; margin-bottom: 16px; background: #fff; transition: box-shadow 0.2s ease, transform 0.2s ease; cursor: pointer;"
+             onmouseover="this.style.boxShadow='0 6px 18px rgba(168,71,47,0.15)'; this.style.transform='translateY(-2px)';"
+             onmouseout="this.style.boxShadow='none'; this.style.transform='none';">
             <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 10px; border-bottom: 1px solid #f0e8dd; padding-bottom: 12px; margin-bottom: 12px;">
               <div>
                 <span style="font-weight: 700; color: var(--color-primary); font-size: 1.1rem;">Order #<?php echo $ord['order_id']; ?></span>
@@ -330,7 +333,11 @@ foreach ($userOrders as $ord) {
               <span>Total Paid:</span>
               <span style="color: var(--color-accent-dark); font-size: 1.1rem;">RM <?php echo number_format($ord['total_amount'], 2); ?></span>
             </div>
-          </div>
+
+            <div style="text-align: right; margin-top: 10px; font-size: 0.85rem; font-weight: 700; color: var(--color-accent-dark);">
+              View Order Details &rarr;
+            </div>
+          </a>
         <?php endforeach; ?>
       </div>
     <?php endif; ?>

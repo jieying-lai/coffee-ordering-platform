@@ -139,12 +139,12 @@ if ($isLoggedIn) {
         <!-- LEFT TOP: MY COZY POINTS CARD -->
         <div class="member-card" style="background: linear-gradient(135deg, #4a2c11 0%, #78350f 100%); color: #fff; padding: 26px; border-radius: 20px; box-shadow: 0 10px 25px rgba(74,44,17,0.25);">
           <div class="card-eyebrow" style="color: #fcd34d; font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase;">COZY REWARDS VIP MEMBER</div>
-          <h2 style="font-size: 1.7rem; margin: 8px 0; font-family: var(--font-heading); color: #fff;"><?php echo htmlspecialchars($member['fullname']); ?></h2>
+          <h2 style="font-size: 1.7rem; margin: 8px 0; font-family: var(--font-heading); color: #fff;"><?php echo htmlspecialchars($member['fullname'] ?? ''); ?></h2>
           
           <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-top: 24px; border-top: 1px solid rgba(255,255,255,0.15); padding-top: 16px;">
             <div>
               <div style="font-size: 0.78rem; opacity: 0.8;">Member No.</div>
-              <div style="font-family: monospace; font-size: 1.05rem; letter-spacing: 1px; color: #fef3c7;"><?php echo htmlspecialchars($member['rewards_member_no']); ?></div>
+              <div style="font-family: monospace; font-size: 1.05rem; letter-spacing: 1px; color: #fef3c7;"><?php echo htmlspecialchars($member['rewards_member_no'] ?? ''); ?></div>
             </div>
             <div style="text-align: right;">
               <div style="font-size: 2.3rem; font-weight: 800; color: #fcd34d; line-height: 1;"><?php echo (int) $member['rewards_points']; ?></div>
@@ -167,7 +167,7 @@ if ($isLoggedIn) {
               <?php foreach (array_slice($pointsLogs, 0, 5) as $log): ?>
                 <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 8px; border-bottom: 1px dashed #e8ded2; font-size: 0.85rem;">
                   <div>
-                    <div style="font-weight: 600; color: #333;"><?php echo htmlspecialchars($log['description']); ?></div>
+                   <<div style="font-weight: 600; color: #333;"><?php echo htmlspecialchars($log['description'] ?? ''); ?></div>
                     <div style="font-size: 0.75rem; color: #888;"><?php echo date('M d, Y · h:i A', strtotime($log['created_at'])); ?></div>
                   </div>
                   <span style="font-weight: 800; font-size: 0.95rem; color: <?php echo $log['points'] >= 0 ? '#059669' : '#dc2626'; ?>;">
