@@ -221,9 +221,24 @@ $orderReference = 'CC' . str_pad($order_id, 6, '0', STR_PAD_LEFT);
       <span style="color: #777;">Order Date &amp; Time</span>
       <span style="font-weight: 700;"><?php echo date('d/m/Y · h:i:s A', strtotime($order['order_date'])); ?></span>
     </div>
-    <div style="display: flex; justify-content: space-between; padding: 8px 0; font-size: 0.95rem;">
+    <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #f0e8dd; font-size: 0.95rem;">
       <span style="color: #777;">Status</span>
       <span style="font-weight: 700; color: <?php echo $statusColor; ?>;"><?php echo htmlspecialchars($status); ?></span>
+    </div>
+    <div style="display: flex; justify-content: space-between; align-items: center; padding: 8px 0; font-size: 0.95rem;">
+      <span style="color: #777;">Payment Method</span>
+      <span style="font-weight: 700; display: flex; align-items: center; gap: 6px;">
+        <?php
+          $paymentMethod = !empty($order['payment_method']) ? $order['payment_method'] : 'Cash';
+          $paymentIcon = '💵';
+          $pmLower = strtolower($paymentMethod);
+          if (strpos($pmLower, 'card') !== false) { $paymentIcon = '💳'; }
+          if (strpos($pmLower, 'touch') !== false) { $paymentIcon = '📱'; }
+          if (strpos($pmLower, 'bank') !== false || strpos($pmLower, 'online') !== false) { $paymentIcon = '🏦'; }
+        ?>
+        <span><?php echo $paymentIcon; ?></span>
+        <span><?php echo htmlspecialchars($paymentMethod); ?></span>
+      </span>
     </div>
   </div>
 

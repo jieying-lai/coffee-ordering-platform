@@ -95,14 +95,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['place_order'])) {
             $combinedInstructions .= "Notes: " . $specialInstructions;
         }
         
-        // Insert order - only using existing columns
+        // Insert order - now including payment_method
         $status = 'Pending';
-        $stmt = $conn->prepare("INSERT INTO orders (user_id, total_amount, status) VALUES (?, ?, ?)");
+        $stmt = $conn->prepare("INSERT INTO orders (user_id, total_amount, status, payment_method) VALUES (?, ?, ?, ?)");
         
         if ($stmt === false) {
             $error = "Database error: " . $conn->error;
         } else {
-            $stmt->bind_param("ids", $userId, $totalAmount, $status);
+            $stmt->bind_param("idss", $userId, $totalAmount, $status, $paymentMethod);
             
             if ($stmt->execute()) {
                 $orderId = $conn->insert_id;
@@ -375,4 +375,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['place_order'])) {
 </script>
 </body>
 </html>
-
