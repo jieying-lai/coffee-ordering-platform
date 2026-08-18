@@ -2,68 +2,148 @@
    COZY COFFEE CO. — PROGRAM PAGES (Benefits / Offers / Activities)
    Load AFTER mystyle.css on: benefits/index.php, offers/index.php,
    activities/index.php
-     <link rel="stylesheet" href="../style/mystyle.css">
-     <link rel="stylesheet" href="../style/programs.css">
+   Theme: High-End Warm Light Coffee & Cream Latte (浅咖色)
    ============================================ */
 
-/* ============ PROGRAM HERO ============ */
+body {
+  background: #FAF6F0 !important;
+  color: #2C1C14;
+}
+
+/* ============ CTA BUTTONS (High-Impact & Prominent) ============ */
+.cta-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 14px 32px;
+  border-radius: 40px;
+  font-size: 0.95rem;
+  font-weight: 800;
+  text-decoration: none !important;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+  letter-spacing: 0.3px;
+}
+
+.cta-btn-primary {
+  background: linear-gradient(135deg, #C85A3E 0%, #A8472F 100%);
+  color: #FFFFFF !important;
+  box-shadow: 0 8px 24px rgba(200, 90, 62, 0.35);
+  border: none;
+}
+
+.cta-btn-primary:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 14px 32px rgba(200, 90, 62, 0.45);
+  background: linear-gradient(135deg, #B64C32 0%, #8C3722 100%);
+  color: #FFFFFF !important;
+}
+
+/* ============ PROGRAM HERO (Refined Font Scale - Matching Blog) ============ */
 .program-hero {
   text-align: center;
-  padding: 56px 6% 40px;
-  background: transparent;
+  padding: 48px 4% 40px;
+  background: linear-gradient(135deg, #FAF4EB 0%, #F5EAE0 50%, #EFE3D3 100%);
+  border-radius: 24px;
+  margin: 24px auto 36px;
+  max-width: 1240px;
+  width: 92%;
+  border: 1.5px solid #E5D5C5;
+  box-shadow: 0 14px 40px rgba(60, 42, 33, 0.06);
+  position: relative;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.program-hero::before {
+  content: "";
+  position: absolute;
+  top: -40%;
+  left: -20%;
+  width: 140%;
+  height: 180%;
+  background: radial-gradient(circle, rgba(200, 90, 62, 0.05) 0%, transparent 60%);
+  pointer-events: none;
 }
 
 .program-hero .eyebrow {
-  font-size: 13px;
-  letter-spacing: 2.5px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 16px;
+  border-radius: 30px;
+  background: rgba(140, 109, 88, 0.12);
+  border: 1px solid rgba(140, 109, 88, 0.3);
+  color: #8C6D58;
+  font-size: 0.78rem;
+  letter-spacing: 2px;
   text-transform: uppercase;
-  color: #8c6d58;
   font-weight: 800;
+  margin-bottom: 12px;
 }
 
 .program-hero h1 {
-  font-size: clamp(28px, 5vw, 42px);
-  margin: 10px 0 12px;
-  color: #3c2a21;
+  font-family: var(--font-heading);
+  font-size: clamp(26px, 4vw, 36px);
+  margin: 0 0 12px 0;
+  color: #2C1C14;
   font-weight: 800;
+  letter-spacing: -0.5px;
+  line-height: 1.25;
+}
+
+.program-hero h1 .highlight-text {
+  color: #C85A3E;
 }
 
 .program-hero p.lede {
-  color: #4a3b32;
-  max-width: 560px;
+  color: #5C4A3E;
+  max-width: 580px;
   margin: 0 auto;
-  font-size: clamp(15px, 2.4vw, 17px);
+  font-size: 0.95rem;
   line-height: 1.6;
   font-weight: 500;
 }
 
-.program-hero .hero-actions { margin-top: 26px; }
+.program-hero .hero-actions {
+  margin-top: 24px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
 /* ============ SECTION SCAFFOLDING ============ */
 .program-section {
-  padding: 44px 6%;
-  max-width: 1100px;
+  padding: 10px 4% 50px;
+  max-width: 1240px;
   margin: 0 auto;
   scroll-margin-top: 90px;
+  box-sizing: border-box;
 }
 
 .program-section + .program-section {
-  border-top: 1px solid var(--color-border);
+  border-top: 1px solid #E8DDD0;
+  padding-top: 40px;
 }
 
 .program-section h2 {
-  font-size: 28px;
+  font-family: var(--font-heading);
+  font-size: clamp(22px, 3vw, 28px);
+  color: #2C1C14;
   margin-bottom: 6px;
+  font-weight: 800;
 }
 
 .program-section .subtitle {
-  color: var(--color-text-soft);
-  font-size: 15px;
+  color: #7A685A;
+  font-size: 0.95rem;
   margin-bottom: 30px;
   max-width: 640px;
+  line-height: 1.55;
 }
 
-/* ============ BENEFITS GRID ============ */
+/* ============ BENEFITS GRID (Warm Light Coffee Cards - Refined Proportions) ============ */
 .benefit-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -71,25 +151,28 @@
 }
 
 .benefit-card {
-  background: #ffffff;
-  border-radius: 14px;
+  background: #FFFFFF;
+  border-radius: 20px;
+  border: 1.5px solid #E8DDD0;
+  box-shadow: 0 8px 24px rgba(60, 42, 33, 0.05);
   overflow: hidden;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   display: flex;
   flex-direction: column;
 }
 
 .benefit-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  transform: translateY(-5px);
+  box-shadow: 0 16px 36px rgba(60, 42, 33, 0.12);
+  border-color: #C85A3E;
 }
 
 .benefit-photo {
   height: 170px;
   width: 100%;
-  background: linear-gradient(135deg, #D8C7AC, #C9AE87);
+  background: linear-gradient(135deg, #FAF4EB, #EFE3D3);
   overflow: hidden;
+  position: relative;
 }
 
 .benefit-photo img {
@@ -97,144 +180,294 @@
   height: 100%;
   object-fit: cover;
   display: block;
-  transition: transform 0.4s ease;
+  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.benefit-card:hover .benefit-photo img { transform: scale(1.05); }
+.benefit-card:hover .benefit-photo img {
+  transform: scale(1.06);
+}
 
-.benefit-info { padding: 18px 20px 22px; flex: 1; display: flex; flex-direction: column; }
+.benefit-info {
+  padding: 20px 20px 22px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
 
-.benefit-info .benefit-icon { font-size: 22px; margin-bottom: 6px; }
+.benefit-info .benefit-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #FAF4EB;
+  border: 1px solid #E8DDD0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  margin-bottom: 12px;
+  box-shadow: 0 4px 10px rgba(60, 42, 33, 0.04);
+}
 
 .benefit-info h3 {
   font-family: var(--font-heading);
-  font-size: 18px;
-  font-weight: 700;
-  color: var(--color-text);
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #2C1C14;
   margin: 0 0 8px 0;
+  line-height: 1.3;
 }
 
 .benefit-info p {
-  font-size: 14px;
-  color: var(--color-text-soft);
+  font-size: 0.9rem;
+  color: #665447;
   line-height: 1.55;
-  margin: 0 0 14px 0;
+  margin: 0 0 16px 0;
   flex: 1;
 }
 
-.benefit-info .benefit-link {
-  font-size: 13.5px;
-  font-weight: 700;
-  color: var(--color-accent-dark);
+.benefit-info .benefit-link,
+.benefit-info .benefit-popup-trigger {
+  font-size: 0.88rem;
+  font-weight: 800;
+  color: #C85A3E;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
-.benefit-info .benefit-link:hover { color: var(--color-accent); }
+
+.benefit-info .benefit-link:hover,
+.benefit-info .benefit-popup-trigger:hover {
+  color: #A8472F;
+  transform: translateX(4px);
+}
 
 /* ============ OFFERS ============ */
 .offer-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 22px;
+  gap: 24px;
 }
 
 .offer-card {
-  background: var(--color-card);
-  border: 1px solid var(--color-border);
-  border-radius: 14px;
+  background: #FFFFFF;
+  border: 1.5px solid #E8DDD0;
+  border-radius: 18px;
   padding: 20px;
+  box-shadow: 0 8px 24px rgba(60, 42, 33, 0.05);
   position: relative;
+  transition: all 0.3s ease;
+}
+
+.offer-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 36px rgba(60, 42, 33, 0.1);
+  border-color: #C85A3E;
 }
 
 .offer-badge {
   display: inline-block;
-  background: var(--color-accent);
-  color: #fff;
-  font-size: 12px;
-  font-weight: 700;
+  background: linear-gradient(135deg, #C85A3E 0%, #A8472F 100%);
+  color: #ffffff;
+  font-size: 0.75rem;
+  font-weight: 800;
   letter-spacing: 0.5px;
-  padding: 4px 10px;
-  border-radius: 999px;
+  padding: 4px 12px;
+  border-radius: 30px;
   margin-bottom: 12px;
+  box-shadow: 0 4px 12px rgba(200, 90, 62, 0.25);
 }
 
 .offer-card .offer-photo {
   height: 140px;
-  border-radius: 10px;
+  border-radius: 12px;
   overflow: hidden;
   margin-bottom: 14px;
-  background: linear-gradient(135deg, #D8C7AC, #C9AE87);
-}
-.offer-card .offer-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
-
-.offer-card h3 { font-family: var(--font-heading); font-size: 17px; margin-bottom: 6px; }
-
-.offer-price-row { display: flex; align-items: baseline; gap: 10px; margin: 10px 0 6px; }
-.offer-price-old { text-decoration: line-through; color: var(--color-text-soft); font-size: 14px; }
-.offer-price-new { color: var(--color-accent-dark); font-size: 20px; font-weight: 700; font-family: var(--font-heading); }
-
-.offer-card p { font-size: 13.5px; color: var(--color-text-soft); line-height: 1.5; }
-
-.offer-note {
-  margin-top: 22px;
-  font-size: 13px;
-  color: var(--color-text-soft);
+  background: linear-gradient(135deg, #FAF4EB, #EFE3D3);
 }
 
-/* Partner promotions list */
-.partner-list { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
-.partner-item {
-  background: #fff;
-  border: 1px solid var(--color-border);
-  border-radius: 12px;
-  padding: 18px 20px;
+.offer-card .offer-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.offer-card h3 {
+  font-family: var(--font-heading);
+  font-size: 1.1rem;
+  color: #2C1C14;
+  font-weight: 800;
+  margin-bottom: 6px;
+}
+
+.offer-price-row {
   display: flex;
-  gap: 14px;
-  align-items: flex-start;
+  align-items: baseline;
+  gap: 8px;
+  margin: 10px 0 6px;
 }
-.partner-item .partner-emoji { font-size: 26px; line-height: 1; }
-.partner-item h4 { font-family: var(--font-heading); font-size: 16px; margin-bottom: 4px; }
-.partner-item p { font-size: 13.5px; color: var(--color-text-soft); line-height: 1.5; margin: 0; }
 
-/* ============ ACTIVITIES ============ */
-.activity-card {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 34px;
+.offer-price-old {
+  text-decoration: line-through;
+  color: #8A7769;
+  font-size: 0.88rem;
+}
+
+.offer-price-new {
+  color: #C85A3E;
+  font-size: 1.25rem;
+  font-weight: 800;
+  font-family: var(--font-heading);
+}
+
+.offer-card p {
+  font-size: 0.88rem;
+  color: #665447;
+  line-height: 1.5;
+}
+
+/* ============ INTERACTIVE MODALS (Light Coffee Style) ============ */
+.program-modal-overlay {
+  display: none;
+  position: fixed;
+  z-index: 2500;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(24, 15, 10, 0.65);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  justify-content: center;
   align-items: center;
+  box-sizing: border-box;
+}
+
+.program-modal-overlay.active {
+  display: flex;
+}
+
+.program-modal-card {
+  background: #FFFFFF;
+  border-radius: 24px;
+  border: 1.5px solid #E5D9CC;
+  box-shadow: 0 25px 70px rgba(44, 28, 20, 0.28);
+  max-width: 580px;
+  width: 92%;
+  padding: 32px 28px;
+  position: relative;
+  max-height: 88vh;
+  overflow-y: auto;
+  box-sizing: border-box;
+  animation: modalPopIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes modalPopIn {
+  from {
+    transform: scale(0.92);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.program-modal-close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #FAF7F2;
+  border: 1px solid #E5D9CC;
+  color: #2C1C14;
+  font-size: 20px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.program-modal-close:hover {
+  background: #C85A3E;
+  color: #FFFFFF;
+  border-color: #C85A3E;
+}
+
+.modal-header-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 14px;
+  border-radius: 20px;
+  background: #FAF4EB;
+  border: 1px solid #E8DDD0;
+  color: #C85A3E;
+  font-size: 0.8rem;
+  font-weight: 800;
+  margin-bottom: 12px;
+}
+
+.program-modal-card h3 {
+  font-family: var(--font-heading);
+  font-size: 1.45rem;
+  color: #2C1C14;
+  margin: 0 0 10px 0;
+  font-weight: 800;
+}
+
+.program-modal-card p {
+  color: #665447;
+  font-size: 0.92rem;
+  line-height: 1.6;
+  margin-bottom: 18px;
+}
+
+.modal-detail-box {
+  background: #FAF6F0;
+  border: 1px solid #E5D9CC;
+  border-radius: 16px;
+  padding: 18px 20px;
   margin-bottom: 20px;
 }
 
-.activity-card.reverse { direction: rtl; }
-.activity-card.reverse > * { direction: ltr; }
-
-.activity-photo {
-  height: 260px;
-  border-radius: 16px;
-  overflow: hidden;
-  background: linear-gradient(135deg, #D8C7AC, #C9AE87);
+.modal-detail-box h4 {
+  font-family: var(--font-heading);
+  font-size: 1.05rem;
+  color: #2C1C14;
+  margin: 0 0 8px 0;
+  font-weight: 800;
 }
-.activity-photo img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
-.activity-copy .eyebrow { margin-bottom: 8px; }
-.activity-copy h3 { font-size: 24px; margin-bottom: 12px; }
-.activity-copy p { color: var(--color-text-soft); line-height: 1.6; margin-bottom: 16px; }
-
-.activity-copy ul { padding-left: 20px; color: var(--color-text-soft); font-size: 14.5px; line-height: 1.8; margin-bottom: 16px; }
+.modal-action-row {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+}
 
 /* ============ RESPONSIVE ============ */
-@media (max-width: 900px) and (min-width: 641px) {
-  .benefit-grid { grid-template-columns: repeat(2, 1fr); }
-  .offer-grid { grid-template-columns: repeat(2, 1fr); }
-}
-
-@media (max-width: 768px) {
-  .activity-card, .activity-card.reverse { grid-template-columns: 1fr; direction: ltr; }
-  .activity-photo { height: 200px; }
+@media (max-width: 980px) {
+  .benefit-grid, .offer-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 @media (max-width: 640px) {
-  .benefit-grid { grid-template-columns: 1fr; }
-  .offer-grid { grid-template-columns: 1fr; }
-  .partner-list { grid-template-columns: 1fr; }
-  .program-hero { padding: 40px 6% 28px; }
-  .program-section { padding: 32px 6%; }
+  .benefit-grid, .offer-grid {
+    grid-template-columns: 1fr;
+  }
+  .program-hero {
+    padding: 36px 5% 28px;
+    border-radius: 18px;
+  }
 }

@@ -152,29 +152,28 @@ body.login-page {
 }
 
 /* Password Toggle Icon */
-.login-page .show-password {
+.login-page .show-password, .show-password {
   position: absolute;
   top: 50%;
-  right: 12px;
+  right: 14px;
   transform: translateY(-50%);
-  width: 28px;
-  height: 28px;
   border: none;
   background: transparent;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
+  font-size: 1.25rem;
+  line-height: 1;
+  padding: 4px;
+  color: #7A695D;
+  transition: transform 0.15s ease, color 0.15s ease;
+  z-index: 10;
 }
 
-.login-page .show-password svg {
-  width: 100%;
-  height: 100%;
-  fill: none;
-  stroke: var(--icon-color);
-  stroke-width: 1.8;
-  stroke-linecap: round;
-  stroke-linejoin: round;
+.show-password:hover {
+  transform: translateY(-50%) scale(1.18);
+  color: #C85A3E;
 }
 
 /* Keep me signed in - Direct Beside Alignment */

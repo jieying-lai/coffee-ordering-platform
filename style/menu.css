@@ -6,20 +6,32 @@
      <link rel="stylesheet" href="../style/menu.css">
    ============================================ */
 
-/* ============ CATEGORY FILTER ============ */
-.filters { display: flex; justify-content: center; gap: 12px; margin: 20px 0; flex-wrap: wrap; }
+/* ============ CATEGORY FILTER (Minimalist Warm Wood) ============ */
+.filters { display: flex; justify-content: center; gap: 10px; margin: 24px 0 28px; flex-wrap: wrap; }
 .filter-btn {
-  padding: 8px 20px;
+  padding: 10px 22px;
   border-radius: 999px;
-  border: 1px solid var(--color-border);
-  background: var(--color-bg);
+  border: 1.5px solid #E5D9CC;
+  background: #FFFFFF;
   font-family: var(--font-body);
   font-weight: 700;
   font-size: 14px;
   cursor: pointer;
-  color: var(--color-text-soft);
+  color: #665447;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(44, 28, 20, 0.04);
 }
-.filter-btn.active { background: var(--color-accent); color: #fff; border-color: var(--color-accent); }
+.filter-btn:hover {
+  border-color: #C85A3E;
+  color: #A8472F;
+  transform: translateY(-1px);
+}
+.filter-btn.active {
+  background: linear-gradient(135deg, #C85A3E 0%, #A8472F 100%);
+  color: #FFFFFF;
+  border-color: #A8472F;
+  box-shadow: 0 6px 16px rgba(200, 90, 62, 0.28);
+}
 
 /* ============ MENU CATEGORIES ============ */
 .menu-category {
@@ -28,8 +40,10 @@
 }
 
 .category-title {
-  font-size: clamp(20px, 4vw, 26px);
+  font-family: var(--font-heading);
+  font-size: clamp(22px, 4vw, 28px);
   text-align: center;
+  color: #2C1C14;
   margin-bottom: 20px;
   padding-bottom: 12px;
   border-bottom: 1px solid var(--color-border);
@@ -39,8 +53,8 @@
   font-size: 13px;
   letter-spacing: 2px;
   text-transform: uppercase;
-  color: var(--color-accent-dark);
-  font-weight: 700;
+  color: #8C6D58;
+  font-weight: 800;
   margin: 28px 0 16px;
   text-align: center;
 }
@@ -50,28 +64,29 @@
   display: inline-block;
   font-size: 12px;
   font-weight: 700;
-  color: var(--color-gold);
+  color: #B8895D;
   letter-spacing: 0.5px;
   margin-bottom: 10px;
 }
 
 /* ============ MENU GRID / ITEM CARDS ============ */
-.menu-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 16px; padding: 0 6% 80px; }
+.menu-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 20px; padding: 0 6% 80px; }
 
 .item-card {
-  background: var(--color-card);
-  border-radius: 14px;
+  background: #FFFFFF;
+  border-radius: 18px;
   overflow: hidden;
   border: 1px solid var(--color-border);
   display: flex;
   flex-direction: column;
+  box-shadow: 0 6px 20px rgba(44, 28, 20, 0.05);
   transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
 }
 
 .item-card:hover {
   transform: translateY(-6px);
-  box-shadow: 0 12px 24px rgba(60, 42, 33, 0.12);
-  border-color: var(--color-accent);
+  box-shadow: 0 14px 30px rgba(44, 28, 20, 0.12);
+  border-color: #C85A3E;
 }
 
 .item-image {

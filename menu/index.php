@@ -83,7 +83,7 @@ while ($row = $categories->fetch_assoc()) {
                 <span class="badge-new">NEW</span>
               <?php endif; ?>
             </h3>
-            <p><?php echo htmlspecialchars($item['description']); ?></p>
+            <p><?php echo nl2br(htmlspecialchars($item['description'])); ?></p>
             <div class="item-footer" style="display: flex; justify-content: space-between; align-items: center; width: 100%; margin-top: 8px;">
               <span class="price" style="font-size: 1.05rem;">RM <?php echo number_format($item['price'], 2); ?></span>
               <button type="button" class="add-btn" style="width: 34px; height: 34px; border-radius: 50%; padding: 0; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; background: var(--color-accent-dark); border: none; color: #fff; cursor: pointer; transition: transform 0.2s ease; box-shadow: 0 4px 10px rgba(140,109,88,0.3);" title="Customize &amp; Add">+</button>

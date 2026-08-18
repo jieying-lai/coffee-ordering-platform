@@ -204,7 +204,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['form_type'] ?? '') === 'ed
         $uStmt->execute();
         $uStmt->close();
 
-        // Handle Optional Photo Replacement during Edit
+        // Delete Specifically Selected Photos during Edit
+        if (!empty($_POST['delete_photo_ids']) && is_array($_POST['delete_photo_ids'])) {
+            foreach ($_POST['delete_photo_ids'] as $delPhotoId) {
+                $delPhotoId = (int)$delPhotoId;
+                if ($delPhotoId > 0) {
+                    $pStmt = $conn->prepare("SELECT image_path FROM blog_photos WHERE id = ? AND post_id = ?");
+                    $pStmt->bind_param("ii", $delPhotoId, $editId);
+                    $pStmt->execute();
+                    $pRes = $pStmt->get_result();
+                    if ($pRow = $pRes->fetch_assoc()) {
+                        if (file_exists('../' . $pRow['image_path'])) {
+                            @unlink('../' . $pRow['image_path']);
+                        }
+                        $dStmt = $conn->prepare("DELETE FROM blog_photos WHERE id = ?");
+                        $dStmt->bind_param("i", $delPhotoId);
+                        $dStmt->execute();
+                        $dStmt->close();
+                    }
+                    $pStmt->close();
+                }
+            }
+        }
+
+        // Handle Optional New Photos Attachment during Edit
         if (!empty($_FILES['edit_photos']['name'][0])) {
             $allowedExt = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
             $uploadDir = '../uploads/blog/';
@@ -228,13 +251,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['form_type'] ?? '') === 'ed
             }
 
             if (!empty($newPaths)) {
-                // Delete old photos
-                $delP = $conn->prepare("DELETE FROM blog_photos WHERE post_id = ?");
-                $delP->bind_param("i", $editId);
-                $delP->execute();
-                $delP->close();
-
-                // Insert new photos
                 $insP = $conn->prepare("INSERT INTO blog_photos (post_id, image_path) VALUES (?, ?)");
                 foreach ($newPaths as $np) {
                     $insP->bind_param("is", $editId, $np);
@@ -244,14 +260,71 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['form_type'] ?? '') === 'ed
             }
         }
 
-        header('Location: index.php');
+        header('Location: index.php?tab=my');
         exit;
     }
 }
 
-// FIX: converted to a prepared statement — $currentUserId is now
-// guaranteed to be set (see top of file) and is safely bound instead
-// of being concatenated directly into the SQL string.
+// HANDLE POST SOFT-DELETE (Move to Recently Deleted for 30 Days)
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['form_type'] ?? '') === 'delete_post') {
+    $deleteId = (int)($_POST['delete_post_id'] ?? 0);
+    if ($isLoggedIn && $deleteId > 0) {
+        $dStmt = $conn->prepare("UPDATE blog_posts SET is_deleted = 1, deleted_at = NOW() WHERE id = ? AND user_id = ?");
+        $dStmt->bind_param("ii", $deleteId, $currentUserId);
+        $dStmt->execute();
+        $dStmt->close();
+        header('Location: index.php?tab=deleted');
+        exit;
+    }
+}
+
+// HANDLE POST RESTORE
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['form_type'] ?? '') === 'restore_post') {
+    $restoreId = (int)($_POST['restore_post_id'] ?? 0);
+    if ($isLoggedIn && $restoreId > 0) {
+        $rStmt = $conn->prepare("UPDATE blog_posts SET is_deleted = 0, deleted_at = NULL WHERE id = ? AND user_id = ?");
+        $rStmt->bind_param("ii", $restoreId, $currentUserId);
+        $rStmt->execute();
+        $rStmt->close();
+        header('Location: index.php?tab=my');
+        exit;
+    }
+}
+
+// HANDLE PERMANENT DELETE
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['form_type'] ?? '') === 'permanent_delete') {
+    $permId = (int)($_POST['perm_delete_id'] ?? 0);
+    if ($isLoggedIn && $permId > 0) {
+        $pStmt = $conn->prepare("SELECT image_path FROM blog_photos WHERE post_id = ?");
+        $pStmt->bind_param("i", $permId);
+        $pStmt->execute();
+        $pRes = $pStmt->get_result();
+        while ($pRow = $pRes->fetch_assoc()) {
+            if (file_exists('../' . $pRow['image_path'])) {
+                @unlink('../' . $pRow['image_path']);
+            }
+        }
+        $pStmt->close();
+
+        $dpStmt = $conn->prepare("DELETE FROM blog_photos WHERE post_id = ?");
+        $dpStmt->bind_param("i", $permId);
+        $dpStmt->execute();
+        $dpStmt->close();
+
+        $bpStmt = $conn->prepare("DELETE FROM blog_posts WHERE id = ? AND user_id = ?");
+        $bpStmt->bind_param("ii", $permId, $currentUserId);
+        $bpStmt->execute();
+        $bpStmt->close();
+
+        header('Location: index.php?tab=deleted');
+        exit;
+    }
+}
+
+// Auto purge posts soft-deleted > 30 days ago
+$conn->query("DELETE FROM blog_posts WHERE is_deleted = 1 AND (deleted_at < NOW() - INTERVAL 30 DAY OR (deleted_at IS NULL AND created_at < NOW() - INTERVAL 30 DAY))");
+
+// Active feed query
 $feedStmt = $conn->prepare(
     'SELECT bp.*, u.username, u.profile_pic
      FROM blog_posts bp
@@ -263,6 +336,36 @@ $feedStmt = $conn->prepare(
 $feedStmt->bind_param('i', $currentUserId);
 $feedStmt->execute();
 $feedResult = $feedStmt->get_result();
+$activePosts = [];
+if ($feedResult) {
+    while ($r = $feedResult->fetch_assoc()) {
+        $activePosts[] = $r;
+    }
+}
+$feedStmt->close();
+
+// Recently Deleted feed query for current logged-in user
+$deletedPosts = [];
+if ($isLoggedIn) {
+    $delStmt = $conn->prepare(
+        'SELECT bp.*, u.username, u.profile_pic
+         FROM blog_posts bp
+         JOIN users u ON u.id = bp.user_id
+         WHERE bp.is_deleted = 1
+           AND bp.user_id = ?
+           AND (bp.deleted_at >= NOW() - INTERVAL 30 DAY OR bp.deleted_at IS NULL)
+         ORDER BY bp.deleted_at DESC'
+    );
+    $delStmt->bind_param('i', $currentUserId);
+    $delStmt->execute();
+    $delRes = $delStmt->get_result();
+    if ($delRes) {
+        while ($dr = $delRes->fetch_assoc()) {
+            $deletedPosts[] = $dr;
+        }
+    }
+    $delStmt->close();
+}
 ?>
 
 <!DOCTYPE html>
@@ -272,31 +375,10 @@ $feedResult = $feedStmt->get_result();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../style/mystyle.css">
     <link rel="stylesheet" href="../style/moment-form.css">
+    <link rel="stylesheet" href="../style/blog.css">
     <title>Cozy Coffee Co. — Coffee Memories</title>
     <style>
-        body { background: linear-gradient(135deg, #F9F4EC 0%, #EFE5D6 50%, #F5ECDF 100%) !important; min-height: 100vh; }
-        .blog-container { max-width: 1200px; margin: 30px auto; padding: 0 20px; }
-        .blog-header { text-align: center; margin-bottom: 35px; }
-
-        /* Side-by-Side Layout Grid */
-        .blog-layout { 
-            display: flex; 
-            gap: 35px; 
-            align-items: flex-start; 
-        }
-        .form-column { 
-            flex: 1; 
-            min-width: 320px; 
-            position: sticky; 
-            top: 20px; 
-        }
-        .feed-column { 
-            flex: 1.4; 
-            min-width: 320px; 
-        }
-
-        /* Post Cards & Author Profile */
-        .post-card { background: #fff; border: 1px solid #e0e0e0; border-radius: 10px; padding: 20px; margin-bottom: 25px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        body { background: #FAF6F0 !important; min-height: 100vh; }
         .post-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
         
         .author-info { display: flex; align-items: center; gap: 12px; }
@@ -423,9 +505,10 @@ $feedResult = $feedStmt->get_result();
 
 <div class="blog-container">
 
-    <div class="blog-header">
-        <h1>Coffee Memories</h1>
-        <p>Check in and capture your cozy moments.</p>
+    <div class="blog-hero">
+        <div class="eyebrow">✦ Community Coffee Journal ✦</div>
+        <h1><span class="gold-highlight">Coffee Memories</span></h1>
+        <p>Check in and capture your cozy coffee moments with fellow coffee lovers.</p>
     </div>
 
     <!-- MAIN SIDE-BY-SIDE LAYOUT -->
@@ -508,46 +591,62 @@ $feedResult = $feedStmt->get_result();
 
         <!-- RIGHT COLUMN: COMMUNITY CHECK-INS FEED -->
 <div class="feed-column">
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
-      <h2 style="margin: 0;">Community Check-ins</h2>
-      <div style="display: flex; gap: 8px;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; flex-wrap: wrap; gap: 10px;">
+      <h2 style="margin: 0; font-family: var(--font-heading); color: #2C1C14; font-size: 1.6rem; font-weight: 800;">Community Check-ins</h2>
+      <div style="display: flex; gap: 8px; flex-wrap: wrap;">
         <button type="button" class="btn btn-small btn-orange feed-filter-btn" data-filter="all">All Moments</button>
         <?php if ($isLoggedIn): ?>
           <button type="button" class="btn btn-small btn-outline feed-filter-btn" data-filter="my" data-user="<?php echo $currentUserId; ?>">My Memories</button>
+          <button type="button" class="btn btn-small btn-outline feed-filter-btn" data-filter="deleted" data-user="<?php echo $currentUserId; ?>">🗑️ Recently Deleted</button>
         <?php endif; ?>
       </div>
     </div>
 
-    <?php if ($feedResult && $feedResult->num_rows > 0): ?>
-        <?php while ($post = $feedResult->fetch_assoc()): ?>
+    <!-- ACTIVE POSTS FEED -->
+    <?php if (!empty($activePosts)): ?>
+        <?php foreach ($activePosts as $post): ?>
+            <?php
+              $pid = (int) $post['id'];
+              $postPhotos = [];
+              $photoStmt = $conn->prepare('SELECT id, image_path FROM blog_photos WHERE post_id = ?');
+              $photoStmt->bind_param('i', $pid);
+              $photoStmt->execute();
+              $photoRes = $photoStmt->get_result();
+              if ($photoRes && $photoRes->num_rows > 0) {
+                  while ($photoRow = $photoRes->fetch_assoc()) {
+                      $postPhotos[] = $photoRow;
+                  }
+              }
+              $photoStmt->close();
+              $photosJson = htmlspecialchars(json_encode($postPhotos), ENT_QUOTES, 'UTF-8');
+            ?>
             <div class="post-card" data-user-id="<?php echo $post['user_id']; ?>">
                 <div class="post-header">
                     <div class="author-info">
-                    <!-- Clickable Profile Picture -->
-                    <a href="javascript:void(0)" onclick="openAuthorModal(<?php echo $post['user_id']; ?>, '<?php echo htmlspecialchars(addslashes($post['username'])); ?>', '../images/profiles/<?php echo htmlspecialchars($post['profile_pic'] ?: 'default.png'); ?>')">
-                        <img src="../images/profiles/<?php echo htmlspecialchars($post['profile_pic'] ?: 'default.png'); ?>" 
-                            alt="<?php echo htmlspecialchars($post['username']); ?>'s profile picture" 
-                            class="profile-avatar">
-                    </a>
-                    <div>
-                        <a href="javascript:void(0)" onclick="openAuthorModal(<?php echo $post['user_id']; ?>, '<?php echo htmlspecialchars(addslashes($post['username'])); ?>', '../images/profiles/<?php echo htmlspecialchars($post['profile_pic'] ?: 'default.png'); ?>')" class="post-author">
-                            <?php echo htmlspecialchars($post['username']); ?>
+                        <a href="javascript:void(0)" onclick="openAuthorModal(<?php echo $post['user_id']; ?>, '<?php echo htmlspecialchars(addslashes($post['username'])); ?>', '../images/profiles/<?php echo htmlspecialchars($post['profile_pic'] ?: 'default.png'); ?>')">
+                            <img src="../images/profiles/<?php echo htmlspecialchars($post['profile_pic'] ?: 'default.png'); ?>" 
+                                alt="<?php echo htmlspecialchars($post['username']); ?>'s profile picture" 
+                                class="profile-avatar">
                         </a>
-                        <div style="margin-top: 4px; display:flex; gap: 4px; flex-wrap:wrap;">
-                          <?php 
-                            $moodList = array_map('trim', explode(',', $post['mood']));
-                            foreach ($moodList as $mTag):
-                              if (empty($mTag)) continue;
-                          ?>
-                            <span class="tag-chip tag-chip-mood"><?php echo htmlspecialchars($mTag); ?></span>
-                          <?php endforeach; ?>
+                        <div>
+                            <a href="javascript:void(0)" onclick="openAuthorModal(<?php echo $post['user_id']; ?>, '<?php echo htmlspecialchars(addslashes($post['username'])); ?>', '../images/profiles/<?php echo htmlspecialchars($post['profile_pic'] ?: 'default.png'); ?>')" class="post-author">
+                                <?php echo htmlspecialchars($post['username']); ?>
+                            </a>
+                            <div style="margin-top: 4px; display:flex; gap: 4px; flex-wrap:wrap;">
+                              <?php 
+                                $moodList = array_map('trim', explode(',', $post['mood']));
+                                foreach ($moodList as $mTag):
+                                  if (empty($mTag)) continue;
+                              ?>
+                                <span class="tag-chip tag-chip-mood"><?php echo htmlspecialchars($mTag); ?></span>
+                              <?php endforeach; ?>
+                            </div>
                         </div>
                     </div>
-                </div>
                     <div style="text-align: right;">
                       <small style="color: #888; display:block;"><?php echo date('M d, Y · g:i A', strtotime($post['created_at'])); ?></small>
                       <?php if ($isLoggedIn && $post['user_id'] == $currentUserId): ?>
-                        <button type="button" class="btn btn-outline btn-small" onclick="openEditPostModal(<?php echo $post['id']; ?>, '<?php echo htmlspecialchars(addslashes($post['ordered_item'] ?? '')); ?>', '<?php echo htmlspecialchars(addslashes($post['description'] ?? '')); ?>')" style="margin-top:4px; padding: 2px 8px; font-size:0.75rem;">✏️ Edit</button>
+                        <button type="button" onclick="openEditPostModal(<?php echo $post['id']; ?>, '<?php echo htmlspecialchars(addslashes($post['ordered_item'] ?? '')); ?>', '<?php echo htmlspecialchars(addslashes($post['mood'] ?? '')); ?>', '<?php echo htmlspecialchars(addslashes($post['description'] ?? '')); ?>', <?php echo $photosJson; ?>)" style="margin-top:6px; padding: 4px 14px; font-size:0.8rem; border-radius: 20px; font-weight: 700; color: #C85A3E; border: 1px solid rgba(200,90,62,0.4); background: rgba(200,90,62,0.06); cursor: pointer; transition: all 0.2s ease;">✏️ Edit Post</button>
                       <?php endif; ?>
                     </div>
                 </div>
@@ -560,34 +659,87 @@ $feedResult = $feedStmt->get_result();
                     <p style="line-height: 1.5; color: #333; margin-top: 6px;"><?php echo nl2br(htmlspecialchars($post['description'])); ?></p>
                 <?php endif; ?>
 
-                <!-- Display Attached Photos -->
-                <?php
-                $pid = (int) $post['id'];
-                $photoStmt = $conn->prepare('SELECT image_path FROM blog_photos WHERE post_id = ?');
-                $photoStmt->bind_param('i', $pid);
-                $photoStmt->execute();
-                $photoRes = $photoStmt->get_result();
-                if ($photoRes && $photoRes->num_rows > 0):
-                ?>
+                <?php if (!empty($postPhotos)): ?>
                     <div class="photo-gallery" id="gallery-<?php echo $pid; ?>">
-                        <?php while ($photo = $photoRes->fetch_assoc()): ?>
+                        <?php foreach ($postPhotos as $photo): ?>
                             <img src="../<?php echo htmlspecialchars($photo['image_path']); ?>" 
                                  alt="Coffee memory photo" 
                                  onclick="openLightbox(this, 'gallery-<?php echo $pid; ?>')">
-                        <?php endwhile; ?>
+                        <?php endforeach; ?>
                     </div>
                 <?php endif; ?>
             </div>
-        <?php endwhile; ?>
+        <?php endforeach; ?>
     <?php else: ?>
-        <p style="color: #666;">No check-ins yet. Be the first to post a memory!</p>
+        <p style="color: #666; font-size: 0.95rem;">No check-ins yet. Be the first to post a memory!</p>
     <?php endif; ?>
 
-    <!-- EMPTY MY MEMORIES TAB MESSAGE -->
-    <div id="emptyMyMemoriesMsg" style="display: none; text-align: center; padding: 40px 20px; background: #ffffff; border-radius: 14px; border: 1px dashed var(--color-border); margin-top: 10px;">
+    <!-- RECENTLY DELETED POST CARDS -->
+    <?php if ($isLoggedIn && !empty($deletedPosts)): ?>
+      <?php foreach ($deletedPosts as $dPost): ?>
+        <?php
+          $deletedTime = strtotime($dPost['deleted_at'] ?? $dPost['created_at']);
+          $daysPassed = floor((time() - $deletedTime) / (60 * 60 * 24));
+          $daysRemaining = max(0, 30 - $daysPassed);
+        ?>
+        <div class="post-card deleted-post-card" data-user-id="<?php echo $dPost['user_id']; ?>" style="display: none; border-left: 4px solid #DC2626; background: #FFF9F9;">
+          <div style="background: rgba(220, 38, 38, 0.08); border-radius: 10px; padding: 10px 14px; margin-bottom: 14px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; color: #991B1B; font-weight: 700; font-size: 0.84rem;">
+            <span>⏳ Recently Deleted (<?php echo $daysRemaining; ?> days remaining until automatic permanent purge)</span>
+            <div style="display: flex; gap: 8px;">
+              <form action="index.php" method="POST" style="margin: 0;">
+                <input type="hidden" name="form_type" value="restore_post">
+                <input type="hidden" name="restore_post_id" value="<?php echo $dPost['id']; ?>">
+                <button type="submit" style="background: #059669; color: #FFF; border: none; padding: 5px 14px; border-radius: 20px; font-weight: 700; font-size: 0.78rem; cursor: pointer; box-shadow: 0 2px 6px rgba(5,150,105,0.25);">🔄 Restore</button>
+              </form>
+              <form action="index.php" method="POST" style="margin: 0;" onsubmit="return confirm('Permanently delete this post forever? This action cannot be undone.')">
+                <input type="hidden" name="form_type" value="permanent_delete">
+                <input type="hidden" name="perm_delete_id" value="<?php echo $dPost['id']; ?>">
+                <button type="submit" style="background: rgba(220, 38, 38, 0.15); color: #DC2626; border: 1px solid rgba(220, 38, 38, 0.4); padding: 5px 14px; border-radius: 20px; font-weight: 700; font-size: 0.78rem; cursor: pointer;">❌ Delete Forever</button>
+              </form>
+            </div>
+          </div>
+
+          <div class="post-header">
+            <div class="author-info">
+              <img src="../images/profiles/<?php echo htmlspecialchars($dPost['profile_pic'] ?: 'default.png'); ?>" class="profile-avatar">
+              <div>
+                <span class="post-author"><?php echo htmlspecialchars($dPost['username']); ?></span>
+                <div style="margin-top: 4px; display:flex; gap: 4px; flex-wrap:wrap;">
+                  <?php 
+                    $moodList = array_map('trim', explode(',', $dPost['mood']));
+                    foreach ($moodList as $mTag):
+                      if (empty($mTag)) continue;
+                  ?>
+                    <span class="tag-chip tag-chip-mood"><?php echo htmlspecialchars($mTag); ?></span>
+                  <?php endforeach; ?>
+                </div>
+              </div>
+            </div>
+            <small style="color: #888;"><?php echo date('M d, Y · g:i A', strtotime($dPost['created_at'])); ?></small>
+          </div>
+
+          <?php if (!empty($dPost['ordered_item'])): ?>
+            <p class="ordered-tag">☕ Ordered: <span class="tag-chip tag-chip-sweet"><?php echo htmlspecialchars($dPost['ordered_item']); ?></span></p>
+          <?php endif; ?>
+
+          <?php if (!empty($dPost['description'])): ?>
+            <p style="line-height: 1.5; color: #333; margin-top: 6px;"><?php echo nl2br(htmlspecialchars($dPost['description'])); ?></p>
+          <?php endif; ?>
+        </div>
+      <?php endforeach; ?>
+    <?php endif; ?>
+
+    <!-- EMPTY TAB MESSAGES -->
+    <div id="emptyMyMemoriesMsg" style="display: none; text-align: center; padding: 40px 20px; background: #ffffff; border-radius: 18px; border: 1.5px dashed #E5D9CC; margin-top: 10px;">
         <div style="font-size: 2.5rem; margin-bottom: 8px;">✨</div>
-        <h3 style="color: var(--color-primary); margin-bottom: 6px;">You haven't posted any coffee memories yet</h3>
+        <h3 style="color: #2C1C14; margin-bottom: 6px; font-weight: 800;">You haven't posted any coffee memories yet</h3>
         <p style="color: #666; font-size: 0.9rem;">Share your first coffee moment, rating, or photo using the form on the left!</p>
+    </div>
+
+    <div id="emptyDeletedMemoriesMsg" style="display: none; text-align: center; padding: 40px 20px; background: #ffffff; border-radius: 18px; border: 1.5px dashed #E5D9CC; margin-top: 10px;">
+        <div style="font-size: 2.5rem; margin-bottom: 8px;">🗑️</div>
+        <h3 style="color: #2C1C14; margin-bottom: 6px; font-weight: 800;">No Recently Deleted Posts</h3>
+        <p style="color: #666; font-size: 0.9rem;">Posts you delete will stay here for 30 days so you can restore them anytime!</p>
     </div>
 </div>
 
@@ -601,38 +753,48 @@ $feedResult = $feedStmt->get_result();
     <button class="lightbox-prev" onclick="changePhoto(-1)">&#10094;</button>
     <img class="lightbox-content" id="lightboxImg" src="" alt="Enlarged photo view">
     <button class="lightbox-next" onclick="changePhoto(1)">&#10095;</button>
+    <div class="lightbox-counter" id="lightboxCounter">Photo 1 of 1</div>
 </div>
+
+<!-- HIDDEN FORM FOR SOFT DELETION -->
+<form id="deletePostForm" action="index.php" method="POST" style="display: none;">
+  <input type="hidden" name="form_type" value="delete_post">
+  <input type="hidden" name="delete_post_id" id="deletePostFormId">
+</form>
 
 <!-- EDIT POST MODAL -->
 <div id="editPostModal" class="modal-overlay">
-  <div class="modal-content" style="max-width: 520px; padding: 25px; max-height: 88vh; overflow-y: auto;">
+  <div class="modal-content" style="max-width: 620px; padding: 36px 32px; border-radius: 24px; border: 1px solid #E5D9CC; background: #FFFFFF; box-shadow: 0 25px 70px rgba(0,0,0,0.3); max-height: 90vh; overflow-y: auto;">
     <button class="modal-close" onclick="document.getElementById('editPostModal').style.display='none'">&times;</button>
-    <h3 style="color: var(--color-primary); margin-bottom: 15px;">✏️ Edit Coffee Moment</h3>
-    <form action="" method="POST" enctype="multipart/form-data">
+    <h3 style="font-family: var(--font-heading); font-size: 1.6rem; color: #2C1C14; margin-bottom: 20px; font-weight: 800;">✏️ Edit Coffee Moment</h3>
+    <form action="" method="POST" enctype="multipart/form-data" onsubmit="return validateEditForm()">
       <input type="hidden" name="form_type" value="edit_post">
       <input type="hidden" name="edit_post_id" id="editPostId">
       
-      <!-- History / Ordered Item Selection -->
-      <div class="form-group" style="margin-bottom: 14px;">
-        <label style="font-size:0.9rem; font-weight:700; color:#444; display:block; margin-bottom:6px;">Select What You Ordered</label>
+      <!-- Container for deleted photo IDs -->
+      <div id="deletedPhotoInputs"></div>
+      
+      <!-- Ordered Item Selection -->
+      <div class="form-group" style="margin-bottom: 18px;">
+        <label style="font-weight:700; color:#2C1C14; display:block; margin-bottom:6px;">Select What You Ordered</label>
         <?php if (!empty($userPurchases)): ?>
-          <select id="editOrderedItemSelect" name="edit_ordered_item" style="width:100%; border-radius:8px; padding:10px; border:1px solid #d0c4b8;">
+          <select id="editOrderedItemSelect" name="edit_ordered_item" class="form-select">
             <option value="">-- Select from menu --</option>
             <?php foreach ($userPurchases as $item): ?>
               <option value="<?php echo htmlspecialchars($item); ?>"><?php echo htmlspecialchars($item); ?></option>
             <?php endforeach; ?>
           </select>
         <?php else: ?>
-          <input type="text" name="edit_ordered_item" id="editOrderedItem" class="search-input" style="width:100%; border-radius:8px; padding:8px 12px;" placeholder="e.g. Dirty Latte">
+          <input type="text" name="edit_ordered_item" id="editOrderedItem" class="form-control" placeholder="e.g. Dirty Latte">
         <?php endif; ?>
       </div>
 
       <!-- Mood Selection -->
-      <div class="form-group" style="margin-bottom: 14px;">
-        <label style="font-size:0.9rem; font-weight:700; color:#444; display:block; margin-bottom:6px;">Update Feeling / Mood:</label>
+      <div class="form-group" style="margin-bottom: 18px;">
+        <label style="font-weight:700; color:#2C1C14; display:block; margin-bottom:8px;">Update Feeling / Mood:</label>
         <div class="mood-checkbox-group">
           <?php foreach ($presetMoods as $key => $label): ?>
-            <label class="mood-chip">
+            <label class="mood-chip edit-mood-chip">
               <input type="checkbox" name="edit_mood_select[]" value="<?php echo htmlspecialchars($key); ?>">
               <span class="chip-label"><?php echo htmlspecialchars($label); ?></span>
             </label>
@@ -641,28 +803,40 @@ $feedResult = $feedStmt->get_result();
       </div>
 
       <!-- Description -->
-      <div class="form-group" style="margin-bottom: 16px;">
-        <label style="font-size:0.9rem; font-weight:700; color:#444; display:block; margin-bottom:6px;">Thoughts / Experience</label>
-        <textarea name="edit_description" id="editDescription" rows="4" style="width:100%; border-radius:8px; padding:10px; border: 1px solid var(--color-border);" required></textarea>
+      <div class="form-group" style="margin-bottom: 18px;">
+        <label style="font-weight:700; color:#2C1C14; display:block; margin-bottom:6px;">Thoughts / Experience (Max 500 words)</label>
+        <textarea name="edit_description" id="editDescription" class="form-control" rows="4" placeholder="Tell us about your coffee moment today..." onkeyup="checkEditWordCount()"></textarea>
+        <small id="edit_word_counter" style="color: #666; display: block; text-align: right; margin-top: 4px;">0 / 500 words</small>
       </div>
 
-      <!-- Replace / Update Photos -->
-      <div class="form-group" style="margin-bottom: 16px;">
-        <label style="font-size:0.9rem; font-weight:700; color:#444; display:block; margin-bottom:6px;">Replace Photos (Optional, max 5)</label>
-        <input type="file" name="edit_photos[]" accept="image/*" multiple style="font-size:0.85rem;">
+      <!-- Existing Photos Management (Delete specific photos) -->
+      <div id="existingPhotosSection" class="existing-photos-section" style="display: none; margin-bottom: 20px;">
+        <label style="font-weight:700; color:#2C1C14; display:block; margin-bottom:6px;">Current Photos (Click ✖ on any photo to remove it)</label>
+        <div id="editExistingPhotosGrid" class="edit-photos-grid"></div>
       </div>
 
-      <button type="submit" class="btn btn-orange btn-full" style="font-weight:700;">Save Changes ☕</button>
+      <!-- Add New Photos -->
+      <div class="form-group" style="margin-bottom: 24px;">
+        <label style="font-weight:700; color:#2C1C14; display:block; margin-bottom:6px;">Add New Photos (Optional, max 5 photos)</label>
+        <input type="file" name="edit_photos[]" accept="image/*" multiple onchange="limitFiles(this)" style="font-size:0.88rem;">
+      </div>
+
+      <div style="display: flex; gap: 12px; margin-top: 10px;">
+        <button type="submit" id="editSubmitBtn" class="btn-primary" style="flex: 2;">Save Changes ☕</button>
+        <button type="button" onclick="confirmDeletePostFromModal()" style="flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px; border-radius: 12px; border: 1.5px solid rgba(220, 38, 38, 0.4); background: rgba(220, 38, 38, 0.06); color: #DC2626; font-weight: 800; font-size: 0.9rem; cursor: pointer; transition: all 0.2s ease;">
+          🗑️ Delete Post
+        </button>
+      </div>
     </form>
   </div>
 </div>
 
 <!-- AUTHOR PROFILE MODAL -->
 <div id="authorModal" class="modal-overlay">
-  <div class="modal-content" style="max-width: 420px; padding: 25px; text-align: center;">
+  <div class="modal-content" style="max-width: 420px; padding: 25px; text-align: center; border-radius: 20px;">
     <button class="modal-close" onclick="document.getElementById('authorModal').style.display='none'">&times;</button>
-    <img id="authorPic" src="" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 3px solid var(--color-accent); margin-bottom: 10px;">
-    <h3 id="authorName" style="color: var(--color-primary); margin-bottom: 4px;"></h3>
+    <img id="authorPic" src="" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 3px solid #C85A3E; margin-bottom: 10px;">
+    <h3 id="authorName" style="color: #2C1C14; margin-bottom: 4px; font-weight: 800;"></h3>
     <p style="color: #666; font-size: 0.88rem; margin-bottom: 15px;">☕ Cozy Coffee Community Member</p>
     <div style="background: #faf5ee; padding: 12px; border-radius: 10px; border: 1px solid #e0d5c4; font-size: 0.88rem; color: #555;">
       Member shares coffee moments, ratings &amp; reviews with fellow enthusiasts!
@@ -712,22 +886,136 @@ function updateLightboxImage() {
     const lightboxImg = document.getElementById('lightboxImg');
     lightboxImg.src = currentGalleryImages[currentImageIndex];
     
+    const counter = document.getElementById('lightboxCounter');
+    if (counter) {
+        counter.innerText = `Photo ${currentImageIndex + 1} of ${currentGalleryImages.length}`;
+        counter.style.display = currentGalleryImages.length > 1 ? 'block' : 'none';
+    }
+
     const prevBtn = document.querySelector('.lightbox-prev');
     const nextBtn = document.querySelector('.lightbox-next');
     if (currentGalleryImages.length <= 1) {
         prevBtn.style.display = 'none';
         nextBtn.style.display = 'none';
     } else {
-        prevBtn.style.display = 'block';
-        nextBtn.style.display = 'block';
+        prevBtn.style.display = 'flex';
+        nextBtn.style.display = 'flex';
     }
 }
 
-function openEditPostModal(id, item, desc) {
+function openEditPostModal(id, item, moodStr, desc, photos) {
     document.getElementById('editPostId').value = id;
-    document.getElementById('editOrderedItem').value = item;
-    document.getElementById('editDescription').value = desc;
+    document.getElementById('deletePostFormId').value = id;
+    
+    // Clear previous deleted photo hidden inputs
+    const deletedContainer = document.getElementById('deletedPhotoInputs');
+    if (deletedContainer) deletedContainer.innerHTML = '';
+    
+    const selectElem = document.getElementById('editOrderedItemSelect');
+    const inputElem = document.getElementById('editOrderedItem');
+    if (selectElem) {
+        selectElem.value = item;
+    } else if (inputElem) {
+        inputElem.value = item;
+    }
+    
+    const descElem = document.getElementById('editDescription');
+    if (descElem) {
+        descElem.value = desc;
+        checkEditWordCount();
+    }
+    
+    const moods = moodStr ? moodStr.split(',').map(m => m.trim()) : [];
+    document.querySelectorAll('#editPostModal input[name="edit_mood_select[]"]').forEach(cb => {
+        cb.checked = moods.includes(cb.value);
+    });
+
+    // Populate existing photos preview grid with delete buttons
+    const photoSection = document.getElementById('existingPhotosSection');
+    const photoGrid = document.getElementById('editExistingPhotosGrid');
+    if (photoGrid) {
+        photoGrid.innerHTML = '';
+        if (photos && photos.length > 0) {
+            photos.forEach(photo => {
+                const itemDiv = document.createElement('div');
+                itemDiv.className = 'edit-photo-thumb';
+                itemDiv.id = 'photo-thumb-' + photo.id;
+                itemDiv.innerHTML = `
+                    <img src="../${photo.image_path}" alt="Existing photo">
+                    <button type="button" class="btn-delete-photo-thumb" onclick="removePhotoFromEdit(${photo.id})" title="Delete this photo">&times;</button>
+                `;
+                photoGrid.appendChild(itemDiv);
+            });
+            if (photoSection) photoSection.style.display = 'block';
+        } else {
+            if (photoSection) photoSection.style.display = 'none';
+        }
+    }
+
     document.getElementById('editPostModal').style.display = 'flex';
+}
+
+function removePhotoFromEdit(photoId) {
+    const thumb = document.getElementById('photo-thumb-' + photoId);
+    if (thumb) {
+        thumb.style.transform = 'scale(0.7)';
+        thumb.style.opacity = '0';
+        setTimeout(() => { thumb.remove(); }, 200);
+    }
+    
+    const container = document.getElementById('deletedPhotoInputs');
+    if (container) {
+        const hidden = document.createElement('input');
+        hidden.type = 'hidden';
+        hidden.name = 'delete_photo_ids[]';
+        hidden.value = photoId;
+        container.appendChild(hidden);
+    }
+}
+
+function confirmDeletePostFromModal() {
+    const id = document.getElementById('editPostId').value;
+    if (!id) return;
+    
+    if (confirm("Are you sure you want to delete this coffee moment?\n\nIt will be moved to 'Recently Deleted' where you can restore it within 30 days.")) {
+        document.getElementById('deletePostFormId').value = id;
+        document.getElementById('deletePostForm').submit();
+    }
+}
+
+function checkEditWordCount() {
+    const text = document.getElementById('editDescription').value.trim();
+    const words = text ? text.split(/\s+/).length : 0;
+    const counter = document.getElementById('edit_word_counter');
+    const btn = document.getElementById('editSubmitBtn');
+    if (counter) {
+        counter.innerText = words + " / 500 words";
+        if (words > 500) {
+            counter.style.color = '#dc2626';
+            counter.innerText = "✖ Exceeded limit (" + words + " / 500 words)";
+            if (btn) btn.disabled = true;
+        } else {
+            counter.style.color = '#666';
+            if (btn) btn.disabled = false;
+        }
+    }
+}
+
+function validateEditForm() {
+    const text = document.getElementById('editDescription').value.trim();
+    const words = text ? text.split(/\s+/).length : 0;
+    if (words > 500) {
+        alert('Description cannot exceed 500 words.');
+        return false;
+    }
+
+    const checkedMoods = document.querySelectorAll('#editPostModal input[name="edit_mood_select[]"]:checked');
+    if (checkedMoods.length === 0) {
+        alert('Please select at least one mood.');
+        return false;
+    }
+
+    return true;
 }
 
 function openAuthorModal(userId, username, picSrc) {
@@ -736,7 +1024,7 @@ function openAuthorModal(userId, username, picSrc) {
     document.getElementById('authorModal').style.display = 'flex';
 }
 
-// Feed Filter JS (All Moments vs My Memories)
+// Feed Filter JS (All Moments vs My Memories vs Recently Deleted)
 document.querySelectorAll('.feed-filter-btn').forEach(btn => {
     btn.addEventListener('click', function() {
         document.querySelectorAll('.feed-filter-btn').forEach(b => {
@@ -748,28 +1036,51 @@ document.querySelectorAll('.feed-filter-btn').forEach(btn => {
 
         const filter = this.dataset.filter;
         const currentUserId = this.dataset.user;
-        const posts = document.querySelectorAll('.post-card');
+        const activePosts = document.querySelectorAll('.post-card:not(.deleted-post-card)');
+        const deletedPosts = document.querySelectorAll('.deleted-post-card');
         let visibleCount = 0;
 
-        posts.forEach(post => {
-            if (filter === 'all') {
-                post.style.display = 'block';
-                visibleCount++;
-            } else if (filter === 'my') {
-                if (post.dataset.userId === currentUserId) {
-                    post.style.display = 'block';
-                    visibleCount++;
+        if (filter === 'all') {
+            activePosts.forEach(p => { p.style.display = 'block'; visibleCount++; });
+            deletedPosts.forEach(p => { p.style.display = 'none'; });
+        } else if (filter === 'my') {
+            activePosts.forEach(p => {
+                if (p.dataset.userId === currentUserId) {
+                    p.style.display = 'block'; visibleCount++;
                 } else {
-                    post.style.display = 'none';
+                    p.style.display = 'none';
                 }
-            }
-        });
+            });
+            deletedPosts.forEach(p => { p.style.display = 'none'; });
+        } else if (filter === 'deleted') {
+            activePosts.forEach(p => { p.style.display = 'none'; });
+            deletedPosts.forEach(p => {
+                p.style.display = 'block'; visibleCount++;
+            });
+        }
 
         const emptyMsg = document.getElementById('emptyMyMemoriesMsg');
         if (emptyMsg) {
-            emptyMsg.style.display = (visibleCount === 0) ? 'block' : 'none';
+            emptyMsg.style.display = (visibleCount === 0 && filter === 'my') ? 'block' : 'none';
+        }
+        const emptyDeletedMsg = document.getElementById('emptyDeletedMemoriesMsg');
+        if (emptyDeletedMsg) {
+            emptyDeletedMsg.style.display = (visibleCount === 0 && filter === 'deleted') ? 'block' : 'none';
         }
     });
+});
+
+// Check URL tab parameter on page load
+document.addEventListener('DOMContentLoaded', function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const tab = urlParams.get('tab');
+    if (tab === 'deleted') {
+        const delBtn = document.querySelector('.feed-filter-btn[data-filter="deleted"]');
+        if (delBtn) delBtn.click();
+    } else if (tab === 'my') {
+        const myBtn = document.querySelector('.feed-filter-btn[data-filter="my"]');
+        if (myBtn) myBtn.click();
+    }
 });
 
 document.addEventListener('keydown', function(event) {

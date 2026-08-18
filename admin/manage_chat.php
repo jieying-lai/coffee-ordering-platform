@@ -49,7 +49,7 @@ if ($selectedUserId === 0 && !empty($chatUsers)) {
 $activeMessages = [];
 $activeUser = null;
 if ($selectedUserId > 0) {
-    $uStmt = $conn->prepare("SELECT id, fullname, email FROM users WHERE id = ?");
+    $uStmt = $conn->prepare("SELECT id, COALESCE(fullname, username, CONCAT('Customer #', id)) as fullname, COALESCE(email, 'Registered User') as email FROM users WHERE id = ?");
     $uStmt->bind_param("i", $selectedUserId);
     $uStmt->execute();
     $activeUser = $uStmt->get_result()->fetch_assoc();
@@ -71,19 +71,45 @@ if ($selectedUserId > 0) {
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="../style/mystyle.css">
+  <link rel="stylesheet" href="../style/admin.css">
   <title>Cozy Admin — Customer Care Live Chat</title>
 </head>
 <body style="background: #f4efe9; min-height: 100vh;">
 
-  <!-- ADMIN TOPBAR NAV -->
-  <nav style="background: var(--color-primary); color: #fff; padding: 14px 5%; display: flex; justify-content: space-between; align-items: center;">
-    <div style="font-weight: 700; font-size: 1.2rem; color: #fff;">☕ Barista Admin Portal</div>
-    <div style="display: flex; gap: 16px; font-weight: 600; font-size: 0.9rem;">
-      <a href="manage_orders.php" style="color: #fff; text-decoration: none;">📦 Manage Orders</a>
-      <a href="manage_chat.php" style="color: #fcd34d; font-weight: 800; text-decoration: none;">💬 Customer Care Chat</a>
-      <a href="admin_logout.php" style="color: #f87171; text-decoration: none;">Logout</a>
+<nav class="admin-nav-bar" style="background: var(--color-primary, #3C2A21); color: #fff; padding: 14px 5%; position: sticky; top: 0; z-index: 9999; box-shadow: 0 4px 14px rgba(0,0,0,0.15);">
+  <div style="max-width: 1400px; margin: 0 auto; width: 100%; display: flex; justify-content: space-between; align-items: center;">
+    
+    <div style="font-weight: 800; font-size: 1.15rem; color: #fff;">
+      <a href="dashboard.php" style="color: #fff; text-decoration: none; display: flex; align-items: center; gap: 8px;">
+        <span>☕</span> Cozy Barista Admin Portal
+      </a>
     </div>
-  </nav>
+
+    <button class="admin-hamburger" id="adminNavToggle" aria-label="Toggle Admin Menu" style="display: none; flex-direction: column; justify-content: space-between; width: 28px; height: 20px; background: transparent; border: none; cursor: pointer; padding: 0;">
+      <span style="display: block; height: 3px; width: 100%; background: #ffffff; border-radius: 3px;"></span>
+      <span style="display: block; height: 3px; width: 100%; background: #ffffff; border-radius: 3px;"></span>
+      <span style="display: block; height: 3px; width: 100%; background: #ffffff; border-radius: 3px;"></span>
+    </button>
+
+    <div class="admin-nav-links" id="adminNavMenu">
+      <a href="dashboard.php">📋 Dashboard</a>
+      <a href="manage_orders.php">📦 Orders</a>
+      <a href="manage_chat.php" class="admin-nav-active">💬 Customer Chat</a>
+      <a href="manage_menu.php">☕ Menu</a>
+      <a href="manage_users.php">👤 Users</a>
+      <a href="manage_blog.php">📸 Blog</a>
+      <a href="manage_contact.php">📍 Contact/About</a>
+      <a href="logout.php" style="color: #f87171 !important; text-decoration: none; padding: 6px 12px; border-radius: 6px; background: rgba(239, 68, 68, 0.15);">Logout</a>
+    </div>
+
+  </div>
+</nav>
+
+<script>
+  document.getElementById('adminNavToggle')?.addEventListener('click', function() {
+    document.getElementById('adminNavMenu')?.classList.toggle('admin-menu-active');
+  });
+</script>
 
   <div class="container" style="max-width: 1200px; margin: 30px auto; padding: 0 20px;">
     

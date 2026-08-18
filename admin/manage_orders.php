@@ -233,37 +233,73 @@ if ($ordersResult) {
     }
     .filter-tabs {
       display: flex;
-      gap: 8px;
-      margin-bottom: 24px;
+      gap: 10px;
+      margin-bottom: 26px;
       flex-wrap: wrap;
     }
     .filter-tab {
-      padding: 10px 18px;
+      padding: 10px 20px;
       border-radius: 20px;
-      background: #fff;
-      border: 1px solid var(--color-border);
-      color: var(--color-text);
+      background: #ffffff;
+      border: 2px solid #d4c5b5;
+      color: #3c2a21;
       text-decoration: none;
-      font-weight: 600;
-      font-size: 0.9rem;
-      transition: all 0.2s;
+      font-weight: 700;
+      font-size: 0.92rem;
+      transition: all 0.2s ease;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.03);
     }
-    .filter-tab.active, .filter-tab:hover {
-      background: var(--color-primary);
-      color: #fff;
-      border-color: var(--color-primary);
+    .filter-tab:hover {
+      background: #f4ede4;
+      border-color: var(--color-accent-dark);
+      color: var(--color-accent-dark);
+      transform: translateY(-1px);
+    }
+    .filter-tab.active {
+      background: var(--color-accent-dark) !important;
+      color: #ffffff !important;
+      border-color: var(--color-accent-dark) !important;
+      font-weight: 800;
+      box-shadow: 0 4px 14px rgba(140, 109, 88, 0.35);
     }
   </style>
 </head>
 <body class="admin-page">
 
-<div class="admin-topbar">
-  <div class="admin-logo"><a href="dashboard.php" style="color:inherit; text-decoration:none;">Cozy Coffee Co. — Admin</a></div>
-  <div>
-    <span class="admin-user">Logged in as <?php echo htmlspecialchars($_SESSION['admin_username']); ?></span>
-    <a href="logout.php" class="logout-link">Logout</a>
+<nav class="admin-nav-bar" style="background: var(--color-primary, #3C2A21); color: #fff; padding: 14px 5%; position: sticky; top: 0; z-index: 9999; box-shadow: 0 4px 14px rgba(0,0,0,0.15);">
+  <div style="max-width: 1400px; margin: 0 auto; width: 100%; display: flex; justify-content: space-between; align-items: center;">
+    
+    <div style="font-weight: 800; font-size: 1.15rem; color: #fff;">
+      <a href="dashboard.php" style="color: #fff; text-decoration: none; display: flex; align-items: center; gap: 8px;">
+        <span>☕</span> Cozy Barista Admin Portal
+      </a>
+    </div>
+
+    <button class="admin-hamburger" id="adminNavToggle" aria-label="Toggle Admin Menu" style="display: none; flex-direction: column; justify-content: space-between; width: 28px; height: 20px; background: transparent; border: none; cursor: pointer; padding: 0;">
+      <span style="display: block; height: 3px; width: 100%; background: #ffffff; border-radius: 3px;"></span>
+      <span style="display: block; height: 3px; width: 100%; background: #ffffff; border-radius: 3px;"></span>
+      <span style="display: block; height: 3px; width: 100%; background: #ffffff; border-radius: 3px;"></span>
+    </button>
+
+    <div class="admin-nav-links" id="adminNavMenu">
+      <a href="dashboard.php">📋 Dashboard</a>
+      <a href="manage_orders.php" class="admin-nav-active">📦 Orders</a>
+      <a href="manage_chat.php">💬 Customer Chat</a>
+      <a href="manage_menu.php">☕ Menu</a>
+      <a href="manage_users.php">👤 Users</a>
+      <a href="manage_blog.php">📸 Blog</a>
+      <a href="manage_contact.php">📍 Contact/About</a>
+      <a href="logout.php" style="color: #f87171 !important; text-decoration: none; padding: 6px 12px; border-radius: 6px; background: rgba(239, 68, 68, 0.15);">Logout</a>
+    </div>
+
   </div>
-</div>
+</nav>
+
+<script>
+  document.getElementById('adminNavToggle')?.addEventListener('click', function() {
+    document.getElementById('adminNavMenu')?.classList.toggle('admin-menu-active');
+  });
+</script>
 
 <div class="admin-wrap">
   <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; margin-bottom: 20px;">

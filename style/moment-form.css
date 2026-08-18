@@ -134,33 +134,44 @@
   line-height: 1.6;
 }
 
-/* File Upload Field */
-.moment-form input[type="file"] {
-  padding: 10px;
-  background-color: var(--color-bg);
-  border: 1px dashed var(--color-border);
-  border-radius: 8px;
+/* File Upload Field (Universal Post & Edit Modal) */
+input[type="file"], .moment-form input[type="file"] {
+  width: 100%;
+  padding: 10px 14px;
+  background-color: #FAF7F2;
+  border: 1.5px dashed #E5D9CC;
+  border-radius: 12px;
   cursor: pointer;
   font-size: 0.9rem;
-  color: var(--color-text-soft);
+  color: #665447;
   font-family: var(--font-body);
+  box-sizing: border-box;
+  transition: all 0.2s ease;
 }
 
-.moment-form input[type="file"]::file-selector-button {
-  background: var(--color-accent);
+input[type="file"]:hover, .moment-form input[type="file"]:hover {
+  border-color: #C85A3E;
+  background-color: #FFFFFF;
+}
+
+input[type="file"]::file-selector-button, .moment-form input[type="file"]::file-selector-button {
+  background: linear-gradient(135deg, #C85A3E 0%, #A8472F 100%);
   color: #ffffff;
   border: none;
-  padding: 6px 14px;
-  border-radius: 6px;
+  padding: 8px 16px;
+  border-radius: 8px;
   cursor: pointer;
-  margin-right: 12px;
-  font-weight: 700;
+  margin-right: 14px;
+  font-weight: 800;
   font-family: var(--font-body);
-  transition: background 0.15s ease;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 12px rgba(200, 90, 62, 0.25);
 }
 
-.moment-form input[type="file"]::file-selector-button:hover {
-  background: var(--color-accent-dark);
+input[type="file"]::file-selector-button:hover, .moment-form input[type="file"]::file-selector-button:hover {
+  background: linear-gradient(135deg, #B64C32 0%, #8C3722 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(200, 90, 62, 0.35);
 }
 
 /* Word Counter */

@@ -159,7 +159,12 @@ if (!empty($_SESSION['cart']) && is_array($_SESSION['cart'])) {
                                     <span class="qty-val"><?php echo $item['quantity']; ?></span>
                                     <button type="button" class="qty-btn" onclick="updateQty('<?php echo $item['cart_key']; ?>', 1)">+</button>
                                 </div>
-                                <span class="item-price">RM <?php echo number_format($item['item_total'], 2); ?></span>
+                                <div style="text-align: right;">
+                                  <span class="item-price" style="font-weight: 800; font-size: 1.1rem; color: var(--color-accent-dark);">RM <?php echo number_format($item['item_total'], 2); ?></span>
+                                  <?php if ($item['quantity'] > 1): ?>
+                                    <div style="font-size: 0.78rem; color: #777;">(RM <?php echo number_format($item['price'], 2); ?> &times; <?php echo $item['quantity']; ?>)</div>
+                                  <?php endif; ?>
+                                </div>
                             </div>
                         </div>
 

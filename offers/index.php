@@ -88,11 +88,13 @@ $memberDiscountRate = 0.15; // 15% member price, shown for browsing
         <p><?php echo htmlspecialchars(strtok($item['description'], "\r\n")); ?></p>
       </div>
 
-      <form class="add-offer-form" style="margin-top: 14px;">
-        <input type="hidden" name="item_id" value="<?php echo $item['item_id']; ?>">
-        <input type="hidden" name="custom_price" value="<?php echo $memberPrice; ?>">
-        <button type="submit" class="btn btn-orange btn-full" style="padding: 8px 14px; font-size: 0.85rem; font-weight: 700;">Order Offer (RM <?php echo number_format($memberPrice, 2); ?>) 🛒</button>
-      </form>
+      <button type="button" class="btn btn-orange btn-full open-offer-modal-btn" 
+              data-id="<?php echo $item['item_id']; ?>"
+              data-name="<?php echo htmlspecialchars($item['name']); ?>"
+              data-desc="<?php echo htmlspecialchars($item['description']); ?>"
+              data-price="<?php echo $memberPrice; ?>"
+              data-image="<?php echo htmlspecialchars($item['image']); ?>"
+              style="margin-top: 14px; padding: 10px 14px; font-size: 0.88rem; font-weight: 700;">Customize &amp; Order (RM <?php echo number_format($memberPrice, 2); ?>) 🛒</button>
     </div>
     <?php endforeach; ?>
   </div>
@@ -121,78 +123,150 @@ $memberDiscountRate = 0.15; // 15% member price, shown for browsing
         <p><?php echo htmlspecialchars(strtok($item['description'], "\r\n")); ?></p>
       </div>
 
-      <form class="add-offer-form" style="margin-top: 14px;">
-        <input type="hidden" name="item_id" value="<?php echo $item['item_id']; ?>">
-        <input type="hidden" name="custom_price" value="<?php echo $memberPrice; ?>">
-        <button type="submit" class="btn btn-orange btn-full" style="padding: 8px 14px; font-size: 0.85rem; font-weight: 700;">Order Offer (RM <?php echo number_format($memberPrice, 2); ?>) 🛒</button>
-      </form>
+      <button type="button" class="btn btn-orange btn-full open-offer-modal-btn" 
+              data-id="<?php echo $item['item_id']; ?>"
+              data-name="<?php echo htmlspecialchars($item['name']); ?>"
+              data-desc="<?php echo htmlspecialchars($item['description']); ?>"
+              data-price="<?php echo $memberPrice; ?>"
+              data-image="<?php echo htmlspecialchars($item['image']); ?>"
+              style="margin-top: 14px; padding: 10px 14px; font-size: 0.88rem; font-weight: 700;">Customize &amp; Order (RM <?php echo number_format($memberPrice, 2); ?>) 🛒</button>
     </div>
     <?php endforeach; ?>
   </div>
 </section>
 
-<!-- ============ PARTNER PROMOTIONS ============ -->
-<section class="program-section" id="partners">
-  <h2>🤝 Partner Promotions</h2>
-  <p class="subtitle">Better everyday value from the local businesses we love, just for showing your Cozy Rewards card.</p>
-
-  <div class="partner-list">
-    <div class="partner-item">
-      <div class="partner-emoji">🫘</div>
-      <div>
-        <h4>Kajang Roastery Co-op</h4>
-        <p>15% off single-origin bean bags for members, plus a free cupping session on your first visit.</p>
-      </div>
-    </div>
-    <div class="partner-item">
-      <div class="partner-emoji">📚</div>
-      <div>
-        <h4>Pages &amp; Pour Bookstore</h4>
-        <p>Show your Cozy Rewards card for RM5 off any purchase over RM30 — perfect for a slow-reading afternoon.</p>
-      </div>
-    </div>
-    <div class="partner-item">
-      <div class="partner-emoji">🥐</div>
-      <div>
-        <h4>Sungai Long Sourdough Bakery</h4>
-        <p>Buy 1 free 1 on day-old bakes every Sunday for Cozy Rewards members.</p>
-      </div>
-    </div>
-    <div class="partner-item">
-      <div class="partner-emoji">🧘</div>
-      <div>
-        <h4>Cozy Yoga Studio</h4>
-        <p>10% off drop-in classes, and bring your reusable Cozy Coffee Co. cup for a free post-class drink.</p>
-      </div>
+<!-- GUEST / NON-MEMBER LOCK MODAL -->
+<div id="memberLockModal" class="modal-overlay">
+  <div class="modal-content" style="max-width: 460px; padding: 30px; text-align: center;">
+    <button class="modal-close" onclick="document.getElementById('memberLockModal').style.display='none'">&times;</button>
+    <div style="font-size: 3rem; margin-bottom: 10px;">🔒</div>
+    <h3 style="color: var(--color-primary); font-family: var(--font-heading); margin-bottom: 8px;">Cozy Rewards Member Exclusive</h3>
+    <p style="color: #666; font-size: 0.92rem; line-height: 1.6; margin-bottom: 22px;">
+      Promotional member prices (15% OFF) are exclusively available to registered Cozy Rewards members. Join for free or log in to unlock member discounts!
+    </p>
+    <div style="display: flex; gap: 12px; justify-content: center;">
+      <a href="../login/index.php" class="btn btn-orange" style="flex: 1; padding: 10px 16px;">Log In</a>
+      <a href="../register/index.php" class="btn btn-outline" style="flex: 1; padding: 10px 16px;">Register Free</a>
     </div>
   </div>
-</section>
+</div>
+
+<!-- OFFER CUSTOMIZATION MODAL -->
+<div id="offerCustomModal" class="modal-overlay">
+  <div class="modal-content" style="max-width: 500px; padding: 25px; max-height: 90vh; overflow-y: auto;">
+    <button class="modal-close" onclick="document.getElementById('offerCustomModal').style.display='none'">&times;</button>
+    
+    <div style="display: flex; gap: 16px; margin-bottom: 16px; align-items: center;">
+      <img id="offerModalImg" src="" style="width: 80px; height: 80px; object-fit: cover; border-radius: 12px; border: 1px solid #e0d5c4;">
+      <div>
+        <h3 id="offerModalTitle" style="color: var(--color-primary); margin-bottom: 4px; font-family: var(--font-heading);"></h3>
+        <div style="font-weight: 800; color: var(--color-accent-dark); font-size: 1.2rem;">
+          Special Member Price: <span id="offerModalPrice"></span>
+        </div>
+      </div>
+    </div>
+
+    <p id="offerModalDesc" style="color: #666; font-size: 0.88rem; line-height: 1.5; margin-bottom: 16px; background: #faf5ee; padding: 10px 12px; border-radius: 8px;"></p>
+
+    <form id="offerModalForm">
+      <input type="hidden" name="item_id" id="offerModalItemId">
+      <input type="hidden" name="custom_price" id="offerModalCustomPrice">
+
+      <!-- Temperature Option -->
+      <div style="margin-bottom: 14px;">
+        <label style="font-weight: 700; font-size: 0.88rem; color: #444; display: block; margin-bottom: 6px;">Temperature Preference:</label>
+        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+          <label style="font-size: 0.85rem; background: #fff; border: 1px solid #d0c4b8; padding: 6px 12px; border-radius: 20px; cursor: pointer;">
+            <input type="radio" name="temperature" value="Regular Ice" checked> 🧊 Regular Ice
+          </label>
+          <label style="font-size: 0.85rem; background: #fff; border: 1px solid #d0c4b8; padding: 6px 12px; border-radius: 20px; cursor: pointer;">
+            <input type="radio" name="temperature" value="Less Ice"> ❄️ Less Ice
+          </label>
+          <label style="font-size: 0.85rem; background: #fff; border: 1px solid #d0c4b8; padding: 6px 12px; border-radius: 20px; cursor: pointer;">
+            <input type="radio" name="temperature" value="Warm / Hot"> ☕ Hot
+          </label>
+        </div>
+      </div>
+
+      <!-- Sweetness Option -->
+      <div style="margin-bottom: 14px;">
+        <label style="font-weight: 700; font-size: 0.88rem; color: #444; display: block; margin-bottom: 6px;">Sweetness Level:</label>
+        <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+          <label style="font-size: 0.85rem; background: #fff; border: 1px solid #d0c4b8; padding: 6px 12px; border-radius: 20px; cursor: pointer;">
+            <input type="radio" name="sweetness" value="100% Normal" checked> 🍯 100% Normal
+          </label>
+          <label style="font-size: 0.85rem; background: #fff; border: 1px solid #d0c4b8; padding: 6px 12px; border-radius: 20px; cursor: pointer;">
+            <input type="radio" name="sweetness" value="50% Less Sweet"> 🍬 50% Less Sweet
+          </label>
+          <label style="font-size: 0.85rem; background: #fff; border: 1px solid #d0c4b8; padding: 6px 12px; border-radius: 20px; cursor: pointer;">
+            <input type="radio" name="sweetness" value="0% Sugar Free"> 🚫 No Sugar
+          </label>
+        </div>
+      </div>
+
+      <!-- Special Remarks -->
+      <div style="margin-bottom: 16px;">
+        <label style="font-weight: 700; font-size: 0.88rem; color: #444; display: block; margin-bottom: 6px;">Special Instructions / Remarks:</label>
+        <textarea name="remarks" rows="2" placeholder="e.g. Extra hot, oat milk substitute..." style="width: 100%; padding: 8px 12px; border-radius: 8px; border: 1px solid #d0c4b8; box-sizing: border-box; font-size: 0.9rem;"></textarea>
+      </div>
+
+      <!-- Quantity & Submit -->
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+        <div style="display: flex; align-items: center; gap: 8px;">
+          <label style="font-weight: 700; font-size: 0.88rem; color: #444;">Qty:</label>
+          <input type="number" name="quantity" value="1" min="1" max="20" style="width: 50px; text-align: center; padding: 6px; border-radius: 6px; border: 1px solid #d0c4b8;">
+        </div>
+        <button type="submit" class="btn btn-orange" style="padding: 10px 20px; font-weight: 700;">Add Offer to Cart 🛒</button>
+      </div>
+    </form>
+  </div>
+</div>
 
 <script>
-  document.querySelector('.hamburger')?.addEventListener('click', () => {
-    const nav = document.querySelector('.nav-links');
-    nav.style.display = nav.style.display === 'flex' ? 'none' : 'flex';
+  const isMemberUser = <?php echo ($isLoggedIn && $isMember) ? 'true' : 'false'; ?>;
+
+  document.querySelectorAll('.open-offer-modal-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      if (!isMemberUser) {
+        document.getElementById('memberLockModal').style.display = 'flex';
+        return;
+      }
+
+      const id = this.dataset.id;
+      const name = this.dataset.name;
+      const desc = this.dataset.desc;
+      const price = parseFloat(this.dataset.price).toFixed(2);
+      const img = this.dataset.image;
+
+      document.getElementById('offerModalItemId').value = id;
+      document.getElementById('offerModalCustomPrice').value = price;
+      document.getElementById('offerModalTitle').textContent = name;
+      document.getElementById('offerModalPrice').textContent = 'RM ' + price;
+      document.getElementById('offerModalDesc').textContent = desc;
+      document.getElementById('offerModalImg').src = '../images/menu/' + img;
+
+      document.getElementById('offerCustomModal').style.display = 'flex';
+    });
   });
 
-  document.querySelectorAll('.add-offer-form').forEach(form => {
-    form.addEventListener('submit', function(e) {
-      e.preventDefault();
-      const formData = new FormData(this);
-      formData.append('ajax', '1');
+  document.getElementById('offerModalForm')?.addEventListener('submit', function(e) {
+    e.preventDefault();
+    const formData = new FormData(this);
+    formData.append('ajax', '1');
 
-      fetch('../cart/add_to_cart.php', { method: 'POST', body: formData })
-        .then(res => res.json())
-        .then(data => {
-          if (data.status === 'success') {
-            const badge = document.getElementById('globalCartCount') || document.querySelector('.nav-cart-badge');
-            if (badge) {
-              badge.textContent = data.total_quantity || data.cart_count;
-              badge.style.display = 'inline-block';
-            }
-            alert('🎉 Offer item added to cart at special member price!');
+    fetch('../cart/add_to_cart.php', { method: 'POST', body: formData })
+      .then(res => res.json())
+      .then(data => {
+        if (data.status === 'success') {
+          const badge = document.getElementById('globalCartCount') || document.querySelector('.nav-cart-badge');
+          if (badge) {
+            badge.textContent = data.total_quantity || data.cart_count;
+            badge.style.display = 'inline-block';
           }
-        });
-    });
+          document.getElementById('offerCustomModal').style.display = 'none';
+          alert('🎉 Promotional offer item added to cart!');
+        }
+      });
   });
 </script>
 

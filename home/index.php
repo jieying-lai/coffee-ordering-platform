@@ -19,9 +19,9 @@ session_start();
 ?>
 
 <section class="hero">
-  <div class="eyebrow">Small Batch · Slow Roasted</div>
-  <h1>Warm cups, cozy corners.</h1>
-  <p>all you need is love, or maybe coffee</p>
+  <div class="eyebrow">✦ Small Batch · Slow Roasted ✦</div>
+  <h1><span class="gold-highlight">Warm cups,</span> cozy corners.</h1>
+  <p>All you need is love, or maybe freshly brewed coffee</p>
 
   <div class="hero-actions">
     <a href="../menu/index.php" class="cta-btn cta-btn-primary">Order Now</a>
@@ -64,40 +64,62 @@ session_start();
 
 <section class="gallery-section" id="gallery">
   <h2>A Peek Inside</h2>
-  <p class="subtitle">Take a look around before you order.</p>
+  <p class="subtitle">Click any area below to view our gallery photos &amp; details.</p>
 
   <div class="gallery-grid">
-    <div class="gallery-card">
+    <div class="gallery-card home-gallery-trigger" data-title="Our Roastery Corner" data-desc="Where our single-origin arabica beans are micro-roasted daily to perfection by master roasters." data-images="../images/1.jpg|../images/menu/hero1.jpg|../images/hero2.jpg" style="cursor: pointer;">
       <div class="gallery-photo">
         <img src="../images/1.jpg" alt="Our Roastery Corner">
       </div>
       <div class="photo-info">
-        <h3>Our Roastery Corner</h3>
-        <p>Where the beans are freshly roasted every morning.</p>
+        <h3>Our Roastery Corner 🔍</h3>
+        <p>Where the beans are freshly roasted every morning. Click to view photos.</p>
       </div>
     </div>
 
-    <div class="gallery-card">
+    <div class="gallery-card home-gallery-trigger" data-title="Fresh Brews Daily" data-desc="Handcrafted espresso, pour-overs, and specialty beverages prepared live by our passionate baristas." data-images="../images/5.jpg|../images/4.jpg|../images/2.jpg" style="cursor: pointer;">
       <div class="gallery-photo">
-        <img src="../images/2.jpg" alt="Fresh Brews Daily">
+        <img src="../images/5.jpg" alt="Fresh Brews Daily">
       </div>
       <div class="photo-info">
-        <h3>Fresh Brews Daily</h3>
-        <p>Handcrafted drinks made with love by our baristas.</p>
+        <h3>Fresh Brews Daily 🔍</h3>
+        <p>Handcrafted drinks made with love by our baristas. Click to view photos.</p>
       </div>
     </div>
 
-    <div class="gallery-card">
+    <div class="gallery-card home-gallery-trigger" data-title="Cozy Seating Area" data-desc="Unwind in our warm lounge with plush seating, ambient warm lighting, and fast WiFi for work or study." data-images="../images/area2.jpg|../images/3.jpg|../images/area1.jpg" style="cursor: pointer;">
       <div class="gallery-photo">
-        <img src="../images/3.jpg" alt="Cozy Seating Area">
+        <img src="../images/area2.jpg" alt="Cozy Seating Area">
       </div>
       <div class="photo-info">
-        <h3>Cozy Seating Area</h3>
-        <p>A warm space for your quiet afternoon or catch-ups.</p>
+        <h3>Cozy Seating Area 🔍</h3>
+        <p>A warm space for your quiet afternoon or catch-ups. Click to view photos.</p>
       </div>
     </div>
   </div>
 </section>
+
+<!-- HOME GALLERY LIGHTBOX MODAL -->
+<div id="homeGalleryModal" class="modal-overlay" onclick="if(event.target === this) closeHomeGallery();">
+  <div class="modal-content" style="max-width: 650px; padding: 25px; text-align: center; position: relative;">
+    <button class="modal-close" onclick="closeHomeGallery()">&times;</button>
+    <h3 id="homeGalleryTitle" style="color: var(--color-primary); margin-bottom: 6px; font-family: var(--font-heading); font-size: 1.4rem;"></h3>
+    <p id="homeGalleryDesc" style="color: #666; font-size: 0.9rem; margin-bottom: 16px;"></p>
+
+    <!-- PHOTO CONTAINER WITH NAVIGATION ARROWS -->
+    <div style="position: relative; width: 100%; height: 340px; border-radius: 14px; overflow: hidden; background: #222; box-shadow: 0 8px 20px rgba(0,0,0,0.15);">
+      <img id="homeGalleryImg" src="" style="width: 100%; height: 100%; object-fit: cover; transition: opacity 0.3s ease;">
+      
+      <button type="button" onclick="prevHomePhoto()" style="position: absolute; left: 12px; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.55); color: #fff; border: none; font-size: 1.6rem; width: 42px; height: 42px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(4px); transition: background 0.2s ease;">❮</button>
+      
+      <button type="button" onclick="nextHomePhoto()" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: rgba(0,0,0,0.55); color: #fff; border: none; font-size: 1.6rem; width: 42px; height: 42px; border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(4px); transition: background 0.2s ease;">❯</button>
+    </div>
+
+    <div style="margin-top: 14px; display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; color: #777;">
+      <span id="homeGalleryCounter">Photo 1 of 3</span>
+    </div>
+  </div>
+</div>
 
 <script>
   const quizModal = document.getElementById('quizModal');
@@ -131,6 +153,49 @@ session_start();
       quizResult.style.display = 'block';
     });
   });
+
+  // GALLERY LIGHTBOX SCRIPT
+  let homeGalleryImages = [];
+  let homeGalleryIdx = 0;
+
+  document.querySelectorAll('.home-gallery-trigger').forEach(card => {
+    card.addEventListener('click', function() {
+      const title = this.dataset.title;
+      const desc = this.dataset.desc;
+      homeGalleryImages = this.dataset.images.split('|');
+      homeGalleryIdx = 0;
+
+      document.getElementById('homeGalleryTitle').textContent = title;
+      document.getElementById('homeGalleryDesc').textContent = desc;
+      updateHomeGalleryPhoto();
+
+      document.getElementById('homeGalleryModal').style.display = 'flex';
+    });
+  });
+
+  function updateHomeGalleryPhoto() {
+    const imgEl = document.getElementById('homeGalleryImg');
+    imgEl.style.opacity = '0.4';
+    setTimeout(() => {
+      imgEl.src = homeGalleryImages[homeGalleryIdx];
+      imgEl.style.opacity = '1';
+    }, 150);
+    document.getElementById('homeGalleryCounter').textContent = `Photo ${homeGalleryIdx + 1} of ${homeGalleryImages.length}`;
+  }
+
+  function prevHomePhoto() {
+    homeGalleryIdx = (homeGalleryIdx - 1 + homeGalleryImages.length) % homeGalleryImages.length;
+    updateHomeGalleryPhoto();
+  }
+
+  function nextHomePhoto() {
+    homeGalleryIdx = (homeGalleryIdx + 1) % homeGalleryImages.length;
+    updateHomeGalleryPhoto();
+  }
+
+  function closeHomeGallery() {
+    document.getElementById('homeGalleryModal').style.display = 'none';
+  }
 </script>
 
 </body>

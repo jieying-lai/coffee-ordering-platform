@@ -23,9 +23,11 @@ $basePrefix = (strpos($currentPath, '/home/') !== false ||
 $activePage = $activePage ?? '';
 $cartCount = !empty($_SESSION['cart']) ? count($_SESSION['cart']) : 0;
 ?>
-<nav>
+<nav class="user-main-nav">
   <div class="logo"><a href="<?php echo $basePrefix; ?>home/index.php">Cozy Coffee Co.</a></div>
-  <ul class="nav-links">
+
+  <!-- CENTER DESKTOP NAV LINKS (Directly accessible on desktop) -->
+  <ul class="nav-links desktop-nav-links">
     <li><a href="<?php echo $basePrefix; ?>home/index.php" class="<?php echo $activePage === 'home' ? 'active' : ''; ?>">Home</a></li>
     <li>
       <a href="<?php echo $basePrefix; ?>menu/index.php" class="<?php echo $activePage === 'menu' ? 'active' : ''; ?>">Menu ▾</a>
@@ -56,14 +58,13 @@ $cartCount = !empty($_SESSION['cart']) ? count($_SESSION['cart']) : 0;
       </div>
     </li>
     <li><a href="<?php echo $basePrefix; ?>contact/index.php" class="<?php echo $activePage === 'contact' ? 'active' : ''; ?>">Contact</a></li>
-    <li>
-      <a href="<?php echo $basePrefix; ?>cart/index.php" class="<?php echo $activePage === 'cart' ? 'active' : ''; ?>">
-        Cart <span class="cart-badge nav-cart-badge" style="<?php echo $cartCount > 0 ? '' : 'display:none;'; ?>"><?php echo $cartCount; ?></span>
-      </a>
-    </li>
+  </ul>
 
-    <!-- NOTIFICATION BELL ENTRANCE -->
-    <li class="notif-container">
+  <!-- RIGHT UTILITIES (ALWAYS VISIBLE AT ALL SCREEN SIZES) -->
+  <div class="nav-right-actions">
+
+    <!-- NOTIFICATION BELL ENTRANCE (ALWAYS ON TOP BAR) -->
+    <div class="notif-container">
       <button type="button" class="notif-bell-btn" id="globalNotifBtn" title="Notifications">
         🔔 <span class="notif-badge-count" id="globalNotifCount">0</span>
       </button>
@@ -79,27 +80,79 @@ $cartCount = !empty($_SESSION['cart']) ? count($_SESSION['cart']) : 0;
           <div style="text-align:center; padding:10px; color:#888; font-size:0.85rem;">Loading notifications...</div>
         </div>
       </div>
-    </li>
+    </div>
 
-    <!-- DYNAMIC USER AUTH DROPDOWN -->
+    <!-- CART ENTRANCE (ALWAYS ON TOP BAR) -->
+    <a href="<?php echo $basePrefix; ?>cart/index.php" class="nav-cart-link <?php echo $activePage === 'cart' ? 'active' : ''; ?>">
+      🛒 Cart <span class="cart-badge nav-cart-badge" style="<?php echo $cartCount > 0 ? '' : 'display:none;'; ?>"><?php echo $cartCount; ?></span>
+    </a>
+
+    <!-- USER AUTH / PROFILE (ALWAYS ON TOP BAR) -->
     <?php if (isset($_SESSION['user_id'])): ?>
-      <li>
-        <a href="<?php echo $basePrefix; ?>profile/index.php" class="<?php echo $activePage === 'profile' ? 'active' : ''; ?>">
-          <?php echo htmlspecialchars($_SESSION['fullname'] ?? $_SESSION['username']); ?> ▾
+      <div class="user-profile-menu">
+        <a href="<?php echo $basePrefix; ?>profile/index.php" class="user-profile-btn <?php echo $activePage === 'profile' ? 'active' : ''; ?>">
+          👤 <?php echo htmlspecialchars($_SESSION['fullname'] ?? $_SESSION['username']); ?> ▾
         </a>
-        <div class="dropdown">
+        <div class="dropdown profile-dropdown">
           <a href="<?php echo $basePrefix; ?>profile/index.php">My Profile</a>
           <a href="<?php echo $basePrefix; ?>rewards/index.php">Cozy Rewards</a>
           <a href="<?php echo $basePrefix; ?>logout.php">Logout</a>
         </div>
-      </li>
+      </div>
     <?php else: ?>
-      <li><a href="<?php echo $basePrefix; ?>login/index.php" class="<?php echo $activePage === 'login' ? 'active' : ''; ?>">Login</a></li>
+      <a href="<?php echo $basePrefix; ?>login/index.php" class="nav-login-btn <?php echo $activePage === 'login' ? 'active' : ''; ?>">Login</a>
     <?php endif; ?>
 
-  </ul>
-  <button class="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+    <!-- HAMBURGER BUTTON (Only visible when desktop links collapse) -->
+    <button class="hamburger" id="sideNavToggle" aria-label="Menu Drawer">
+      <span></span><span></span><span></span>
+    </button>
+
+  </div>
 </nav>
+
+<!-- SIDE SLIDE DRAWER OVERLAY -->
+<div id="sideNavOverlay" class="side-nav-overlay"></div>
+
+<!-- SIDE SLIDE DRAWER PANEL (Slides 300px from right) -->
+<div id="sideNavDrawer" class="side-nav-drawer">
+  <div class="side-drawer-header">
+    <span class="side-drawer-title">Cozy Menu</span>
+    <button type="button" id="sideNavClose" class="side-drawer-close">&times;</button>
+  </div>
+  <ul class="side-drawer-links">
+    <li><a href="<?php echo $basePrefix; ?>home/index.php" class="<?php echo $activePage === 'home' ? 'active' : ''; ?>">🏠 Home</a></li>
+    <li>
+      <a href="<?php echo $basePrefix; ?>menu/index.php" class="<?php echo $activePage === 'menu' ? 'active' : ''; ?>">☕ Menu</a>
+      <div class="side-sub-menu">
+        <a href="<?php echo $basePrefix; ?>menu/index.php?cat=specialty#specialty">🌟 Specialty Coffee</a>
+        <a href="<?php echo $basePrefix; ?>menu/index.php?cat=classic#classic">☕ Classic Coffee</a>
+        <a href="<?php echo $basePrefix; ?>menu/index.php?cat=noncoffein#noncoffein">🍃 Non-Coffein</a>
+        <a href="<?php echo $basePrefix; ?>menu/index.php?cat=smoothies#smoothies">🍹 Smoothies &amp; Sodas</a>
+        <a href="<?php echo $basePrefix; ?>menu/index.php?cat=mains#mains">🍽️ Main Dishes</a>
+        <a href="<?php echo $basePrefix; ?>menu/index.php?cat=desserts#desserts">🍰 Desserts</a>
+      </div>
+    </li>
+    <li><a href="<?php echo $basePrefix; ?>blog/index.php" class="<?php echo $activePage === 'blog' ? 'active' : ''; ?>">📸 Blog</a></li>
+    <li><a href="<?php echo $basePrefix; ?>benefits/index.php" class="<?php echo $activePage === 'benefits' ? 'active' : ''; ?>">🎁 Benefits</a></li>
+    <li>
+      <a href="<?php echo $basePrefix; ?>offers/index.php" class="<?php echo $activePage === 'offers' ? 'active' : ''; ?>">🏷️ Offers</a>
+      <div class="side-sub-menu">
+        <a href="<?php echo $basePrefix; ?>offers/index.php#drinks">Drink Offers</a>
+        <a href="<?php echo $basePrefix; ?>offers/index.php#food">Food Offers</a>
+        <a href="<?php echo $basePrefix; ?>offers/index.php#partners">Partner Promotions</a>
+      </div>
+    </li>
+    <li>
+      <a href="<?php echo $basePrefix; ?>activities/index.php" class="<?php echo $activePage === 'activities' ? 'active' : ''; ?>">🎉 Activities</a>
+      <div class="side-sub-menu">
+        <a href="<?php echo $basePrefix; ?>activities/index.php#workshops">Coffee Workshops</a>
+        <a href="<?php echo $basePrefix; ?>activities/index.php#giveback">Cozy Give-Back</a>
+      </div>
+    </li>
+    <li><a href="<?php echo $basePrefix; ?>contact/index.php" class="<?php echo $activePage === 'contact' ? 'active' : ''; ?>">📍 Contact Us</a></li>
+  </ul>
+</div>
 
 <!-- FLOATING CUSTOMER SERVICE CHAT BUBBLE -->
 <div id="csChatWidget" style="position: fixed; bottom: 24px; right: 24px; z-index: 9999;">
@@ -132,10 +185,25 @@ $cartCount = !empty($_SESSION['cart']) ? count($_SESSION['cart']) : 0;
 </div>
 
 <script>
-  // Mobile Nav Toggle
-  document.querySelector('.hamburger')?.addEventListener('click', () => {
-    document.querySelector('.nav-links')?.classList.toggle('nav-active');
-  });
+  // Side Slide Drawer Handler
+  const sideToggleBtn = document.getElementById('sideNavToggle');
+  const sideDrawer = document.getElementById('sideNavDrawer');
+  const sideOverlay = document.getElementById('sideNavOverlay');
+  const sideCloseBtn = document.getElementById('sideNavClose');
+
+  function openSideDrawer() {
+    sideDrawer?.classList.add('open');
+    sideOverlay?.classList.add('show');
+  }
+
+  function closeSideDrawer() {
+    sideDrawer?.classList.remove('open');
+    sideOverlay?.classList.remove('show');
+  }
+
+  sideToggleBtn?.addEventListener('click', openSideDrawer);
+  sideCloseBtn?.addEventListener('click', closeSideDrawer);
+  sideOverlay?.addEventListener('click', closeSideDrawer);
 
   // Notification Bell Script
   const notifBtn = document.getElementById('globalNotifBtn');
