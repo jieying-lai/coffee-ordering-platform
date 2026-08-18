@@ -76,20 +76,28 @@ $memberDiscountRate = 0.15; // 15% member price, shown for browsing
     <?php foreach ($drinkOffers as $item):
       $memberPrice = round($item['price'] * (1 - $memberDiscountRate), 2);
     ?>
-    <div class="offer-card">
-      <span class="offer-badge">Member Price</span>
-      <div class="offer-photo"><img src="../images/menu/<?php echo htmlspecialchars($item['image']); ?>" alt="<?php echo htmlspecialchars($item['name']); ?>"></div>
-      <h3><?php echo htmlspecialchars($item['name']); ?></h3>
-      <div class="offer-price-row">
-        <span class="offer-price-old">RM <?php echo number_format($item['price'], 2); ?></span>
-        <span class="offer-price-new">RM <?php echo number_format($memberPrice, 2); ?></span>
+    <div class="offer-card" style="display: flex; flex-direction: column; justify-content: space-between;">
+      <div>
+        <span class="offer-badge">Member Special (15% OFF)</span>
+        <div class="offer-photo"><img src="../images/menu/<?php echo htmlspecialchars($item['image']); ?>" alt="<?php echo htmlspecialchars($item['name']); ?>"></div>
+        <h3><?php echo htmlspecialchars($item['name']); ?></h3>
+        <div class="offer-price-row">
+          <span class="offer-price-old">RM <?php echo number_format($item['price'], 2); ?></span>
+          <span class="offer-price-new">RM <?php echo number_format($memberPrice, 2); ?></span>
+        </div>
+        <p><?php echo htmlspecialchars(strtok($item['description'], "\r\n")); ?></p>
       </div>
-      <p><?php echo htmlspecialchars(strtok($item['description'], "\r\n")); ?></p>
+
+      <form class="add-offer-form" style="margin-top: 14px;">
+        <input type="hidden" name="item_id" value="<?php echo $item['item_id']; ?>">
+        <input type="hidden" name="custom_price" value="<?php echo $memberPrice; ?>">
+        <button type="submit" class="btn btn-orange btn-full" style="padding: 8px 14px; font-size: 0.85rem; font-weight: 700;">Order Offer (RM <?php echo number_format($memberPrice, 2); ?>) 🛒</button>
+      </form>
     </div>
     <?php endforeach; ?>
   </div>
 
-  <p class="offer-note">Use promo code <strong>COZY10</strong> at checkout to apply your Cozy Rewards discount. Offers refresh monthly — check back often!</p>
+  <p class="offer-note">Member prices automatically applied when ordering from this page! Offers refresh monthly — check back often!</p>
 </section>
 
 <!-- ============ FOOD OFFERS ============ -->
@@ -101,15 +109,23 @@ $memberDiscountRate = 0.15; // 15% member price, shown for browsing
     <?php foreach ($foodOffers as $item):
       $memberPrice = round($item['price'] * (1 - $memberDiscountRate), 2);
     ?>
-    <div class="offer-card">
-      <span class="offer-badge">Member Price</span>
-      <div class="offer-photo"><img src="../images/menu/<?php echo htmlspecialchars($item['image']); ?>" alt="<?php echo htmlspecialchars($item['name']); ?>"></div>
-      <h3><?php echo htmlspecialchars($item['name']); ?></h3>
-      <div class="offer-price-row">
-        <span class="offer-price-old">RM <?php echo number_format($item['price'], 2); ?></span>
-        <span class="offer-price-new">RM <?php echo number_format($memberPrice, 2); ?></span>
+    <div class="offer-card" style="display: flex; flex-direction: column; justify-content: space-between;">
+      <div>
+        <span class="offer-badge">Member Special (15% OFF)</span>
+        <div class="offer-photo"><img src="../images/menu/<?php echo htmlspecialchars($item['image']); ?>" alt="<?php echo htmlspecialchars($item['name']); ?>"></div>
+        <h3><?php echo htmlspecialchars($item['name']); ?></h3>
+        <div class="offer-price-row">
+          <span class="offer-price-old">RM <?php echo number_format($item['price'], 2); ?></span>
+          <span class="offer-price-new">RM <?php echo number_format($memberPrice, 2); ?></span>
+        </div>
+        <p><?php echo htmlspecialchars(strtok($item['description'], "\r\n")); ?></p>
       </div>
-      <p><?php echo htmlspecialchars(strtok($item['description'], "\r\n")); ?></p>
+
+      <form class="add-offer-form" style="margin-top: 14px;">
+        <input type="hidden" name="item_id" value="<?php echo $item['item_id']; ?>">
+        <input type="hidden" name="custom_price" value="<?php echo $memberPrice; ?>">
+        <button type="submit" class="btn btn-orange btn-full" style="padding: 8px 14px; font-size: 0.85rem; font-weight: 700;">Order Offer (RM <?php echo number_format($memberPrice, 2); ?>) 🛒</button>
+      </form>
     </div>
     <?php endforeach; ?>
   </div>
@@ -153,9 +169,30 @@ $memberDiscountRate = 0.15; // 15% member price, shown for browsing
 </section>
 
 <script>
-  document.querySelector('.hamburger').addEventListener('click', () => {
+  document.querySelector('.hamburger')?.addEventListener('click', () => {
     const nav = document.querySelector('.nav-links');
     nav.style.display = nav.style.display === 'flex' ? 'none' : 'flex';
+  });
+
+  document.querySelectorAll('.add-offer-form').forEach(form => {
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      const formData = new FormData(this);
+      formData.append('ajax', '1');
+
+      fetch('../cart/add_to_cart.php', { method: 'POST', body: formData })
+        .then(res => res.json())
+        .then(data => {
+          if (data.status === 'success') {
+            const badge = document.getElementById('globalCartCount') || document.querySelector('.nav-cart-badge');
+            if (badge) {
+              badge.textContent = data.total_quantity || data.cart_count;
+              badge.style.display = 'inline-block';
+            }
+            alert('🎉 Offer item added to cart at special member price!');
+          }
+        });
+    });
   });
 </script>
 

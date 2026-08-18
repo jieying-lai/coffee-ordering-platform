@@ -28,15 +28,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['send_admin_reply'])) 
 
 // Fetch list of users with chat history
 $chatUsers = [];
-$uSql = "SELECT DISTINCT cm.user_id, u.fullname, u.email, 
+$uSql = "SELECT DISTINCT cm.user_id, COALESCE(u.fullname, u.username, CONCAT('Customer #', cm.user_id)) as fullname, COALESCE(u.email, 'Registered User') as email, 
                 (SELECT message FROM chat_messages WHERE user_id = cm.user_id ORDER BY created_at DESC LIMIT 1) as last_msg,
                 (SELECT created_at FROM chat_messages WHERE user_id = cm.user_id ORDER BY created_at DESC LIMIT 1) as last_time
          FROM chat_messages cm
-         JOIN users u ON u.id = cm.user_id
+         LEFT JOIN users u ON u.id = cm.user_id
          ORDER BY last_time DESC";
 $uRes = $conn->query($uSql);
-while ($row = $uRes->fetch_assoc()) {
-    $chatUsers[] = $row;
+if ($uRes) {
+    while ($row = $uRes->fetch_assoc()) {
+        $chatUsers[] = $row;
+    }
 }
 
 if ($selectedUserId === 0 && !empty($chatUsers)) {

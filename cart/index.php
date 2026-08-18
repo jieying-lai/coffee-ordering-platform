@@ -69,7 +69,8 @@ if (!empty($_SESSION['cart']) && is_array($_SESSION['cart'])) {
             $id = $cartData['item_id'];
             if (isset($dbItems[$id])) {
                 $item = $dbItems[$id];
-                $itemTotal = $item['price'] * $cartData['quantity'];
+                $effectivePrice = (isset($cartData['custom_price']) && $cartData['custom_price'] > 0) ? (float)$cartData['custom_price'] : (float)$item['price'];
+                $itemTotal = $effectivePrice * $cartData['quantity'];
                 $subtotal += $itemTotal;
 
                 $imagePath = (preg_match('/^https?:\/\//i', $item['image']))
@@ -80,7 +81,7 @@ if (!empty($_SESSION['cart']) && is_array($_SESSION['cart'])) {
                     'cart_key' => $key,
                     'item_id' => $id,
                     'name' => $item['name'],
-                    'price' => (float)$item['price'],
+                    'price' => $effectivePrice,
                     'image' => $imagePath,
                     'quantity' => (int)$cartData['quantity'],
                     'temperature' => $cartData['temperature'] ?? '',

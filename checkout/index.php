@@ -47,14 +47,15 @@ if (!empty($_SESSION['cart'])) {
             $id = $cartData['item_id'];
             if (isset($dbItems[$id])) {
                 $item = $dbItems[$id];
-                $itemTotal = $item['price'] * $cartData['quantity'];
+                $effectivePrice = (isset($cartData['custom_price']) && $cartData['custom_price'] > 0) ? (float)$cartData['custom_price'] : (float)$item['price'];
+                $itemTotal = $effectivePrice * $cartData['quantity'];
                 $subtotal += $itemTotal;
 
                 $cartItems[] = [
                     'cart_key' => $key,
                     'item_id' => $id,
                     'name' => $item['name'],
-                    'price' => (float)$item['price'],
+                    'price' => $effectivePrice,
                     'quantity' => (int)$cartData['quantity'],
                     'temperature' => $cartData['temperature'] ?? '',
                     'sweetness' => $cartData['sweetness'] ?? '',

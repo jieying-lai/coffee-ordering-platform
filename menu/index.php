@@ -142,13 +142,13 @@ while ($row = $categories->fetch_assoc()) {
           </div>
 
           <!-- QUANTITY & SUBMIT -->
-          <div class="modal-action-row">
+          <div class="modal-action-row" style="margin-top: 18px; margin-bottom: 24px; padding-bottom: 12px;">
             <div class="quantity-control">
               <button type="button" id="qtyMinus">-</button>
               <input type="number" name="quantity" id="itemQty" value="1" min="1" max="99" readonly>
               <button type="button" id="qtyPlus">+</button>
             </div>
-            <button type="submit" class="submit-cart-btn" id="submitCartBtn">Add to Cart</button>
+            <button type="submit" class="submit-cart-btn" id="submitCartBtn" style="padding: 12px 18px; font-size: 0.95rem; font-weight: 700;">Add to Cart ☕</button>
           </div>
         </div>
       </div>

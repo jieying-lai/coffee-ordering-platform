@@ -164,34 +164,17 @@ foreach ($userOrders as $ord) {
   require_once '../includes/header_nav.php'; 
 ?>
 
-<!-- STICKY ACTIVE LIVE ORDER WIDGET (IF ANY ORDER ACTIVE) -->
-<?php if ($activeOrder): 
-  $st = strtolower($activeOrder['status']);
-  $stepPercent = 33;
-  $statusMsg = 'Order Received & Pending Barista Review';
-  if ($st === 'preparing') { $stepPercent = 66; $statusMsg = 'Barista is Handcrafting Your Order ☕'; }
-  if ($st === 'ready') { $stepPercent = 100; $statusMsg = 'Order Ready for Pickup / Table Service! 🎉'; }
-?>
-  <a href="order_detail.php?id=<?php echo $activeOrder['order_id']; ?>" id="stickyLiveOrderBanner" style="text-decoration: none; color: inherit; position: sticky; top: 70px; z-index: 990; background: #ffffff; border: 2px solid var(--color-accent); border-radius: 14px; margin: 16px auto; max-width: 960px; padding: 16px 20px; box-shadow: 0 8px 24px rgba(168,71,47,0.15); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; cursor: pointer;">
-    <div>
-      <div style="display: flex; align-items: center; gap: 8px;">
-        <span style="font-size: 1.3rem;">⚡</span>
-        <span style="font-weight: 800; font-size: 1.1rem; color: var(--color-primary);">Active Live Order #<?php echo $activeOrder['order_id']; ?></span>
-        <span class="tag-chip tag-chip-sweet" style="text-transform: uppercase; font-weight: 800; padding: 4px 10px; background: #fef3c7; color: #92400e; border: 1px solid #fcd34d;"><?php echo htmlspecialchars($activeOrder['status']); ?></span>
-      </div>
-      <div style="font-size: 0.88rem; color: #555; margin-top: 4px;"><?php echo $statusMsg; ?></div>
-    </div>
-
-    <div style="min-width: 220px; flex: 1; max-width: 320px;">
-      <div style="height: 8px; background: #e5dace; border-radius: 999px; overflow: hidden;">
-        <div style="height: 100%; width: <?php echo $stepPercent; ?>%; background: var(--color-accent-dark); transition: width 0.4s ease;"></div>
-      </div>
-    </div>
-  </a>
-<?php endif; ?>
+<!-- SUB NAVIGATION TAB BAR -->
+<div style="background: #ffffff; border-bottom: 1px solid var(--color-border); padding: 12px 5%; box-shadow: 0 2px 8px rgba(0,0,0,0.03);">
+  <div style="max-width: 960px; margin: 0 auto; display: flex; gap: 16px;">
+    <a href="index.php" style="padding: 8px 18px; border-radius: 20px; font-size: 0.9rem; font-weight: 700; background: var(--color-accent-dark); color: #ffffff; text-decoration: none; box-shadow: 0 4px 10px rgba(140,109,88,0.25);">👤 Edit My Profile</a>
+    <a href="orders.php" style="padding: 8px 18px; border-radius: 20px; font-size: 0.9rem; font-weight: 600; color: #666; text-decoration: none;">📦 My Orders &amp; Live Status</a>
+    <a href="../rewards/index.php" style="padding: 8px 18px; border-radius: 20px; font-size: 0.9rem; font-weight: 600; color: #666; text-decoration: none;">⭐ Cozy Rewards</a>
+  </div>
+</div>
 
 <!-- MAIN CONTENT WRAPPER -->
-<main class="container" style="max-width: 960px; margin: 20px auto;">
+<main class="container" style="max-width: 960px; margin: 30px auto; padding: 0 20px;">
   
   <div class="profile-card">
     
@@ -271,76 +254,13 @@ foreach ($userOrders as $ord) {
     </form>
   </div>
 
-  <!-- ORDER HISTORY & LIVE STATUS TRACKER -->
-  <div class="profile-card" style="margin-top: 30px;">
-    <h2>📦 My Orders &amp; Live Status</h2>
-    <p style="color: #666; font-size: 0.95rem; margin-bottom: 20px;">Track your active coffee orders and review past receipts.</p>
+  </div>
 
-    <?php if (empty($userOrders)): ?>
-      <div style="text-align: center; padding: 30px; background: var(--color-bg); border-radius: 12px; border: 1px dashed var(--color-border);">
-        <span style="font-size: 2.5rem;">☕</span>
-        <p style="margin-top: 10px; color: #666;">You haven't placed any coffee orders yet.</p>
-        <a href="../menu/index.php" class="btn btn-orange" style="margin-top: 12px; display: inline-block; font-size: 0.9rem;">Browse Menu &amp; Order</a>
-      </div>
-    <?php else: ?>
-      <div class="user-orders-list">
-        <?php foreach ($userOrders as $ord): 
-          $statusLower = strtolower($ord['status']);
-          $statusColor = '#92400e';
-          $statusBg = '#fef3c7';
-          if ($statusLower === 'preparing') { $statusColor = '#1e40af'; $statusBg = '#dbeafe'; }
-          if ($statusLower === 'ready') { $statusColor = '#3730a3'; $statusBg = '#e0e7ff'; }
-          if ($statusLower === 'completed') { $statusColor = '#065f46'; $statusBg = '#d1fae5'; }
-        ?>
-          <a href="order_detail.php?id=<?php echo $ord['order_id']; ?>"
-             style="text-decoration: none; color: inherit; display: block; border: 1px solid var(--color-border); border-radius: 12px; padding: 18px; margin-bottom: 16px; background: #fff; transition: box-shadow 0.2s ease, transform 0.2s ease; cursor: pointer;"
-             onmouseover="this.style.boxShadow='0 6px 18px rgba(168,71,47,0.15)'; this.style.transform='translateY(-2px)';"
-             onmouseout="this.style.boxShadow='none'; this.style.transform='none';">
-            <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 10px; border-bottom: 1px solid #f0e8dd; padding-bottom: 12px; margin-bottom: 12px;">
-              <div>
-                <span style="font-weight: 700; color: var(--color-primary); font-size: 1.1rem;">Order #<?php echo $ord['order_id']; ?></span>
-                <span style="font-size: 0.85rem; color: #777; margin-left: 10px;">📅 <?php echo date('M d, Y · h:i A', strtotime($ord['order_date'])); ?></span>
-              </div>
-              <span style="padding: 4px 12px; border-radius: 20px; font-weight: 700; font-size: 0.82rem; text-transform: uppercase; background: <?php echo $statusBg; ?>; color: <?php echo $statusColor; ?>;">
-                <?php echo htmlspecialchars($ord['status']); ?>
-              </span>
-            </div>
-
-            <!-- Order Items -->
-            <div style="margin-bottom: 12px;">
-              <?php foreach ($ord['items'] as $it): ?>
-                <div style="display: flex; justify-content: space-between; font-size: 0.92rem; padding: 4px 0;">
-                  <div>
-                    <span><strong><?php echo htmlspecialchars($it['name']); ?></strong> &times; <?php echo $it['quantity']; ?></span>
-                    <?php if (!empty($it['item_options'])): ?>
-                      <div style="margin-top: 3px; display: flex; gap: 4px; flex-wrap: wrap;">
-                        <?php 
-                          $opts = array_map('trim', explode(',', $it['item_options']));
-                          foreach ($opts as $opt):
-                            if (empty($opt)) continue;
-                        ?>
-                          <span class="tag-chip tag-chip-sweet"><?php echo htmlspecialchars($opt); ?></span>
-                        <?php endforeach; ?>
-                      </div>
-                    <?php endif; ?>
-                  </div>
-                  <span style="font-weight: 600;">RM <?php echo number_format($it['price_at_order'] * $it['quantity'], 2); ?></span>
-                </div>
-              <?php endforeach; ?>
-            </div>
-
-            <div style="display: flex; justify-content: space-between; align-items: center; background: var(--color-bg); padding: 10px 14px; border-radius: 8px; font-weight: 700;">
-              <span>Total Paid:</span>
-              <span style="color: var(--color-accent-dark); font-size: 1.1rem;">RM <?php echo number_format($ord['total_amount'], 2); ?></span>
-            </div>
-
-            <div style="text-align: right; margin-top: 10px; font-size: 0.85rem; font-weight: 700; color: var(--color-accent-dark);">
-              View Order Details &rarr;
-            </div>
-          </a>
-        <?php endforeach; ?>
-      </div>
-    <?php endif; ?>
+  <!-- LINK TO MY ORDERS CARD -->
+  <div class="profile-card" style="margin-top: 30px; text-align: center; padding: 24px;">
+    <h3 style="margin-bottom: 6px; color: var(--color-primary);">📦 Looking for Your Orders &amp; Live Status?</h3>
+    <p style="color: #666; font-size: 0.9rem; margin-bottom: 16px;">Track your live barista order progress and review past order receipts on the dedicated Orders page.</p>
+    <a href="orders.php" class="btn btn-orange">View My Orders &amp; Live Status ⚡</a>
   </div>
 
 </main>

@@ -136,22 +136,22 @@ if ($isLoggedIn) {
       <!-- LEFT COLUMN: TOP POINTS CARD & BOTTOM HISTORY LOG -->
       <div style="display: flex; flex-direction: column; gap: 24px;">
         
-        <!-- LEFT TOP: MY COZY POINTS CARD -->
-        <div class="member-card" style="background: linear-gradient(135deg, #4a2c11 0%, #78350f 100%); color: #fff; padding: 26px; border-radius: 20px; box-shadow: 0 10px 25px rgba(74,44,17,0.25);">
-          <div class="card-eyebrow" style="color: #fcd34d; font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase;">COZY REWARDS VIP MEMBER</div>
-          <h2 style="font-size: 1.7rem; margin: 8px 0; font-family: var(--font-heading); color: #fff;"><?php echo htmlspecialchars($member['fullname'] ?? ''); ?></h2>
-          
-          <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-top: 24px; border-top: 1px solid rgba(255,255,255,0.15); padding-top: 16px;">
-            <div>
-              <div style="font-size: 0.78rem; opacity: 0.8;">Member No.</div>
-              <div style="font-family: monospace; font-size: 1.05rem; letter-spacing: 1px; color: #fef3c7;"><?php echo htmlspecialchars($member['rewards_member_no'] ?? ''); ?></div>
-            </div>
-            <div style="text-align: right;">
-              <div style="font-size: 2.3rem; font-weight: 800; color: #fcd34d; line-height: 1;"><?php echo (int) $member['rewards_points']; ?></div>
-              <div style="font-size: 0.82rem; margin-top: 4px;">Cozy Points ⭐</div>
+          <!-- LEFT TOP: MY COZY POINTS CARD -->
+          <div class="member-card" style="background: linear-gradient(135deg, #4a2c11 0%, #78350f 100%); color: #fff; padding: 26px; border-radius: 20px; box-shadow: 0 10px 25px rgba(74,44,17,0.25);">
+            <div class="card-eyebrow" style="color: #fcd34d; font-size: 0.8rem; letter-spacing: 2px; text-transform: uppercase;">COZY REWARDS VIP MEMBER</div>
+            <h2 style="font-size: 1.7rem; margin: 8px 0; font-family: var(--font-heading); color: #fff;"><?php echo htmlspecialchars($member['fullname'] ?? 'Cozy Member'); ?></h2>
+            
+            <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-top: 24px; border-top: 1px solid rgba(255,255,255,0.15); padding-top: 16px;">
+              <div>
+                <div style="font-size: 0.78rem; opacity: 0.8;">Member No.</div>
+                <div style="font-family: monospace; font-size: 1.05rem; letter-spacing: 1px; color: #fef3c7;"><?php echo htmlspecialchars(!empty($member['rewards_member_no']) ? $member['rewards_member_no'] : 'CZ-PENDING'); ?></div>
+              </div>
+              <div style="text-align: right;">
+                <div style="font-size: 2.3rem; font-weight: 800; color: #fcd34d; line-height: 1;"><?php echo (int)($member['rewards_points'] ?? 0); ?></div>
+                <div style="font-size: 0.82rem; margin-top: 4px;">Cozy Points ⭐</div>
+              </div>
             </div>
           </div>
-        </div>
 
         <!-- LEFT BOTTOM: POINTS HISTORY LOG -->
         <div style="background: #ffffff; border: 1px solid var(--color-border); border-radius: 16px; padding: 22px; box-shadow: 0 4px 14px rgba(0,0,0,0.03);">

@@ -180,12 +180,70 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['form_type'] ?? '') === 'ed
     $editId = (int)($_POST['edit_post_id'] ?? 0);
     $editDesc = trim($_POST['edit_description'] ?? '');
     $editItem = trim($_POST['edit_ordered_item'] ?? '');
+    $editMoodSelects = $_POST['edit_mood_select'] ?? [];
+    if (!is_array($editMoodSelects)) {
+        $editMoodSelects = [$editMoodSelects];
+    }
+    $editMoodCustom = trim($_POST['edit_mood_custom'] ?? '');
+
+    $selectedMoods = [];
+    foreach ($editMoodSelects as $mVal) {
+        if ($mVal === 'other') {
+            if (!empty($editMoodCustom)) {
+                $selectedMoods[] = $editMoodCustom;
+            }
+        } else {
+            $selectedMoods[] = $mVal;
+        }
+    }
+    $editMood = implode(', ', $selectedMoods);
 
     if ($isLoggedIn && $editId > 0) {
-        $uStmt = $conn->prepare("UPDATE blog_posts SET ordered_item = ?, description = ? WHERE id = ? AND user_id = ?");
-        $uStmt->bind_param("ssii", $editItem, $editDesc, $editId, $currentUserId);
+        $uStmt = $conn->prepare("UPDATE blog_posts SET ordered_item = ?, mood = CASE WHEN ? != '' THEN ? ELSE mood END, description = ? WHERE id = ? AND user_id = ?");
+        $uStmt->bind_param("ssssii", $editItem, $editMood, $editMood, $editDesc, $editId, $currentUserId);
         $uStmt->execute();
         $uStmt->close();
+
+        // Handle Optional Photo Replacement during Edit
+        if (!empty($_FILES['edit_photos']['name'][0])) {
+            $allowedExt = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+            $uploadDir = '../uploads/blog/';
+            if (!is_dir($uploadDir)) {
+                mkdir($uploadDir, 0755, true);
+            }
+
+            $totalFiles = count($_FILES['edit_photos']['name']);
+            $newPaths = [];
+            for ($i = 0; $i < min($totalFiles, 5); $i++) {
+                if ($_FILES['edit_photos']['error'][$i] === UPLOAD_ERR_OK) {
+                    $ext = strtolower(pathinfo($_FILES['edit_photos']['name'][$i], PATHINFO_EXTENSION));
+                    if (in_array($ext, $allowedExt, true)) {
+                        $filename = 'blog_edit_' . $currentUserId . '_' . time() . '_' . $i . '.' . $ext;
+                        $targetFile = $uploadDir . $filename;
+                        if (move_uploaded_file($_FILES['edit_photos']['tmp_name'][$i], $targetFile)) {
+                            $newPaths[] = 'uploads/blog/' . $filename;
+                        }
+                    }
+                }
+            }
+
+            if (!empty($newPaths)) {
+                // Delete old photos
+                $delP = $conn->prepare("DELETE FROM blog_photos WHERE post_id = ?");
+                $delP->bind_param("i", $editId);
+                $delP->execute();
+                $delP->close();
+
+                // Insert new photos
+                $insP = $conn->prepare("INSERT INTO blog_photos (post_id, image_path) VALUES (?, ?)");
+                foreach ($newPaths as $np) {
+                    $insP->bind_param("is", $editId, $np);
+                    $insP->execute();
+                }
+                $insP->close();
+            }
+        }
+
         header('Location: index.php');
         exit;
     }
@@ -524,6 +582,13 @@ $feedResult = $feedStmt->get_result();
     <?php else: ?>
         <p style="color: #666;">No check-ins yet. Be the first to post a memory!</p>
     <?php endif; ?>
+
+    <!-- EMPTY MY MEMORIES TAB MESSAGE -->
+    <div id="emptyMyMemoriesMsg" style="display: none; text-align: center; padding: 40px 20px; background: #ffffff; border-radius: 14px; border: 1px dashed var(--color-border); margin-top: 10px;">
+        <div style="font-size: 2.5rem; margin-bottom: 8px;">✨</div>
+        <h3 style="color: var(--color-primary); margin-bottom: 6px;">You haven't posted any coffee memories yet</h3>
+        <p style="color: #666; font-size: 0.9rem;">Share your first coffee moment, rating, or photo using the form on the left!</p>
+    </div>
 </div>
 
     </div>
@@ -540,24 +605,54 @@ $feedResult = $feedStmt->get_result();
 
 <!-- EDIT POST MODAL -->
 <div id="editPostModal" class="modal-overlay">
-  <div class="modal-content" style="max-width: 480px; padding: 25px;">
+  <div class="modal-content" style="max-width: 520px; padding: 25px; max-height: 88vh; overflow-y: auto;">
     <button class="modal-close" onclick="document.getElementById('editPostModal').style.display='none'">&times;</button>
     <h3 style="color: var(--color-primary); margin-bottom: 15px;">✏️ Edit Coffee Moment</h3>
-    <form action="" method="POST">
+    <form action="" method="POST" enctype="multipart/form-data">
       <input type="hidden" name="form_type" value="edit_post">
       <input type="hidden" name="edit_post_id" id="editPostId">
       
-      <div class="form-group" style="margin-bottom: 12px;">
-        <label style="font-size:0.9rem; color:#444;">Ordered Item Name</label>
-        <input type="text" name="edit_ordered_item" id="editOrderedItem" class="search-input" style="width:100%; border-radius:8px; padding:8px 12px;" required>
+      <!-- History / Ordered Item Selection -->
+      <div class="form-group" style="margin-bottom: 14px;">
+        <label style="font-size:0.9rem; font-weight:700; color:#444; display:block; margin-bottom:6px;">Select What You Ordered</label>
+        <?php if (!empty($userPurchases)): ?>
+          <select id="editOrderedItemSelect" name="edit_ordered_item" style="width:100%; border-radius:8px; padding:10px; border:1px solid #d0c4b8;">
+            <option value="">-- Select from menu --</option>
+            <?php foreach ($userPurchases as $item): ?>
+              <option value="<?php echo htmlspecialchars($item); ?>"><?php echo htmlspecialchars($item); ?></option>
+            <?php endforeach; ?>
+          </select>
+        <?php else: ?>
+          <input type="text" name="edit_ordered_item" id="editOrderedItem" class="search-input" style="width:100%; border-radius:8px; padding:8px 12px;" placeholder="e.g. Dirty Latte">
+        <?php endif; ?>
       </div>
 
+      <!-- Mood Selection -->
+      <div class="form-group" style="margin-bottom: 14px;">
+        <label style="font-size:0.9rem; font-weight:700; color:#444; display:block; margin-bottom:6px;">Update Feeling / Mood:</label>
+        <div class="mood-checkbox-group">
+          <?php foreach ($presetMoods as $key => $label): ?>
+            <label class="mood-chip">
+              <input type="checkbox" name="edit_mood_select[]" value="<?php echo htmlspecialchars($key); ?>">
+              <span class="chip-label"><?php echo htmlspecialchars($label); ?></span>
+            </label>
+          <?php endforeach; ?>
+        </div>
+      </div>
+
+      <!-- Description -->
       <div class="form-group" style="margin-bottom: 16px;">
-        <label style="font-size:0.9rem; color:#444;">Thoughts / Experience</label>
-        <textarea name="edit_description" id="editDescription" rows="4" style="width:100%; border-radius:8px; padding:8px 12px; border: 1px solid var(--color-border);" required></textarea>
+        <label style="font-size:0.9rem; font-weight:700; color:#444; display:block; margin-bottom:6px;">Thoughts / Experience</label>
+        <textarea name="edit_description" id="editDescription" rows="4" style="width:100%; border-radius:8px; padding:10px; border: 1px solid var(--color-border);" required></textarea>
       </div>
 
-      <button type="submit" class="btn btn-orange btn-full">Save Changes</button>
+      <!-- Replace / Update Photos -->
+      <div class="form-group" style="margin-bottom: 16px;">
+        <label style="font-size:0.9rem; font-weight:700; color:#444; display:block; margin-bottom:6px;">Replace Photos (Optional, max 5)</label>
+        <input type="file" name="edit_photos[]" accept="image/*" multiple style="font-size:0.85rem;">
+      </div>
+
+      <button type="submit" class="btn btn-orange btn-full" style="font-weight:700;">Save Changes ☕</button>
     </form>
   </div>
 </div>
@@ -654,18 +749,26 @@ document.querySelectorAll('.feed-filter-btn').forEach(btn => {
         const filter = this.dataset.filter;
         const currentUserId = this.dataset.user;
         const posts = document.querySelectorAll('.post-card');
+        let visibleCount = 0;
 
         posts.forEach(post => {
             if (filter === 'all') {
                 post.style.display = 'block';
+                visibleCount++;
             } else if (filter === 'my') {
                 if (post.dataset.userId === currentUserId) {
                     post.style.display = 'block';
+                    visibleCount++;
                 } else {
                     post.style.display = 'none';
                 }
             }
         });
+
+        const emptyMsg = document.getElementById('emptyMyMemoriesMsg');
+        if (emptyMsg) {
+            emptyMsg.style.display = (visibleCount === 0) ? 'block' : 'none';
+        }
     });
 });
 

@@ -8,13 +8,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $sweetness = isset($_POST['sweetness']) ? trim($_POST['sweetness']) : '';
     $remarks = isset($_POST['remarks']) ? trim($_POST['remarks']) : '';
 
+    $customPrice = isset($_POST['custom_price']) ? (float)$_POST['custom_price'] : null;
+
     if ($itemId > 0 && $quantity > 0) {
         if (!isset($_SESSION['cart'])) {
             $_SESSION['cart'] = [];
         }
 
         // Create a unique key based on item ID and custom selections
-        $cartKey = md5($itemId . '|' . $temperature . '|' . $sweetness . '|' . $remarks);
+        $cartKey = md5($itemId . '|' . $temperature . '|' . $sweetness . '|' . $remarks . '|' . $customPrice);
 
         if (isset($_SESSION['cart'][$cartKey])) {
             $_SESSION['cart'][$cartKey]['quantity'] += $quantity;
@@ -24,7 +26,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'quantity' => $quantity,
                 'temperature' => $temperature,
                 'sweetness' => $sweetness,
-                'remarks' => $remarks
+                'remarks' => $remarks,
+                'custom_price' => $customPrice
             ];
         }
     }
