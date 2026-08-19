@@ -30,34 +30,7 @@ $about = $conn->query('SELECT * FROM about_us WHERE id = 1')->fetch_assoc();
 </head>
 <body class="admin-page">
 
-<nav class="admin-nav-bar" style="background: var(--color-primary, #3C2A21); color: #fff; padding: 14px 5%; position: sticky; top: 0; z-index: 9999; box-shadow: 0 4px 14px rgba(0,0,0,0.15);">
-  <div style="max-width: 1400px; margin: 0 auto; width: 100%; display: flex; justify-content: space-between; align-items: center;">
-    
-    <div style="font-weight: 800; font-size: 1.15rem; color: #fff;">
-      <a href="dashboard.php" style="color: #fff; text-decoration: none; display: flex; align-items: center; gap: 8px;">
-        <span>☕</span> Cozy Barista Admin Portal
-      </a>
-    </div>
-
-    <button class="admin-hamburger" id="adminNavToggle" aria-label="Toggle Admin Menu" style="display: none; flex-direction: column; justify-content: space-between; width: 28px; height: 20px; background: transparent; border: none; cursor: pointer; padding: 0;">
-      <span style="display: block; height: 3px; width: 100%; background: #ffffff; border-radius: 3px;"></span>
-      <span style="display: block; height: 3px; width: 100%; background: #ffffff; border-radius: 3px;"></span>
-      <span style="display: block; height: 3px; width: 100%; background: #ffffff; border-radius: 3px;"></span>
-    </button>
-
-    <div class="admin-nav-links" id="adminNavMenu">
-      <a href="dashboard.php">📋 Dashboard</a>
-      <a href="manage_orders.php">📦 Orders</a>
-      <a href="manage_chat.php">💬 Customer Chat</a>
-      <a href="manage_menu.php">☕ Menu</a>
-      <a href="manage_users.php">👤 Users</a>
-      <a href="manage_blog.php">📸 Blog</a>
-      <a href="manage_contact.php" class="admin-nav-active">📍 Contact/About</a>
-      <a href="logout.php" style="color: #f87171 !important; text-decoration: none; padding: 6px 12px; border-radius: 6px; background: rgba(239, 68, 68, 0.15);">Logout</a>
-    </div>
-
-  </div>
-</nav>
+<?php $adminActivePage = 'contact'; require_once '../includes/admin_header_nav.php'; ?>
 
 <script>
   document.getElementById('adminNavToggle')?.addEventListener('click', function() {
@@ -97,6 +70,8 @@ $about = $conn->query('SELECT * FROM about_us WHERE id = 1')->fetch_assoc();
   </form>
 
 </div>
+
+<?php require_once '../includes/admin_footer.php'; ?>
 
 </body>
 </html>

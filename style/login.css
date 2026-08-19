@@ -17,9 +17,7 @@ body.login-page {
   color: var(--color-text);
   font-family: var(--font-body);
   min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: block;
 }
 
 /* Main 2-Column Grid Wrapper */
@@ -111,59 +109,64 @@ body.login-page {
 }
 
 /* Form Inputs */
-.login-page .input-group {
-  position: relative;
+.input-group, .password-group {
+  position: relative !important;
   margin-bottom: 18px;
 }
 
-.login-page .input-group label {
+.input-group label {
   position: absolute;
   top: 50%;
   left: 16px;
   transform: translateY(-50%);
   font-size: 15px;
-  color: var(--color-text-soft);
+  color: var(--color-text-soft, #665447);
   pointer-events: none;
   transition: opacity 0.2s ease;
 }
 
-.login-page .input-group input {
+.input-group input {
   width: 100%;
   height: 48px;
   padding: 12px 16px;
-  border: 1.5px solid var(--input-border);
+  border: 1.5px solid var(--input-border, #E8E0D5);
   border-radius: 8px;
-  background-color: var(--input-bg);
+  background-color: var(--input-bg, #FFFFFF);
   font-size: 15px;
   outline: none;
-  color: var(--color-text);
+  color: var(--color-text, #2C1C14);
+  box-sizing: border-box;
   transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
-.login-page .input-group input:focus {
-  border-color: var(--color-accent);
+.password-group input, input[type="password"] {
+  padding-right: 48px !important;
+}
+
+.input-group input:focus {
+  border-color: var(--color-accent, #C85A3E);
   box-shadow: 0 0 0 3px rgba(200, 90, 62, 0.15);
 }
 
-.login-page .input-group input:focus + label,
-.login-page .input-group input:not(:placeholder-shown) + label {
+.input-group input:focus + label,
+.input-group input:not(:placeholder-shown) + label {
   opacity: 0;
   visibility: hidden;
 }
 
 /* Password Toggle Icon */
-.login-page .show-password, .show-password {
-  position: absolute;
-  top: 50%;
-  right: 14px;
-  transform: translateY(-50%);
-  border: none;
-  background: transparent;
+.show-password {
+  position: absolute !important;
+  top: 50% !important;
+  right: 12px !important;
+  transform: translateY(-50%) !important;
+  border: none !important;
+  background: transparent !important;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.25rem;
+  font-size: 1.2rem;
   line-height: 1;
   padding: 4px;
   color: #7A695D;
@@ -172,7 +175,7 @@ body.login-page {
 }
 
 .show-password:hover {
-  transform: translateY(-50%) scale(1.18);
+  transform: translateY(-50%) scale(1.18) !important;
   color: #C85A3E;
 }
 

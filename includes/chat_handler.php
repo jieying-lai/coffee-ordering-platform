@@ -17,12 +17,24 @@ if ($action === 'fetch_messages') {
     $stmt->execute();
     $res = $stmt->get_result();
     $messages = [];
+    $today = date('Y-m-d');
+    $yesterday = date('Y-m-d', strtotime('-1 day'));
+
     while ($row = $res->fetch_assoc()) {
+        $msgDate = date('Y-m-d', strtotime($row['created_at']));
+        $dateDisplay = date('M d, Y', strtotime($row['created_at']));
+        if ($msgDate === $today) {
+            $dateDisplay = 'Today';
+        } else if ($msgDate === $yesterday) {
+            $dateDisplay = 'Yesterday';
+        }
+
         $messages[] = [
             'id' => $row['id'],
             'sender' => $row['sender_type'],
             'text' => htmlspecialchars($row['message']),
-            'time' => date('h:i A', strtotime($row['created_at']))
+            'time' => date('h:i A', strtotime($row['created_at'])),
+            'date_display' => $dateDisplay
         ];
     }
     $stmt->close();
@@ -40,6 +52,25 @@ if ($action === 'send_message') {
 
     $stmt = $conn->prepare("INSERT INTO chat_messages (user_id, sender_type, message) VALUES (?, 'user', ?)");
     $stmt->bind_param("is", $userId, $msg);
+    if ($stmt->execute()) {
+        $newId = $stmt->insert_id;
+        $stmt->close();
+        echo json_encode(['status' => 'success', 'msg_id' => $newId]);
+    } else {
+        echo json_encode(['status' => 'error', 'message' => $conn->error]);
+    }
+    exit;
+}
+
+if ($action === 'delete_message') {
+    $msgId = (int)($_POST['msg_id'] ?? 0);
+    if ($msgId <= 0) {
+        echo json_encode(['status' => 'error', 'message' => 'Invalid message ID.']);
+        exit;
+    }
+
+    $stmt = $conn->prepare("DELETE FROM chat_messages WHERE id = ? AND user_id = ? AND sender_type = 'user'");
+    $stmt->bind_param("ii", $msgId, $userId);
     if ($stmt->execute()) {
         $stmt->close();
         echo json_encode(['status' => 'success']);

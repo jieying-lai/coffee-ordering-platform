@@ -8,36 +8,57 @@
   <title>Cozy Coffee Co. — Create Account</title>
   <style>
     /* Premium Light Theme Layout */
+    .input-group, .password-group {
+      position: relative !important;
+    }
+    .password-group input, input[type="password"] {
+      padding-right: 48px !important;
+    }
+    .show-password {
+      position: absolute !important;
+      top: 50% !important;
+      right: 12px !important;
+      transform: translateY(-50%) !important;
+      background: transparent !important;
+      border: none !important;
+      cursor: pointer !important;
+      font-size: 1.2rem !important;
+      padding: 4px !important;
+      color: #7A695D !important;
+      z-index: 10 !important;
+    }
+
     body.cust-login-body {
-      margin: 0;
-      padding: 0;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: linear-gradient(135deg, #FAF6F0 0%, #F5EDE2 50%, #FAF6F0 100%);
+      margin: 0 !important;
+      padding: 0 !important;
+      min-height: 100vh !important;
+      display: flex !important;
+      flex-direction: column !important;
+      justify-content: space-between !important;
+      align-items: stretch !important;
+      background: linear-gradient(135deg, #FAF6F0 0%, #F5EDE2 50%, #FAF6F0 100%) !important;
       font-family: var(--font-body, 'Plus Jakarta Sans', sans-serif);
       color: #3C2A21;
     }
 
     .cust-auth-card {
       width: 92%;
-      max-width: 980px;
-      margin: 40px auto;
+      max-width: 900px;
+      margin: 24px auto;
       display: flex;
-      border-radius: 24px;
+      border-radius: 22px;
       overflow: hidden;
-      box-shadow: 0 20px 60px rgba(60, 42, 33, 0.12);
+      box-shadow: 0 16px 48px rgba(60, 42, 33, 0.12);
       border: 1px solid #EFE6DC;
       background: #FFFFFF;
-      min-height: 600px;
+      min-height: 480px;
     }
 
     /* Left Light Hero Panel */
     .cust-auth-hero {
       flex: 1.1;
       background: linear-gradient(145deg, #F7EFE5 0%, #EFE3D3 100%);
-      padding: 44px 40px;
+      padding: 32px 36px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
@@ -49,7 +70,7 @@
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      padding: 6px 14px;
+      padding: 5px 14px;
       background: rgba(200, 90, 62, 0.12);
       border: 1px solid rgba(200, 90, 62, 0.25);
       color: #C85A3E;
@@ -63,27 +84,27 @@
 
     .hero-title-light {
       font-family: var(--font-heading, serif);
-      font-size: 2.2rem;
+      font-size: 1.85rem;
       font-weight: 800;
       line-height: 1.25;
       color: #3C2A21;
-      margin: 16px 0 12px;
+      margin: 12px 0 10px;
     }
 
     .hero-desc-light {
-      font-size: 0.92rem;
+      font-size: 0.88rem;
       color: #665447;
-      line-height: 1.6;
-      margin-bottom: 24px;
+      line-height: 1.55;
+      margin-bottom: 16px;
     }
 
     .hero-img-box {
       width: 100%;
-      height: 170px;
-      border-radius: 16px;
+      height: 140px;
+      border-radius: 14px;
       overflow: hidden;
-      box-shadow: 0 8px 24px rgba(60, 42, 33, 0.12);
-      margin-bottom: 20px;
+      box-shadow: 0 6px 20px rgba(60, 42, 33, 0.1);
+      margin-bottom: 16px;
     }
 
     .hero-img-box img {
@@ -98,14 +119,14 @@
       margin: 0;
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 8px;
     }
 
     .hero-features-light li {
       display: flex;
       align-items: center;
       gap: 10px;
-      font-size: 0.88rem;
+      font-size: 0.85rem;
       color: #4A3B32;
       font-weight: 600;
     }
@@ -114,23 +135,23 @@
     .cust-auth-form-wrap {
       flex: 1.1;
       background: #FFFFFF;
-      padding: 44px 40px;
+      padding: 32px 36px;
       display: flex;
       flex-direction: column;
       justify-content: center;
     }
 
     .form-header-light h2 {
-      font-size: 1.8rem;
+      font-size: 1.65rem;
       font-weight: 800;
       color: #3C2A21;
-      margin: 0 0 6px;
+      margin: 0 0 4px;
     }
 
     .form-header-light p {
-      font-size: 0.88rem;
+      font-size: 0.86rem;
       color: #7A695D;
-      margin: 0 0 24px;
+      margin: 0 0 16px;
     }
 
     /* Chrome Autofill Repair */
@@ -218,13 +239,13 @@
 
 <body class="cust-login-body">
 
-  <div class="cust-auth-card">
+  <div style="flex: 1; display: flex; align-items: center; justify-content: center; width: 100%; padding: 40px 0;">
+    <div class="cust-auth-card">
     
     <!-- LEFT HERO PANEL (LIGHT LATTE THEME) -->
     <div class="cust-auth-hero">
       <div>
-        <a href="../home/index.php" class="back-home-link">← Back to Store Home</a>
-        <span class="hero-badge-light">🎁 Join Cozy Coffee Rewards</span>
+        <a href="../login/index.php" class="back-home-link">← Back to Login page</a>
         <h1 class="hero-title-light">Create Your Account</h1>
         <p class="hero-desc-light">Create a free account to collect points on every coffee order, redeem promotional coupons, and save your custom drink preferences!</p>
 
@@ -239,8 +260,8 @@
         </ul>
       </div>
 
-      <div style="margin-top: 24px; font-size: 0.82rem; color: #8A7769;">
-        Already registered? <a href="../login/index.php" style="color: #C85A3E; font-weight: 700;">Sign in here →</a>
+      <div style="margin-top: 10px; font-size: 0.78rem; color: #8A7769;">
+        <a href="../home/index.php" style="color: #C85A3E; font-weight: 700; text-decoration: underline;">Back to Home page</a>
       </div>
     </div>
 
@@ -343,10 +364,10 @@
         </div>
         <div id="passwordError" style="font-size: 0.78rem; margin-top: -10px; margin-bottom: 10px; display: none;"></div>
 
-        <div style="margin: 14px 0; font-size: 0.85rem; color: #555;">
-          <label style="display: flex; align-items: flex-start; gap: 8px; cursor: pointer;">
-            <input type="checkbox" id="termsCheck" required style="margin-top: 3px; accent-color: #C85A3E;">
-            <span>I agree to the <a href="#" style="color: #C85A3E; font-weight:700;">Terms of Service</a> and consent to personal data processing for Cozy Rewards.</span>
+        <div style="margin: 10px 0; font-size: 0.78rem; color: #555;">
+          <label style="display: flex; align-items: flex-start; gap: 6px; cursor: pointer;">
+            <input type="checkbox" id="termsCheck" required style="margin-top: 2px; accent-color: #C85A3E;">
+            <span>I agree to the <span class="footer-policy-link" style="color: #C85A3E; font-weight:700; text-decoration: underline; cursor: pointer;" onclick="openFooterPolicyModal('terms')">Terms of Service</span> and consent to personal data processing for Cozy Rewards.</span>
           </label>
         </div>
 
@@ -354,34 +375,31 @@
           Create Account
         </button>
 
-        <div style="text-align: center; margin-top: 20px; font-size: 0.9rem; color: #666;">
-          Already have an account? 
-          <a href="../login/index.php" style="color: #C85A3E; font-weight: 800; text-decoration: none;">Sign In Here →</a>
+        <div style="text-align: center; margin-top: 12px; font-size: 0.85rem; color: #666;">
+          <div>Already have an account?</div>
+          <a href="../login/index.php" style="color: #C85A3E; font-weight: 800; text-decoration: underline; margin-top: 4px; display: inline-block;">Sign In Here</a>
         </div>
 
       </form>
     </div>
-
   </div>
+</div>
 
   <script>
-    function setupPasswordHoverView(buttonId, inputId) {
-      const btn = document.getElementById(buttonId);
+    // Password Visibility Toggle Utility
+    function setupPasswordToggle(btnId, inputId) {
+      const btn = document.getElementById(btnId);
       const input = document.getElementById(inputId);
       if (!btn || !input) return;
 
-      // Hover to view password
       btn.addEventListener("mouseenter", function () {
         input.type = "text";
         btn.textContent = "🔓";
       });
-
       btn.addEventListener("mouseleave", function () {
         input.type = "password";
         btn.textContent = "🔒";
       });
-
-      // Click to toggle
       btn.addEventListener("click", function (e) {
         e.preventDefault();
         if (input.type === "password") {
@@ -393,74 +411,92 @@
         }
       });
     }
-    
-    setupPasswordHoverView("showPassword", "password");
-    setupPasswordHoverView("showConfirmPassword", "confirm_password");
 
-    const emailInput = document.getElementById("email");
-    const usernameInput = document.getElementById("username");
-    const passwordInput = document.getElementById("password");
-    const confirmInput = document.getElementById("confirm_password");
-    const emailHint = document.getElementById("regEmailHint");
-    const userHint = document.getElementById("regUserHint");
-    const passHint = document.getElementById("regPassHint");
-    const passError = document.getElementById("passwordError");
+    setupPasswordToggle("showPassword", "password");
+    setupPasswordToggle("showConfirmPassword", "confirm_password");
 
-    emailInput?.addEventListener("input", function() {
+    // Real-Time User Typing Input Validations
+    const regEmailInput = document.getElementById("email");
+    const regUserInput = document.getElementById("username");
+    const regPassInput = document.getElementById("password");
+    const regConfirmInput = document.getElementById("confirm_password");
+
+    const regEmailHint = document.getElementById("regEmailHint");
+    const regUserHint = document.getElementById("regUserHint");
+    const regPassHint = document.getElementById("regPassHint");
+    const regPassError = document.getElementById("passwordError");
+
+    // 1. Real-Time Email Validation
+    regEmailInput?.addEventListener("input", function() {
       const val = this.value.trim();
-      emailHint.style.display = "block";
+      if (!regEmailHint) return;
+      regEmailHint.style.display = "block";
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (val.length === 0) {
-        emailHint.style.display = "none";
+        regEmailHint.style.display = "none";
       } else if (!emailRegex.test(val)) {
-        emailHint.style.color = "#dc2626";
-        emailHint.textContent = "✖ Please enter a valid email address (e.g. name@domain.com)";
+        regEmailHint.style.color = "#dc2626";
+        regEmailHint.textContent = "✖ Please enter a valid email (e.g. name@domain.com)";
       } else {
-        emailHint.style.color = "#059669";
-        emailHint.textContent = "✓ Valid email format";
+        regEmailHint.style.color = "#059669";
+        regEmailHint.textContent = "✓ Valid email format";
       }
     });
 
-    usernameInput?.addEventListener("input", function() {
+    // 2. Real-Time Username Validation
+    regUserInput?.addEventListener("input", function() {
       const val = this.value.trim();
-      userHint.style.display = "block";
+      if (!regUserHint) return;
+      regUserHint.style.display = "block";
       if (val.length === 0) {
-        userHint.style.display = "none";
+        regUserHint.style.display = "none";
       } else if (val.length < 3) {
-        userHint.style.color = "#dc2626";
-        userHint.textContent = "✖ Username must be at least 3 characters";
+        regUserHint.style.color = "#dc2626";
+        regUserHint.textContent = "✖ Username must be at least 3 characters";
       } else {
-        userHint.style.color = "#059669";
-        userHint.textContent = "✓ Username available";
+        regUserHint.style.color = "#059669";
+        regUserHint.textContent = "✓ Valid username length";
       }
     });
 
-    passwordInput?.addEventListener("input", function() {
+    // 3. Real-Time Password Min-Length Validation
+    regPassInput?.addEventListener("input", function() {
       const val = this.value;
-      passHint.style.display = "block";
+      if (!regPassHint) return;
+      regPassHint.style.display = "block";
       if (val.length === 0) {
-        passHint.style.display = "none";
+        regPassHint.style.display = "none";
       } else if (val.length < 8) {
-        passHint.style.color = "#dc2626";
-        passHint.textContent = "✖ Password must be at least 8 characters";
+        regPassHint.style.color = "#dc2626";
+        regPassHint.textContent = "✖ Password must be at least 8 characters";
       } else {
-        passHint.style.color = "#059669";
-        passHint.textContent = "✓ Strong password length";
+        regPassHint.style.color = "#059669";
+        regPassHint.textContent = "✓ Strong password length";
+      }
+
+      // Re-trigger confirm match check if confirm input already has value
+      if (regConfirmInput && regConfirmInput.value.length > 0) {
+        regConfirmInput.dispatchEvent(new Event('input'));
       }
     });
 
-    confirmInput?.addEventListener("input", function() {
-      passError.style.display = "block";
-      if (this.value === 0 || this.value === "") {
-        passError.style.display = "none";
-      } else if (this.value !== passwordInput.value) {
-        passError.style.color = "#dc2626";
-        passError.textContent = "✖ Passwords do not match";
+    // 4. Real-Time Confirm Password Match Validation
+    regConfirmInput?.addEventListener("input", function() {
+      const val = this.value;
+      if (!regPassError) return;
+      regPassError.style.display = "block";
+      if (val.length === 0) {
+        regPassError.style.display = "none";
+      } else if (val !== regPassInput.value) {
+        regPassError.style.color = "#dc2626";
+        regPassError.textContent = "✖ Passwords do not match";
       } else {
-        passError.style.color = "#059669";
-        passError.textContent = "✓ Passwords match!";
+        regPassError.style.color = "#059669";
+        regPassError.textContent = "✓ Passwords match!";
       }
     });
   </script>
+<?php require_once '../includes/footer.php'; ?>
+
 </body>
 </html>

@@ -1,100 +1,111 @@
 <?php
 session_start();
-require_once "../db.php";
+require_once '../includes/db_connect.php';
 
-// Protect page: Redirect to login if user is not logged in
+// Redirect if not logged in
 if (!isset($_SESSION['user_id'])) {
-    header("Location: ../login/index.php");
-    exit();
+    header('Location: ../login/index.php');
+    exit;
 }
 
-$user_id = $_SESSION['user_id'];
-$message = "";
-$message_type = "";
+$userId = $_SESSION['user_id'];
+$message = '';
+$message_type = '';
 
-// ----------------------------------------------------
-// 1. HANDLE PROFILE DETAILS & PICTURE UPDATE
-// ----------------------------------------------------
-if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['update_profile'])) {
-    $fullname = trim($_POST['fullname']);
-    $email    = filter_var(trim($_POST['email']), FILTER_SANITIZE_EMAIL);
-    $birthday = !empty($_POST['birthday']) ? $_POST['birthday'] : NULL;
-    $gender   = !empty($_POST['gender']) ? $_POST['gender'] : NULL;
+// Fetch user details
+$stmt = $conn->prepare("SELECT * FROM users WHERE id = ?");
+$stmt->bind_param("i", $userId);
+$stmt->execute();
+$user = $stmt->get_result()->fetch_assoc();
+$stmt->close();
 
-    // Check if new profile photo is uploaded
-    $profile_pic_name = NULL;
+// Handle profile update
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_profile'])) {
+    $fullname = trim($_POST['fullname'] ?? '');
+    $email = trim($_POST['email'] ?? '');
+    $phone = trim($_POST['phone'] ?? '');
+    $birthday = trim($_POST['birthday'] ?? '');
+    $gender = trim($_POST['gender'] ?? '');
+    
+    // Avatar upload handling
+    $avatarPath = $user['profile_pic'] ?? '';
     if (isset($_FILES['profile_pic']) && $_FILES['profile_pic']['error'] === UPLOAD_ERR_OK) {
-        $file_tmp   = $_FILES['profile_pic']['tmp_name'];
-        $file_name  = $_FILES['profile_pic']['name'];
-        $file_ext   = strtolower(pathinfo($file_name, PATHINFO_EXTENSION));
-        $allowed    = ['jpg', 'jpeg', 'png', 'webp'];
+        $fileTmpPath = $_FILES['profile_pic']['tmp_name'];
+        $fileName = $_FILES['profile_pic']['name'];
+        $fileExtension = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
 
-        if (in_array($file_ext, $allowed)) {
-            // Give file a unique name: e.g. user_1_1690000000.jpg
-            $new_filename = "user_" . $user_id . "_" . time() . "." . $file_ext;
-            $upload_dir   = "../images/profiles/";
+        $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+        if (in_array($fileExtension, $allowedExtensions)) {
+            $newFileName = 'user_' . $userId . '_' . time() . '.' . $fileExtension;
+            $uploadFileDir = '../images/profiles/';
 
-            if (!is_dir($upload_dir)) {
-                mkdir($upload_dir, 0777, true);
+            if (!is_dir($uploadFileDir)) {
+                mkdir($uploadFileDir, 0755, true);
             }
 
-            if (move_uploaded_file($file_tmp, $upload_dir . $new_filename)) {
-                $profile_pic_name = $new_filename;
+            $dest_path = $uploadFileDir . $newFileName;
+            if (move_uploaded_file($fileTmpPath, $dest_path)) {
+                $avatarPath = $newFileName;
             }
         }
     }
 
-    // Update Query
-    if ($profile_pic_name) {
-        $stmt = $conn->prepare("UPDATE users SET fullname = ?, email = ?, birthday = ?, gender = ?, profile_pic = ? WHERE id = ?");
-        $stmt->bind_param("sssssi", $fullname, $email, $birthday, $gender, $profile_pic_name, $user_id);
+    if (!empty($fullname) && !empty($email)) {
+        $updateStmt = $conn->prepare("UPDATE users SET fullname = ?, email = ?, phone = ?, birthday = ?, gender = ?, profile_pic = ? WHERE id = ?");
+        $updateStmt->bind_param("ssssssi", $fullname, $email, $phone, $birthday, $gender, $avatarPath, $userId);
+        
+        if ($updateStmt->execute()) {
+            $_SESSION['fullname'] = $fullname;
+            $_SESSION['email'] = $email;
+            $message = "Profile updated successfully!";
+            $message_type = "success";
+            
+            // Refresh user data
+            $user['fullname'] = $fullname;
+            $user['email'] = $email;
+            $user['phone'] = $phone;
+            $user['birthday'] = $birthday;
+            $user['gender'] = $gender;
+            $user['profile_pic'] = $avatarPath;
+        } else {
+            $message = "Error updating profile. Please try again.";
+            $message_type = "error";
+        }
+        $updateStmt->close();
     } else {
-        $stmt = $conn->prepare("UPDATE users SET fullname = ?, email = ?, birthday = ?, gender = ? WHERE id = ?");
-        $stmt->bind_param("ssssi", $fullname, $email, $birthday, $gender, $user_id);
-    }
-
-    if ($stmt->execute()) {
-        $_SESSION['fullname'] = $fullname; // Update session
-        $message = "Profile updated successfully!";
-        $message_type = "success";
-    } else {
-        $message = "Error updating profile: " . $conn->error;
+        $message = "Full Name and Email are required fields.";
         $message_type = "error";
     }
-    $stmt->close();
 }
 
-// ----------------------------------------------------
-// 2. HANDLE CHANGE PASSWORD UPDATE
-// ----------------------------------------------------
-if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['change_password'])) {
-    $current_pass = $_POST['current_password'];
-    $new_pass     = $_POST['new_password'];
-    $confirm_pass = $_POST['confirm_password'];
+// Handle password change
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['change_password'])) {
+    $current_password = $_POST['current_password'] ?? '';
+    $new_password = $_POST['new_password'] ?? '';
+    $confirm_password = $_POST['confirm_password'] ?? '';
 
-    if ($new_pass !== $confirm_pass) {
-        $message = "New passwords do not match!";
+    if (empty($current_password) || empty($new_password) || empty($confirm_password)) {
+        $message = "All password fields are required.";
         $message_type = "error";
-    } elseif (strlen($new_pass) < 8) {
-        $message = "New password must be at least 8 characters long.";
+    } elseif ($new_password !== $confirm_password) {
+        $message = "New password and confirm password do not match.";
+        $message_type = "error";
+    } elseif (strlen($new_password) < 6) {
+        $message = "New password must be at least 6 characters long.";
         $message_type = "error";
     } else {
-        // Fetch current password from DB
-        $pass_stmt = $conn->prepare("SELECT password FROM users WHERE id = ?");
-        $pass_stmt->bind_param("i", $user_id);
-        $pass_stmt->execute();
-        $res = $pass_stmt->get_result()->fetch_assoc();
-        $pass_stmt->close();
-
-        if (password_verify($current_pass, $res['password'])) {
-            $hashed_new = password_hash($new_pass, PASSWORD_DEFAULT);
-            $update_pass = $conn->prepare("UPDATE users SET password = ? WHERE id = ?");
-            $update_pass->bind_param("si", $hashed_new, $user_id);
-            if ($update_pass->execute()) {
-                $message = "Password changed successfully!";
+        if (password_verify($current_password, $user['password'])) {
+            $hashed_password = password_hash($new_password, PASSWORD_DEFAULT);
+            $passStmt = $conn->prepare("UPDATE users SET password = ? WHERE id = ?");
+            $passStmt->bind_param("si", $hashed_password, $userId);
+            if ($passStmt->execute()) {
+                $message = "Password updated successfully!";
                 $message_type = "success";
+            } else {
+                $message = "Failed to update password.";
+                $message_type = "error";
             }
-            $update_pass->close();
+            $passStmt->close();
         } else {
             $message = "Current password is incorrect.";
             $message_type = "error";
@@ -102,48 +113,17 @@ if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['change_password'])) {
     }
 }
 
-// ----------------------------------------------------
-// 3. FETCH CURRENT USER DATA FROM DB
-// ----------------------------------------------------
-$user_stmt = $conn->prepare("SELECT fullname, username, email, birthday, gender, profile_pic, is_rewards_member, rewards_points, rewards_member_no FROM users WHERE id = ?");
-$user_stmt->bind_param("i", $user_id);
-$user_stmt->execute();
-$user = $user_stmt->get_result()->fetch_assoc();
-$user_stmt->close();
-
-// Profile Picture fallback
-$avatar = (!empty($user['profile_pic']) && file_exists("../images/profiles/" . $user['profile_pic'])) 
-          ? "../images/profiles/" . $user['profile_pic'] 
-          : "../images/default-avatar.png";
-
-// ----------------------------------------------------
-// 4. FETCH USER ORDER HISTORY & LIVE STATUS
-// ----------------------------------------------------
-$userOrdersStmt = $conn->prepare("SELECT o.* FROM orders o WHERE o.user_id = ? ORDER BY o.order_date DESC LIMIT 10");
-$userOrdersStmt->bind_param("i", $user_id);
-$userOrdersStmt->execute();
-$userOrdersRes = $userOrdersStmt->get_result();
-$userOrders = [];
-while ($ord = $userOrdersRes->fetch_assoc()) {
-    $oStmt = $conn->prepare("SELECT oi.*, m.name FROM order_items oi JOIN menu_items m ON m.item_id = oi.item_id WHERE oi.order_id = ?");
-    $oStmt->bind_param("i", $ord['order_id']);
-    $oStmt->execute();
-    $oItemsRes = $oStmt->get_result();
-    $ord['items'] = [];
-    while ($it = $oItemsRes->fetch_assoc()) {
-        $ord['items'][] = $it;
-    }
-    $oStmt->close();
-    $userOrders[] = $ord;
-}
-$userOrdersStmt->close();
-// Fetch active live order (Pending / Preparing / Ready)
-$activeOrder = null;
-foreach ($userOrders as $ord) {
-    $st = strtolower($ord['status']);
-    if (in_array($st, ['pending', 'preparing', 'ready'])) {
-        $activeOrder = $ord;
-        break;
+$pic = $user['profile_pic'] ?? '';
+$avatar = '../images/avatar-placeholder.png';
+if (!empty($pic)) {
+    if (preg_match('/^https?:\/\//i', $pic)) {
+        $avatar = $pic;
+    } elseif (file_exists('../images/profiles/' . $pic)) {
+        $avatar = '../images/profiles/' . $pic;
+    } elseif (file_exists('../uploads/avatars/' . $pic)) {
+        $avatar = '../uploads/avatars/' . $pic;
+    } elseif (file_exists('../' . $pic)) {
+        $avatar = '../' . $pic;
     }
 }
 ?>
@@ -157,41 +137,41 @@ foreach ($userOrders as $ord) {
   <title>Cozy Coffee Co. — My Account</title>
 </head>
 
-<body class="profile-page" style="background: linear-gradient(135deg, #F9F4EC 0%, #EFE5D6 50%, #F5ECDF 100%); min-height: 100vh;">
+<body class="profile-page" style="background: #FAF7F2; min-height: 100vh;">
 
 <?php 
   $activePage = 'profile';
   require_once '../includes/header_nav.php'; 
 ?>
 
-<!-- SUB NAVIGATION TAB BAR -->
-<div style="background: #ffffff; border-bottom: 1px solid var(--color-border); padding: 12px 5%; box-shadow: 0 2px 8px rgba(0,0,0,0.03);">
-  <div style="max-width: 960px; margin: 0 auto; display: flex; gap: 16px;">
-    <a href="index.php" style="padding: 8px 18px; border-radius: 20px; font-size: 0.9rem; font-weight: 700; background: var(--color-accent-dark); color: #ffffff; text-decoration: none; box-shadow: 0 4px 10px rgba(140,109,88,0.25);">👤 Edit My Profile</a>
-    <a href="orders.php" style="padding: 8px 18px; border-radius: 20px; font-size: 0.9rem; font-weight: 600; color: #666; text-decoration: none;">📦 My Orders &amp; Live Status</a>
-    <a href="../rewards/index.php" style="padding: 8px 18px; border-radius: 20px; font-size: 0.9rem; font-weight: 600; color: #666; text-decoration: none;">⭐ Cozy Rewards</a>
+<!-- SUB NAVIGATION TAB BAR (SEAMLESS WARM BACKGROUND) -->
+<div style="background: rgba(249, 244, 236, 0.95); border-bottom: 1.5px solid #E8DDD0; padding: 12px 5%; box-shadow: 0 4px 12px rgba(60,42,33,0.03);">
+  <div style="max-width: 960px; margin: 0 auto; display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+    <a href="index.php" style="padding: 9px 22px; border-radius: 20px; font-size: 0.88rem; font-weight: 800; background: var(--color-accent-dark); color: #ffffff; text-decoration: none; box-shadow: 0 4px 12px rgba(140,109,88,0.3);">👤 Edit My Profile</a>
+    <a href="orders.php" style="padding: 9px 22px; border-radius: 20px; font-size: 0.88rem; font-weight: 700; background: #FFFFFF; color: #665447; border: 1.5px solid #E5D9CC; text-decoration: none;">📦 My Orders &amp; Live Status</a>
+    <a href="../rewards/index.php" style="padding: 9px 22px; border-radius: 20px; font-size: 0.88rem; font-weight: 700; background: #FFFFFF; color: #665447; border: 1.5px solid #E5D9CC; text-decoration: none;">⭐ Cozy Rewards</a>
   </div>
 </div>
 
 <!-- MAIN CONTENT WRAPPER -->
-<main class="container" style="max-width: 960px; margin: 30px auto; padding: 0 20px;">
+<main class="container" style="max-width: 860px; margin: 30px auto 50px; padding: 0 20px;">
   
-  <div class="profile-card">
+  <div class="profile-card" style="background: #FFFFFF; border-radius: 22px; border: 1.5px solid #E8DDD0; padding: 32px; box-shadow: 0 8px 24px rgba(60,42,33,0.04);">
     
-    <h2>👤 My Profile</h2>
+    <h2 style="font-family: var(--font-heading); color: #2C1C14; font-size: 1.6rem; font-weight: 800; margin-top: 0; margin-bottom: 18px;">👤 My Profile</h2>
 
-    <div class="alert" style="background: var(--color-bg); border: 1px solid var(--color-border); border-radius: 10px; padding: 14px 16px; margin-bottom: 18px; display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;">
+    <div class="alert" style="background: #FAF4EB; border: 1.5px solid #E8DDD0; border-radius: 14px; padding: 14px 18px; margin-bottom: 22px; display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;">
       <?php if ((int) ($user['is_rewards_member'] ?? 0) === 1): ?>
-        <span>☕ <strong>Cozy Rewards</strong> — Member <?php echo htmlspecialchars($user['rewards_member_no']); ?> · <?php echo (int) $user['rewards_points']; ?> points</span>
-        <a href="../rewards/index.php" style="font-weight: 700; color: var(--color-accent-dark);">View card &gt;</a>
+        <span style="color: #2C1C14; font-size: 0.92rem;">☕ <strong>Cozy Rewards</strong> — Member <?php echo htmlspecialchars($user['rewards_member_no']); ?> · <strong><?php echo (int) ($user['rewards_points'] ?? $user['points'] ?? 0); ?> points</strong></span>
+        <a href="../rewards/index.php" style="font-weight: 800; color: #C85A3E; text-decoration: none;">View card &gt;</a>
       <?php else: ?>
-        <span>☕ You haven't activated <strong>Cozy Rewards</strong> yet</span>
-        <a href="../rewards/join.php" style="font-weight: 700; color: var(--color-accent-dark);">Activate now &gt;</a>
+        <span style="color: #2C1C14; font-size: 0.92rem;">☕ You haven't activated <strong>Cozy Rewards</strong> yet</span>
+        <a href="../rewards/join.php" style="font-weight: 800; color: #C85A3E; text-decoration: none;">Activate now &gt;</a>
       <?php endif; ?>
     </div>
 
     <?php if (!empty($message)): ?>
-      <div class="alert alert-<?php echo $message_type; ?>">
+      <div class="alert alert-<?php echo $message_type; ?>" style="margin-bottom: 20px; padding: 14px 18px; border-radius: 12px; background: <?php echo $message_type === 'success' ? '#d1fae5' : '#fee2e2'; ?>; color: <?php echo $message_type === 'success' ? '#065f46' : '#991b1b'; ?>; font-weight: 700;">
         <?php echo $message; ?>
       </div>
     <?php endif; ?>
@@ -209,7 +189,7 @@ foreach ($userOrders as $ord) {
         </div>
       </div>
 
-      <hr class="divider">
+      <hr class="divider" style="border: none; border-top: 1.5px solid #FAF4EB; margin: 24px 0;">
 
       <!-- USER DETAILS FORM -->
       <div class="form-grid">
@@ -220,18 +200,23 @@ foreach ($userOrders as $ord) {
         </div>
 
         <div class="input-group">
-          <label for="fullname">Full Name</label>
+          <label for="fullname">Full Name *</label>
           <input type="text" id="fullname" name="fullname" value="<?php echo htmlspecialchars($user['fullname']); ?>" required>
         </div>
 
         <div class="input-group">
-          <label for="email">Email Address</label>
+          <label for="email">Email Address *</label>
           <input type="email" id="email" name="email" value="<?php echo htmlspecialchars($user['email']); ?>" required>
         </div>
 
         <div class="input-group">
           <label for="birthday">Birthday</label>
           <input type="date" id="birthday" name="birthday" value="<?php echo htmlspecialchars($user['birthday'] ?? ''); ?>">
+        </div>
+
+        <div class="input-group">
+          <label for="phone">Phone Number</label>
+          <input type="tel" id="phone" name="phone" value="<?php echo htmlspecialchars($user['phone'] ?? ''); ?>" placeholder="e.g. 012-3456789">
         </div>
 
         <div class="input-group">
@@ -246,23 +231,13 @@ foreach ($userOrders as $ord) {
 
       </div>
 
-      <div class="actions-row">
-        <button type="submit" name="update_profile" class="btn btn-orange">Save Changes</button>
-        <button type="button" class="btn btn-outline" onclick="openPassModal()">🔒 Change Password</button>
+      <div class="actions-row" style="margin-top: 24px;">
+        <button type="submit" name="update_profile" class="btn btn-orange" style="font-weight: 800; padding: 12px 24px; border-radius: 12px;">Save Changes</button>
+        <button type="button" class="btn btn-outline" onclick="openPassModal()" style="font-weight: 700; padding: 12px 24px; border-radius: 12px;">🔒 Change Password</button>
       </div>
 
     </form>
   </div>
-
-  </div>
-
-  <!-- LINK TO MY ORDERS CARD -->
-  <div class="profile-card" style="margin-top: 30px; text-align: center; padding: 24px;">
-    <h3 style="margin-bottom: 6px; color: var(--color-primary);">📦 Looking for Your Orders &amp; Live Status?</h3>
-    <p style="color: #666; font-size: 0.9rem; margin-bottom: 16px;">Track your live barista order progress and review past order receipts on the dedicated Orders page.</p>
-    <a href="orders.php" class="btn btn-orange">View My Orders &amp; Live Status ⚡</a>
-  </div>
-
 </main>
 
 <!-- CHANGE PASSWORD MODAL -->
@@ -291,12 +266,6 @@ foreach ($userOrders as $ord) {
 </div>
 
 <script>
-  // Mobile Nav Toggle
-  document.querySelector('.hamburger').addEventListener('click', () => {
-    const nav = document.querySelector('.nav-links');
-    nav.style.display = nav.style.display === 'flex' ? 'none' : 'flex';
-  });
-
   // Image Live Preview
   function previewImage(input) {
     if (input.files && input.files[0]) {
@@ -316,6 +285,8 @@ foreach ($userOrders as $ord) {
     document.getElementById('passModal').style.display = 'none';
   }
 </script>
+
+<?php require_once '../includes/footer.php'; ?>
 
 </body>
 </html>

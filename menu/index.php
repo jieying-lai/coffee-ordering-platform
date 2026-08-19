@@ -302,5 +302,7 @@ while ($row = $categories->fetch_assoc()) {
   });
 </script>
 
+<?php require_once '../includes/footer.php'; ?>
+
 </body>
 </html>

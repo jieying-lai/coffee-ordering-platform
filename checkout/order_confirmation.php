@@ -2,167 +2,27 @@
 session_start();
 require_once '../includes/db_connect.php';
 
-// Redirect if not logged in
-if (!isset($_SESSION['user_id'])) {
-    $_SESSION['redirect_after_login'] = '../checkout/index.php';
-    header('Location: ../login/index.php');
-    exit;
-}
+$orderId = (int)($_GET['order_id'] ?? $_SESSION['last_order_info']['order_id'] ?? 0);
+$orderInfo = $_SESSION['last_order_info'] ?? null;
+$dbOrder = null;
+$orderItems = [];
 
-// Redirect if cart is empty
-if (empty($_SESSION['cart'])) {
-    header('Location: ../cart/index.php');
-    exit;
-}
+if ($orderId > 0) {
+    $stmt = $conn->prepare("SELECT * FROM orders WHERE order_id = ?");
+    $stmt->bind_param("i", $orderId);
+    $stmt->execute();
+    $dbOrder = $stmt->get_result()->fetch_assoc();
+    $stmt->close();
 
-// Fetch user details
-$userId = $_SESSION['user_id'];
-$stmt = $conn->prepare("SELECT id, fullname, email, phone FROM users WHERE id = ?");
-$stmt->bind_param("i", $userId);
-$stmt->execute();
-$user = $stmt->get_result()->fetch_assoc();
-$stmt->close();
-
-// Fetch cart items with details
-$cartItems = [];
-$subtotal = 0;
-$deliveryFee = 5.00;
-
-if (!empty($_SESSION['cart'])) {
-    $itemIds = array_column($_SESSION['cart'], 'item_id');
-    
-    if (!empty($itemIds)) {
-        $placeholders = implode(',', array_fill(0, count($itemIds), '?'));
-        $types = str_repeat('i', count($itemIds));
-        
-        $stmt = $conn->prepare("SELECT * FROM menu_items WHERE item_id IN ($placeholders)");
-        $stmt->bind_param($types, ...$itemIds);
-        $stmt->execute();
-        $result = $stmt->get_result();
-
-        $dbItems = [];
-        while ($row = $result->fetch_assoc()) {
-            $dbItems[$row['item_id']] = $row;
+    if ($dbOrder) {
+        $stmt2 = $conn->prepare("SELECT oi.*, mi.name as item_name, mi.image as item_image FROM order_items oi JOIN menu_items mi ON oi.item_id = mi.item_id WHERE oi.order_id = ?");
+        $stmt2->bind_param("i", $orderId);
+        $stmt2->execute();
+        $res = $stmt2->get_result();
+        while ($r = $res->fetch_assoc()) {
+            $orderItems[] = $r;
         }
-        $stmt->close();
-
-        foreach ($_SESSION['cart'] as $key => $cartData) {
-            $id = $cartData['item_id'];
-            if (isset($dbItems[$id])) {
-                $item = $dbItems[$id];
-                $itemTotal = $item['price'] * $cartData['quantity'];
-                $subtotal += $itemTotal;
-
-                $cartItems[] = [
-                    'cart_key' => $key,
-                    'item_id' => $id,
-                    'name' => $item['name'],
-                    'price' => (float)$item['price'],
-                    'quantity' => (int)$cartData['quantity'],
-                    'temperature' => $cartData['temperature'] ?? '',
-                    'sweetness' => $cartData['sweetness'] ?? '',
-                    'remarks' => $cartData['remarks'] ?? '',
-                    'item_total' => $itemTotal
-                ];
-            }
-        }
-    }
-}
-
-// Handle order submission
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['place_order'])) {
-    $deliveryAddress = trim($_POST['delivery_address'] ?? '');
-    $contactNumber = trim($_POST['contact_number'] ?? '');
-    $specialInstructions = trim($_POST['special_instructions'] ?? '');
-    $paymentMethod = $_POST['payment_method'] ?? 'cash';
-    
-    // Calculate total (subtotal + delivery fee)
-    $totalAmount = $subtotal + $deliveryFee;
-    
-    $errors = [];
-    if (empty($deliveryAddress)) $errors[] = "Delivery address is required.";
-    if (empty($contactNumber)) $errors[] = "Contact number is required.";
-    if (empty($cartItems)) $errors[] = "Your cart is empty.";
-    
-    if (empty($errors)) {
-        // Combine all extra info into special instructions (since we can't add new columns)
-        $combinedInstructions = "Payment: " . ucfirst($paymentMethod) . "\n";
-        $combinedInstructions .= "Contact: " . $contactNumber . "\n";
-        $combinedInstructions .= "Address: " . $deliveryAddress . "\n";
-        if ($specialInstructions) {
-            $combinedInstructions .= "Notes: " . $specialInstructions;
-        }
-        
-        // Insert order - only using existing columns
-        $status = 'Pending';
-        $stmt = $conn->prepare("INSERT INTO orders (user_id, total_amount, status) VALUES (?, ?, ?)");
-        
-        if ($stmt === false) {
-            $error = "Database error: " . $conn->error;
-        } else {
-            $stmt->bind_param("ids", $userId, $totalAmount, $status);
-            
-            if ($stmt->execute()) {
-                $orderId = $conn->insert_id;
-                $stmt->close();
-                
-                // Insert order items with customizations in a note
-                $allItemsInserted = true;
-                $stmt = $conn->prepare("INSERT INTO order_items (order_id, item_id, quantity, price_at_order) VALUES (?, ?, ?, ?)");
-                
-                if ($stmt === false) {
-                    $error = "Database error: " . $conn->error;
-                    // Clean up - delete the order
-                    $conn->query("DELETE FROM orders WHERE order_id = $orderId");
-                } else {
-                    foreach ($cartItems as $item) {
-                        $stmt->bind_param("iiid", 
-                            $orderId, 
-                            $item['item_id'], 
-                            $item['quantity'], 
-                            $item['price']
-                        );
-                        
-                        if (!$stmt->execute()) {
-                            $allItemsInserted = false;
-                            $error = "Failed to save order items: " . $stmt->error;
-                            break;
-                        }
-                    }
-                    $stmt->close();
-                    
-                    if ($allItemsInserted) {
-                        // Store the extra order info in session for the confirmation page
-                        $_SESSION['order_delivery_info'] = [
-                            'address' => $deliveryAddress,
-                            'contact' => $contactNumber,
-                            'instructions' => $specialInstructions,
-                            'payment_method' => $paymentMethod,
-                            'subtotal' => $subtotal,
-                            'delivery_fee' => $deliveryFee,
-                            'cart_items' => $cartItems
-                        ];
-                        
-                        // Success! Clear cart and redirect
-                        unset($_SESSION['cart']);
-                        $_SESSION['last_order_id'] = $orderId;
-                        header('Location: order_confirmation.php');
-                        exit;
-                    } else {
-                        // Clean up - delete the order
-                        $conn->query("DELETE FROM orders WHERE order_id = $orderId");
-                        if (empty($error)) {
-                            $error = "Failed to place order. Please try again.";
-                        }
-                    }
-                }
-            } else {
-                $error = "Failed to create order: " . $stmt->error;
-                $stmt->close();
-            }
-        }
-    } else {
-        $error = implode("<br>", $errors);
+        $stmt2->close();
     }
 }
 ?>
@@ -173,194 +33,181 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['place_order'])) {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="../style/mystyle.css">
   <link rel="stylesheet" href="../style/checkout.css">
-  <title>Cozy Coffee Co. — Checkout</title>
+  <title>Cozy Coffee Co. — Order Confirmation #<?php echo $orderId; ?></title>
+  <style>
+    .receipt-card {
+      background: #FFFFFF;
+      border-radius: 24px;
+      border: 1.5px solid #E8DDD0;
+      box-shadow: 0 16px 40px rgba(60, 42, 33, 0.08);
+      max-width: 680px;
+      margin: 40px auto 60px;
+      padding: 36px 32px;
+      box-sizing: border-box;
+    }
+
+    .success-badge-icon {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      background: #ECFDF5;
+      border: 2px solid #6EE7B7;
+      color: #059669;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.2rem;
+      margin: 0 auto 16px;
+    }
+
+    .receipt-header { text-align: center; margin-bottom: 26px; }
+    .receipt-header h1 {
+      font-family: var(--font-heading);
+      font-size: 1.7rem;
+      color: #2C1C14;
+      margin: 0 0 6px 0;
+      font-weight: 800;
+    }
+
+    .receipt-section {
+      background: #FAF7F2;
+      border-radius: 16px;
+      border: 1px solid #E5D9CC;
+      padding: 18px 20px;
+      margin-bottom: 20px;
+    }
+
+    .receipt-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+      font-size: 0.92rem;
+    }
+
+    .receipt-row:last-child { margin-bottom: 0; }
+    .receipt-row .lbl { color: #7A685A; font-weight: 600; }
+    .receipt-row .val { color: #2C1C14; font-weight: 800; }
+  </style>
 </head>
 
-<body class="checkout-page">
+<body>
 
-<nav>
-  <div class="logo"><a href="../home/index.php">Cozy Coffee Co.</a></div>
-  <ul class="nav-links">
-    <li><a href="../home/index.php">Home</a></li>
-    <li>
-      <a href="../menu/index.php">Menu ▾</a>
-      <div class="dropdown">
-        <a href="../menu/index.php?cat=specialty#specialty">Specialty</a>
-        <a href="../menu/index.php?cat=classic#classic">Classic Coffee</a>
-        <a href="../menu/index.php?cat=noncoffein#noncoffein">Non-Coffein</a>
-        <a href="../menu/index.php?cat=smoothies#smoothies">Smoothies &amp; Sodas</a>
-        <a href="../menu/index.php?cat=mains#mains">Main Dishes</a>
-        <a href="../menu/index.php?cat=desserts#desserts">Desserts</a>
-      </div>
-    </li>
-    <li><a href="../blog/index.php">Blog</a></li>
-        <li><a href="../benefits/index.php">Benefits</a></li>
-    <li>
-      <a href="../offers/index.php">Offers ▾</a>
-      <div class="dropdown">
-        <a href="../offers/index.php#drinks">Drink Offers</a>
-        <a href="../offers/index.php#food">Food Offers</a>
-        <a href="../offers/index.php#partners">Partner Promotions</a>
-      </div>
-    </li>
-    <li>
-      <a href="../activities/index.php">Activities ▾</a>
-      <div class="dropdown">
-        <a href="../activities/index.php#workshops">Coffee Workshops</a>
-        <a href="../activities/index.php#giveback">Cozy Give-Back</a>
-      </div>
-    </li>
-    <li><a href="../contact/index.php">Contact</a></li>
-    <li><a href="../cart/index.php">Cart</a></li>
-
-    <?php if (isset($_SESSION['user_id'])): ?>
-      <li>
-        <a href="../profile/index.php"><?php echo htmlspecialchars($_SESSION['fullname']); ?> ▾</a>
-        <div class="dropdown">
-          <a href="../profile/index.php">My Profile</a>
-          <a href="../rewards/index.php">Cozy Rewards</a>
-          <a href="../logout.php">Logout</a>
-        </div>
-      </li>
-    <?php else: ?>
-      <li><a href="../login/index.php">Login</a></li>
-    <?php endif; ?>
-
-  </ul>
-  <button class="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
-</nav>
+<?php 
+  $activePage = 'cart';
+  require_once '../includes/header_nav.php'; 
+?>
 
 <div class="container">
-
-    <!-- Header -->
-    <div class="header">
-        <h1>Checkout</h1>
-        <span class="badge"><?php echo count($cartItems); ?> Items</span>
+  
+  <div class="receipt-card">
+    <div class="success-badge-icon">✓</div>
+    
+    <div class="receipt-header">
+      <h1>Order Received &amp; Placed! 🎉</h1>
+      <p style="color: #665447; font-size: 0.95rem; margin: 0;">
+        Thank you for ordering with Cozy Coffee Co. Your order has been dispatched to our barista counter!
+      </p>
     </div>
 
-    <?php if (isset($error)): ?>
-        <div class="alert alert-error"><?php echo $error; ?></div>
+    <?php if ($dbOrder): ?>
+      <!-- ORDER SUMMARY METADATA -->
+      <div class="receipt-section">
+        <div class="receipt-row">
+          <span class="lbl">Order Number</span>
+          <span class="val" style="color: #C85A3E; font-size: 1.1rem; font-family: var(--font-heading);">#<?php echo $dbOrder['order_id']; ?></span>
+        </div>
+
+        <div class="receipt-row">
+          <span class="lbl">Fulfillment Mode</span>
+          <span class="val">
+            <?php echo htmlspecialchars($dbOrder['fulfillment_type'] ?? 'Dine-In'); ?>
+            <?php if (!empty($dbOrder['table_number'])): ?>
+              (<?php echo htmlspecialchars($dbOrder['table_number']); ?>)
+            <?php endif; ?>
+          </span>
+        </div>
+
+        <div class="receipt-row">
+          <span class="lbl">Payment Method</span>
+          <span class="val"><?php echo htmlspecialchars($dbOrder['payment_method'] ?? 'Pay at Counter'); ?></span>
+        </div>
+
+        <div class="receipt-row">
+          <span class="lbl">Contact Phone</span>
+          <span class="val"><?php echo htmlspecialchars($dbOrder['contact_number'] ?? '—'); ?></span>
+        </div>
+
+        <div class="receipt-row">
+          <span class="lbl">Order Date &amp; Time</span>
+          <span class="val"><?php echo date('d M Y, g:i A', strtotime($dbOrder['order_date'])); ?></span>
+        </div>
+      </div>
+
+      <!-- ECO BYO NOTICE IF APPLICABLE -->
+      <?php if ((int)($dbOrder['byo_tumbler'] ?? 0) === 1 || (int)($dbOrder['byo_container'] ?? 0) === 1): ?>
+        <div style="background: #ECFDF5; border: 1.5px solid #6EE7B7; color: #065F46; padding: 14px 18px; border-radius: 14px; margin-bottom: 20px; font-weight: 700; font-size: 0.9rem; display: flex; align-items: center; gap: 10px;">
+          <span style="font-size: 1.4rem;">🌱</span>
+          <div>
+            <div>Eco BYO Initiative Active</div>
+            <div style="font-weight: 600; font-size: 0.84rem; opacity: 0.9;">
+              Please pass your tumbler / container to our counter barista upon arrival.
+            </div>
+          </div>
+        </div>
+      <?php endif; ?>
+
+      <!-- ORDERED ITEMS LIST -->
+      <div style="margin-bottom: 24px;">
+        <h3 style="font-family: var(--font-heading); font-size: 1.15rem; color: #2C1C14; font-weight: 800; margin-bottom: 12px;">Ordered Items</h3>
+        <div style="display: flex; flex-direction: column; gap: 10px;">
+          <?php foreach ($orderItems as $item): ?>
+            <div style="display: flex; justify-content: space-between; align-items: center; background: #FFF; padding: 12px 14px; border-radius: 12px; border: 1px solid #E8DDD0;">
+              <div style="display: flex; gap: 12px; align-items: center;">
+                <img src="../images/menu/<?php echo htmlspecialchars($item['item_image']); ?>" style="width: 48px; height: 48px; object-fit: cover; border-radius: 8px; border: 1px solid #E5D9CC;">
+                <div>
+                  <div style="font-weight: 800; color: #2C1C14; font-size: 0.95rem;">
+                    <?php echo htmlspecialchars($item['item_name']); ?>
+                    <span style="color: #C85A3E;">×<?php echo $item['quantity']; ?></span>
+                  </div>
+                  <?php if (!empty($item['item_options'])): ?>
+                    <div style="font-size: 0.78rem; color: #7A685A; font-weight: 600;"><?php echo htmlspecialchars($item['item_options']); ?></div>
+                  <?php endif; ?>
+                </div>
+              </div>
+              <div style="font-weight: 800; color: #C85A3E; font-size: 1rem;">
+                RM <?php echo number_format($item['price_at_order'] * $item['quantity'], 2); ?>
+              </div>
+            </div>
+          <?php endforeach; ?>
+        </div>
+      </div>
+
+      <!-- TOTAL SUMMARY -->
+      <div style="display: flex; justify-content: space-between; align-items: center; background: #FAF4EB; padding: 16px 20px; border-radius: 14px; border: 1.5px solid #E8DDD0; margin-bottom: 28px;">
+        <span style="font-weight: 800; color: #2C1C14; font-size: 1.05rem;">Total Amount Paid / Payable</span>
+        <span style="font-family: var(--font-heading); font-size: 1.4rem; font-weight: 800; color: #C85A3E;">
+          RM <?php echo number_format($dbOrder['total_amount'], 2); ?>
+        </span>
+      </div>
     <?php endif; ?>
 
-    <form method="POST" action="" class="checkout-form">
-        <!-- Delivery & Payment Section -->
-        <div class="section-box">
-            <h2>Delivery Details</h2>
-            
-            <div class="form-group">
-                <label for="delivery_address">Delivery Address *</label>
-                <textarea id="delivery_address" name="delivery_address" required 
-                          placeholder="Enter your full delivery address"><?php echo htmlspecialchars($deliveryAddress ?? ''); ?></textarea>
-            </div>
+    <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+      <a href="../orders/track.php?order_id=<?php echo $orderId; ?>&contact=<?php echo urlencode($dbOrder['contact_number'] ?? ''); ?>" class="btn btn-orange btn-full" style="flex: 1; min-width: 220px; height: 48px; border-radius: 12px; font-weight: 800; font-size: 0.95rem; justify-content: center; display: flex; align-items: center; text-decoration: none;">
+        ⚡ Track Live Order Status #<?php echo $orderId; ?>
+      </a>
+      <?php if (isset($_SESSION['user_id'])): ?>
+        <a href="../profile/orders.php" class="btn btn-outline btn-full" style="flex: 1; min-width: 180px; height: 48px; border-radius: 12px; font-weight: 800; font-size: 0.95rem; justify-content: center; display: flex; align-items: center; text-decoration: none; border: 1.5px solid #C85A3E; color: #C85A3E;">
+          📋 My Account Orders
+        </a>
+      <?php endif; ?>
+      <a href="../menu/index.php" class="btn btn-outline btn-full" style="flex: 1; min-width: 160px; height: 48px; border-radius: 12px; font-weight: 700; font-size: 0.95rem; justify-content: center; text-align: center; border: 1.5px solid #E5D9CC; color: #665447; text-decoration: none; display: flex; align-items: center;">
+        ☕ Back to Menu
+      </a>
+    </div>
 
-            <div class="form-group">
-                <label for="contact_number">Contact Number *</label>
-                <input type="tel" id="contact_number" name="contact_number" required 
-                       value="<?php echo htmlspecialchars($contactNumber ?? $user['phone'] ?? ''); ?>"
-                       pattern="[0-9+\-\s()]+"
-                       placeholder="012-3456789">
-            </div>
+  </div>
 
-            <div class="form-group">
-                <label for="special_instructions">Special Instructions (Optional)</label>
-                <textarea id="special_instructions" name="special_instructions" 
-                          placeholder="Any special delivery instructions..."><?php echo htmlspecialchars($specialInstructions ?? ''); ?></textarea>
-            </div>
-        </div>
-
-        <div class="section-box">
-            <h2>Payment Method</h2>
-            <div class="payment-methods">
-                <label class="payment-option">
-                    <input type="radio" name="payment_method" value="cash" checked>
-                    <span class="payment-label">
-                        <span class="payment-icon">💵</span>
-                        Cash on Delivery
-                    </span>
-                </label>
-                
-                <label class="payment-option">
-                    <input type="radio" name="payment_method" value="card">
-                    <span class="payment-label">
-                        <span class="payment-icon">💳</span>
-                        Credit/Debit Card
-                    </span>
-                </label>
-                
-                <label class="payment-option">
-                    <input type="radio" name="payment_method" value="ewallet">
-                    <span class="payment-label">
-                        <span class="payment-icon">📱</span>
-                        E-Wallet
-                    </span>
-                </label>
-            </div>
-        </div>
-
-        <!-- Order Summary -->
-        <div class="summary-box">
-            <h2>Order Summary</h2>
-            
-            <div class="order-items">
-                <?php foreach ($cartItems as $item): ?>
-                    <div class="order-item">
-                        <div class="item-info">
-                            <span class="item-name">
-                                <?php echo htmlspecialchars($item['name']); ?>
-                                <span class="item-qty">×<?php echo $item['quantity']; ?></span>
-                            </span>
-                            <?php if ($item['temperature'] || $item['sweetness']): ?>
-                                <div class="item-options">
-                                    <?php if ($item['temperature']): ?>
-                                        <span class="option-tag"><?php echo htmlspecialchars($item['temperature']); ?></span>
-                                    <?php endif; ?>
-                                    <?php if ($item['sweetness']): ?>
-                                        <span class="option-tag"><?php echo htmlspecialchars($item['sweetness']); ?></span>
-                                    <?php endif; ?>
-                                </div>
-                            <?php endif; ?>
-                            <?php if ($item['remarks']): ?>
-                                <p class="item-remarks"><em>Note: "<?php echo htmlspecialchars($item['remarks']); ?>"</em></p>
-                            <?php endif; ?>
-                        </div>
-                        <span class="item-price">RM <?php echo number_format($item['item_total'], 2); ?></span>
-                    </div>
-                <?php endforeach; ?>
-            </div>
-
-            <div class="price-breakdown">
-                <div class="price-row">
-                    <span>Subtotal</span>
-                    <span>RM <?php echo number_format($subtotal, 2); ?></span>
-                </div>
-                <div class="price-row">
-                    <span>Delivery Fee</span>
-                    <span>RM <?php echo number_format($deliveryFee, 2); ?></span>
-                </div>
-                <div class="price-row total">
-                    <span>Total</span>
-                    <span class="amount">RM <?php echo number_format($subtotal + $deliveryFee, 2); ?></span>
-                </div>
-            </div>
-
-            <div class="checkout-actions">
-                <button type="submit" name="place_order" class="btn btn-orange btn-full">
-                    Place Order 🛒
-                </button>
-                <a href="../cart/index.php" class="btn btn-outline btn-full">
-                    ← Back to Cart
-                </a>
-            </div>
-        </div>
-    </form>
 </div>
 
-<script>
-    document.querySelector('.hamburger').addEventListener('click', () => {
-        const nav = document.querySelector('.nav-links');
-        nav.style.display = nav.style.display === 'flex' ? 'none' : 'flex';
-    });
-</script>
 </body>
 </html>
-

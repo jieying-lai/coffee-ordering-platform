@@ -17,6 +17,26 @@ if ($error === 'invalid') {
   <title>Cozy Coffee Co. — Staff &amp; Admin Portal</title>
   <style>
     /* Premium Dark Ambient Page Layout */
+    .input-group, .password-group {
+      position: relative !important;
+    }
+    .password-group input, input[type="password"] {
+      padding-right: 48px !important;
+    }
+    .show-password {
+      position: absolute !important;
+      top: 50% !important;
+      right: 12px !important;
+      transform: translateY(-50%) !important;
+      background: transparent !important;
+      border: none !important;
+      cursor: pointer !important;
+      font-size: 1.2rem !important;
+      padding: 4px !important;
+      color: #7A695D !important;
+      z-index: 10 !important;
+    }
+
     body.admin-login-body {
       margin: 0;
       padding: 0;

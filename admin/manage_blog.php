@@ -2,6 +2,20 @@
 require_once '../includes/admin_auth_check.php';
 require_once '../includes/db_connect.php';
 
+// ============ AJAX TOGGLE HIDE / MODERATE STATUS (NO PAGE REFRESH) ============
+if (isset($_GET['ajax_toggle_hide'])) {
+    header('Content-Type: application/json');
+    $postId = (int) $_GET['ajax_toggle_hide'];
+    $status = (int) $_GET['status']; // 1 = Hide, 0 = Unhide
+
+    $stmt = $conn->prepare('UPDATE blog_posts SET is_hidden = ? WHERE id = ?');
+    $stmt->bind_param('ii', $status, $postId);
+    $ok = $stmt->execute();
+    $stmt->close();
+    echo json_encode(['status' => $ok ? 'success' : 'error', 'new_status' => $status]);
+    exit;
+}
+
 $message = '';
 $messageType = '';
 
@@ -114,45 +128,14 @@ $posts = $conn->query($postsQuery);
 </head>
 <body class="admin-page">
 
-<nav class="admin-nav-bar" style="background: var(--color-primary, #3C2A21); color: #fff; padding: 14px 5%; position: sticky; top: 0; z-index: 9999; box-shadow: 0 4px 14px rgba(0,0,0,0.15);">
-  <div style="max-width: 1400px; margin: 0 auto; width: 100%; display: flex; justify-content: space-between; align-items: center;">
-    
-    <div style="font-weight: 800; font-size: 1.15rem; color: #fff;">
-      <a href="dashboard.php" style="color: #fff; text-decoration: none; display: flex; align-items: center; gap: 8px;">
-        <span>☕</span> Cozy Barista Admin Portal
-      </a>
-    </div>
-
-    <button class="admin-hamburger" id="adminNavToggle" aria-label="Toggle Admin Menu" style="display: none; flex-direction: column; justify-content: space-between; width: 28px; height: 20px; background: transparent; border: none; cursor: pointer; padding: 0;">
-      <span style="display: block; height: 3px; width: 100%; background: #ffffff; border-radius: 3px;"></span>
-      <span style="display: block; height: 3px; width: 100%; background: #ffffff; border-radius: 3px;"></span>
-      <span style="display: block; height: 3px; width: 100%; background: #ffffff; border-radius: 3px;"></span>
-    </button>
-
-    <div class="admin-nav-links" id="adminNavMenu">
-      <a href="dashboard.php">📋 Dashboard</a>
-      <a href="manage_orders.php">📦 Orders</a>
-      <a href="manage_chat.php">💬 Customer Chat</a>
-      <a href="manage_menu.php">☕ Menu</a>
-      <a href="manage_users.php">👤 Users</a>
-      <a href="manage_blog.php" class="admin-nav-active">📸 Blog</a>
-      <a href="manage_contact.php">📍 Contact/About</a>
-      <a href="logout.php" style="color: #f87171 !important; text-decoration: none; padding: 6px 12px; border-radius: 6px; background: rgba(239, 68, 68, 0.15);">Logout</a>
-    </div>
-
-  </div>
-</nav>
-
-<script>
-  document.getElementById('adminNavToggle')?.addEventListener('click', function() {
-    document.getElementById('adminNavMenu')?.classList.toggle('admin-menu-active');
-  });
-</script>
+<?php $adminActivePage = 'blog'; require_once '../includes/admin_header_nav.php'; ?>
 
 <div class="admin-wrap">
-  <a href="dashboard.php" class="admin-back">← Back to Dashboard</a>
-  <h1>Manage Blog Posts</h1>
-  <p class="admin-subtitle">Moderate community posts by marking policy violations or managing trash storage.</p>
+  <div class="admin-page-header">
+    <a href="dashboard.php" class="btn-back-dashboard">&larr; Back to Dashboard</a>
+    <h1 class="admin-header-title">Manage Community Blog</h1>
+    <p class="admin-header-subtitle">Moderate community posts by marking policy violations or managing trash storage.</p>
+  </div>
 
   <?php if ($message): ?>
     <div class="admin-alert admin-alert-<?php echo $messageType; ?>"><?php echo htmlspecialchars($message); ?></div>
@@ -189,9 +172,11 @@ $posts = $conn->query($postsQuery);
           <tr class="blog-row" data-search="<?php echo strtolower(htmlspecialchars($p['username'] . ' ' . $p['ordered_item'] . ' ' . $p['mood'] . ' ' . $p['description'])); ?>">
             <td>
               <strong>@<?php echo htmlspecialchars($p['username']); ?></strong>
-              <?php if (!empty($p['is_hidden'])): ?>
-                <br><span class="status-badge status-hidden">Violation (Hidden)</span>
-              <?php endif; ?>
+              <span id="blog-status-badge-<?php echo $p['id']; ?>">
+                <?php if (!empty($p['is_hidden'])): ?>
+                  <br><span class="status-badge status-hidden">Violation (Hidden)</span>
+                <?php endif; ?>
+              </span>
             </td>
             <td><?php echo htmlspecialchars($p['ordered_item'] ?: '—'); ?></td>
             <td class="col-mood">
@@ -230,14 +215,9 @@ $posts = $conn->query($postsQuery);
             <td><?php echo date('d M Y, g:i A', strtotime($p['created_at'])); ?></td>
             <td class="admin-actions">
               <?php if (!$viewTrash): ?>
-                <?php if (empty($p['is_hidden'])): ?>
-                  <a href="manage_blog.php?toggle_hide=<?php echo $p['id']; ?>&status=1" 
-                     class="admin-btn admin-btn-sm btn-hide"
-                     onclick="return confirm('Hide this post for community guidelines violation?');">Hide</a>
-                <?php else: ?>
-                  <a href="manage_blog.php?toggle_hide=<?php echo $p['id']; ?>&status=0" 
-                     class="admin-btn admin-btn-sm btn-unhide">Unhide</a>
-                <?php endif; ?>
+                <button type="button" class="admin-btn admin-btn-sm <?php echo empty($p['is_hidden']) ? 'btn-hide' : 'btn-unhide'; ?>" id="blog-hide-btn-<?php echo $p['id']; ?>" onclick="toggleBlogHide(this, <?php echo $p['id']; ?>, <?php echo (int)$p['is_hidden']; ?>)">
+                  <?php echo empty($p['is_hidden']) ? '🔒 Hide' : '🔓 Unhide'; ?>
+                </button>
 
                 <a href="manage_blog.php?soft_delete=<?php echo $p['id']; ?>" 
                    class="admin-btn admin-btn-danger admin-btn-sm" 
@@ -258,6 +238,43 @@ $posts = $conn->query($postsQuery);
 </div>
 
 <script>
+function toggleBlogHide(btnEl, postId, isHidden) {
+    const newStatus = isHidden === 1 ? 0 : 1;
+    if (newStatus === 1 && !confirm('Hide this post for community guidelines violation?')) {
+        return;
+    }
+    btnEl.disabled = true;
+    btnEl.style.opacity = '0.6';
+
+    fetch(`manage_blog.php?ajax_toggle_hide=${postId}&status=${newStatus}`)
+    .then(r => r.json())
+    .then(data => {
+        btnEl.disabled = false;
+        btnEl.style.opacity = '1';
+        if (data.status === 'success') {
+            const badgeEl = document.getElementById(`blog-status-badge-${postId}`);
+            if (newStatus === 1) {
+                btnEl.innerHTML = '🔓 Unhide';
+                btnEl.className = 'admin-btn admin-btn-sm btn-unhide';
+                btnEl.onclick = function() { toggleBlogHide(this, postId, 1); };
+                if (badgeEl) badgeEl.innerHTML = '<br><span class="status-badge status-hidden">Violation (Hidden)</span>';
+            } else {
+                btnEl.innerHTML = '🔒 Hide';
+                btnEl.className = 'admin-btn admin-btn-sm btn-hide';
+                btnEl.onclick = function() { toggleBlogHide(this, postId, 0); };
+                if (badgeEl) badgeEl.innerHTML = '';
+            }
+        } else {
+            alert('Failed to update status.');
+        }
+    })
+    .catch(err => {
+        btnEl.disabled = false;
+        btnEl.style.opacity = '1';
+        alert('Network error.');
+    });
+}
+
 function filterPosts() {
   const searchVal = document.getElementById('searchInput').value.toLowerCase().trim();
   const rows = document.querySelectorAll('#blogTable .blog-row');
@@ -272,6 +289,8 @@ function filterPosts() {
   });
 }
 </script>
+
+<?php require_once '../includes/admin_footer.php'; ?>
 
 </body>
 </html>

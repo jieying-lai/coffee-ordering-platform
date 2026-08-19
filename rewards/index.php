@@ -35,56 +35,108 @@ $vouchersConfig = [
     ]
 ];
 
-// Handle Voucher Redemption
-if ($isLoggedIn && $_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['redeem_voucher'])) {
-    $voucherCode = trim($_POST['voucher_code'] ?? '');
-
-    if (isset($vouchersConfig[$voucherCode])) {
-        $v = $vouchersConfig[$voucherCode];
-        $pStmt = $conn->prepare("SELECT rewards_points FROM users WHERE id = ?");
-        $pStmt->bind_param("i", $userId);
-        $pStmt->execute();
-        $userPoints = (int)($pStmt->get_result()->fetch_assoc()['rewards_points'] ?? 0);
-        $pStmt->close();
-
-        if ($userPoints >= $v['cost']) {
-            $deduct = $conn->prepare("UPDATE users SET rewards_points = rewards_points - ? WHERE id = ?");
-            $deduct->bind_param("ii", $v['cost'], $userId);
-            $deduct->execute();
-            $deduct->close();
-
-            $pLog = $conn->prepare("INSERT INTO points_history (user_id, points, description) VALUES (?, ?, ?)");
-            $negPoints = -$v['cost'];
-            $desc = "Redeemed Coupon: " . $voucherCode;
-            $pLog->bind_param("iis", $userId, $negPoints, $desc);
-            $pLog->execute();
-            $pLog->close();
-
-            $vIns = $conn->prepare("INSERT INTO user_vouchers (user_id, voucher_code, discount_amount, min_spend, terms) VALUES (?, ?, ?, ?, ?)");
-            $vIns->bind_param("isdds", $userId, $voucherCode, $v['discount'], $v['min_spend'], $v['terms']);
-            $vIns->execute();
-            $vIns->close();
-
-            $message = "🎉 Successfully redeemed coupon '{$voucherCode}'! Use it in your Cart.";
-            $message_type = "success";
-        } else {
-            $message = "You need at least {$v['cost']} Cozy Points to redeem this voucher.";
-            $message_type = "error";
-        }
-    }
-}
+// Birthday Vouchers Config
+$birthdayVouchersConfig = [
+    'BDAYCAKEFREE' => [
+        'name' => '🎂 Free Slice of Bakery Cake',
+        'cost' => 0,
+        'discount' => 12.00,
+        'min_spend' => 0.00,
+        'terms' => "• Complimentary slice of handcrafted bakery cake during your birthday month!\n• No minimum spend required.\n• Exclusive birthday gift for Cozy Rewards members."
+    ],
+    'BDAY50OFF' => [
+        'name' => '🎉 50% Off Total Bill (Birthday Special)',
+        'cost' => 0,
+        'discount' => 25.00,
+        'min_spend' => 15.00,
+        'terms' => "• Enjoy 50% discount on your total order bill during your birthday month (max discount RM25.00).\n• Requires minimum spend of RM15.00.\n• Valid for 30 days during your birthday month."
+    ]
+];
 
 if ($isLoggedIn) {
-    $stmt = $conn->prepare("SELECT fullname, is_rewards_member, rewards_points, rewards_member_no, rewards_joined_at FROM users WHERE id = ?");
+    $stmt = $conn->prepare("SELECT fullname, birthday, is_rewards_member, rewards_points, points, rewards_member_no, rewards_joined_at FROM users WHERE id = ?");
     $stmt->bind_param('i', $userId);
     $stmt->execute();
     $member = $stmt->get_result()->fetch_assoc();
     $stmt->close();
 }
 
+// Check Birthday Month Status
+$isBirthdayMonth = false;
+if ($member && !empty($member['birthday']) && $member['birthday'] !== '0000-00-00') {
+    $bMonth = date('m', strtotime($member['birthday']));
+    if ($bMonth === date('m')) {
+        $isBirthdayMonth = true;
+    }
+}
+
+// Handle Voucher Redemption (Standard & Birthday Vouchers)
+if ($isLoggedIn && $_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['redeem_voucher'])) {
+    $voucherCode = trim($_POST['voucher_code'] ?? '');
+    $isBirthdayRedeem = isset($birthdayVouchersConfig[$voucherCode]);
+
+    if (isset($vouchersConfig[$voucherCode]) || $isBirthdayRedeem) {
+        $v = $isBirthdayRedeem ? $birthdayVouchersConfig[$voucherCode] : $vouchersConfig[$voucherCode];
+        
+        // Check if user already claimed this birthday voucher
+        $alreadyClaimed = false;
+        if ($isBirthdayRedeem) {
+            $chkClaim = $conn->prepare("SELECT id FROM user_vouchers WHERE user_id = ? AND voucher_code = ?");
+            $chkClaim->bind_param("is", $userId, $voucherCode);
+            $chkClaim->execute();
+            if ($chkClaim->get_result()->num_rows > 0) {
+                $alreadyClaimed = true;
+            }
+            $chkClaim->close();
+        }
+
+        if ($alreadyClaimed) {
+            $message = "You have already claimed your birthday perk '{$v['name']}'!";
+            $message_type = "error";
+        } else {
+            $pStmt = $conn->prepare("SELECT rewards_points FROM users WHERE id = ?");
+            $pStmt->bind_param("i", $userId);
+            $pStmt->execute();
+            $userPoints = (int)($pStmt->get_result()->fetch_assoc()['rewards_points'] ?? 0);
+            $pStmt->close();
+
+            if ($userPoints >= $v['cost']) {
+                if ($v['cost'] > 0) {
+                    $deduct = $conn->prepare("UPDATE users SET rewards_points = rewards_points - ?, points = points - ? WHERE id = ?");
+                    $deduct->bind_param("iii", $v['cost'], $v['cost'], $userId);
+                    $deduct->execute();
+                    $deduct->close();
+                    
+                    // Refresh member points
+                    $member['rewards_points'] -= $v['cost'];
+                }
+
+                $pLog = $conn->prepare("INSERT INTO points_history (user_id, points, description) VALUES (?, ?, ?)");
+                $negPoints = -$v['cost'];
+                $desc = $isBirthdayRedeem ? "Claimed Birthday Perk: " . $voucherCode : "Redeemed Coupon: " . $voucherCode;
+                $pLog->bind_param("iis", $userId, $negPoints, $desc);
+                $pLog->execute();
+                $pLog->close();
+
+                $vIns = $conn->prepare("INSERT INTO user_vouchers (user_id, voucher_code, discount_amount, min_spend, terms, status) VALUES (?, ?, ?, ?, ?, 'ACTIVE')");
+                $vIns->bind_param("isdds", $userId, $voucherCode, $v['discount'], $v['min_spend'], $v['terms']);
+                $vIns->execute();
+                $vIns->close();
+
+                $message = "🎉 Successfully claimed voucher '{$v['name']}'! Use coupon code '{$voucherCode}' at checkout.";
+                $message_type = "success";
+            } else {
+                $message = "You need at least {$v['cost']} Cozy Points to redeem this voucher.";
+                $message_type = "error";
+            }
+        }
+    }
+}
+
+// Fetch Points History Logs
 $pointsLogs = [];
 if ($isLoggedIn) {
-    $logStmt = $conn->prepare("SELECT * FROM points_history WHERE user_id = ? ORDER BY created_at DESC LIMIT 10");
+    $logStmt = $conn->prepare("SELECT * FROM points_history WHERE user_id = ? ORDER BY created_at DESC LIMIT 15");
     $logStmt->bind_param("i", $userId);
     $logStmt->execute();
     $resLog = $logStmt->get_result();
@@ -92,6 +144,21 @@ if ($isLoggedIn) {
         $pointsLogs[] = $r;
     }
     $logStmt->close();
+}
+
+// Fetch User Redeemed Vouchers for Redemption History Modal
+$userVouchersList = [];
+$claimedVoucherCodes = [];
+if ($isLoggedIn) {
+    $vStmt = $conn->prepare("SELECT * FROM user_vouchers WHERE user_id = ? ORDER BY created_at DESC");
+    $vStmt->bind_param("i", $userId);
+    $vStmt->execute();
+    $resV = $vStmt->get_result();
+    while ($r = $resV->fetch_assoc()) {
+        $userVouchersList[] = $r;
+        $claimedVoucherCodes[] = $r['voucher_code'];
+    }
+    $vStmt->close();
 }
 ?>
 <!DOCTYPE html>
@@ -104,16 +171,25 @@ if ($isLoggedIn) {
   <title>Cozy Coffee Co. — Cozy Rewards &amp; Voucher Store</title>
 </head>
 
-<body style="background: linear-gradient(135deg, #F9F4EC 0%, #EFE5D6 50%, #F5ECDF 100%); min-height: 100vh;">
+<body style="background: #FAF7F2; min-height: 100vh;">
 <?php 
   $activePage = 'profile';
   require_once '../includes/header_nav.php'; 
 ?>
 
+<!-- SUB NAVIGATION TAB BAR (SEAMLESS WARM BACKGROUND) -->
+<div style="background: rgba(249, 244, 236, 0.95); border-bottom: 1.5px solid #E8DDD0; padding: 12px 5%; box-shadow: 0 4px 12px rgba(60,42,33,0.03);">
+  <div style="max-width: 960px; margin: 0 auto; display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+    <a href="../profile/index.php" style="padding: 9px 22px; border-radius: 20px; font-size: 0.88rem; font-weight: 700; background: #FFFFFF; color: #665447; border: 1.5px solid #E5D9CC; text-decoration: none;">👤 Edit My Profile</a>
+    <a href="../profile/orders.php" style="padding: 9px 22px; border-radius: 20px; font-size: 0.88rem; font-weight: 700; background: #FFFFFF; color: #665447; border: 1.5px solid #E5D9CC; text-decoration: none;">📦 My Orders &amp; Live Status</a>
+    <a href="index.php" style="padding: 9px 22px; border-radius: 20px; font-size: 0.88rem; font-weight: 800; background: var(--color-accent-dark); color: #ffffff; text-decoration: none; box-shadow: 0 4px 12px rgba(140,109,88,0.3);">⭐ Cozy Rewards</a>
+  </div>
+</div>
+
 <div class="container" style="max-width: 1200px; margin: 30px auto; padding: 0 20px;">
 
   <?php if (!empty($message)): ?>
-    <div class="alert alert-<?php echo $message_type; ?>" style="margin-bottom: 20px; padding: 14px 18px; border-radius: 12px; background: <?php echo $message_type === 'success' ? '#d1fae5' : '#fee2e2'; ?>; color: <?php echo $message_type === 'success' ? '#065f46' : '#991b1b'; ?>;">
+    <div class="alert alert-<?php echo $message_type; ?>" style="margin-bottom: 20px; padding: 14px 18px; border-radius: 12px; background: <?php echo $message_type === 'success' ? '#d1fae5' : '#fee2e2'; ?>; color: <?php echo $message_type === 'success' ? '#065f46' : '#991b1b'; ?>; font-weight: 700;">
       <?php echo htmlspecialchars($message); ?>
     </div>
   <?php endif; ?>
@@ -167,7 +243,7 @@ if ($isLoggedIn) {
               <?php foreach (array_slice($pointsLogs, 0, 5) as $log): ?>
                 <div style="display: flex; justify-content: space-between; align-items: center; padding-bottom: 8px; border-bottom: 1px dashed #e8ded2; font-size: 0.85rem;">
                   <div>
-                   <<div style="font-weight: 600; color: #333;"><?php echo htmlspecialchars($log['description'] ?? ''); ?></div>
+                    <div style="font-weight: 600; color: #333;"><?php echo htmlspecialchars($log['description'] ?? ''); ?></div>
                     <div style="font-size: 0.75rem; color: #888;"><?php echo date('M d, Y · h:i A', strtotime($log['created_at'])); ?></div>
                   </div>
                   <span style="font-weight: 800; font-size: 0.95rem; color: <?php echo $log['points'] >= 0 ? '#059669' : '#dc2626'; ?>;">
@@ -181,11 +257,62 @@ if ($isLoggedIn) {
 
       </div>
 
-      <!-- RIGHT COLUMN: REDEEM VOUCHERS STORE -->
+      <!-- RIGHT COLUMN: REDEEM VOUCHERS STORE & BIRTHDAY PERKS -->
       <div style="background: #ffffff; border: 1px solid var(--color-border); border-radius: 20px; padding: 26px; box-shadow: 0 4px 16px rgba(0,0,0,0.03);">
-        <h2 style="font-size: 1.4rem; margin-bottom: 6px; color: var(--color-primary);">🎁 Points Redemption Store</h2>
-        <p style="color: #666; font-size: 0.9rem; margin-bottom: 22px;">Use your Cozy Points to redeem food &amp; drink discount coupons!</p>
+        
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+          <div>
+            <h2 style="font-size: 1.4rem; margin: 0 0 4px 0; color: var(--color-primary);">🎁 Points Redemption Store</h2>
+            <p style="color: #666; font-size: 0.88rem; margin: 0;">Use your Cozy Points to redeem food &amp; drink discount coupons!</p>
+          </div>
+          <button type="button" class="btn btn-outline btn-small" onclick="openRedemptionHistoryModal()" style="font-size: 0.8rem; padding: 6px 12px; font-weight: 700; white-space: nowrap;">
+            📜 Redemption History
+          </button>
+        </div>
 
+        <!-- BIRTHDAY MONTH EXCLUSIVE PERKS (IF BIRTHDAY MONTH) -->
+        <?php if ($isBirthdayMonth): ?>
+          <div style="background: linear-gradient(135deg, #FFF5F5 0%, #FED7D7 100%); border: 2px solid #FCA5A5; border-radius: 16px; padding: 18px; margin-bottom: 22px; box-shadow: 0 6px 16px rgba(239, 68, 68, 0.12);">
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px;">
+              <span style="font-size: 1.5rem;">🎂</span>
+              <div>
+                <h3 style="font-family: var(--font-heading); color: #991B1B; margin: 0; font-size: 1.15rem; font-weight: 800;">Happy Birthday Month!</h3>
+                <p style="color: #7F1D1D; font-size: 0.82rem; margin: 0;">Claim your 2 exclusive birthday gifts below for FREE!</p>
+              </div>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 12px;">
+              <?php foreach ($birthdayVouchersConfig as $bCode => $bv): 
+                $claimed = in_array($bCode, $claimedVoucherCodes);
+              ?>
+                <div style="background: #FFFFFF; border: 1.5px solid #FCA5A5; border-radius: 12px; padding: 14px; display: flex; justify-content: space-between; align-items: center; gap: 10px;">
+                  <div>
+                    <span style="background: #EF4444; color: #FFF; padding: 2px 8px; border-radius: 4px; font-size: 0.72rem; font-weight: 800; font-family: monospace;"><?php echo $bCode; ?></span>
+                    <div style="font-weight: 800; color: #2C1C14; font-size: 0.95rem; margin-top: 4px;"><?php echo htmlspecialchars($bv['name']); ?></div>
+                    <div style="font-size: 0.78rem; color: #7F1D1D;"><?php echo $bv['min_spend'] > 0 ? 'Min Spend RM' . number_format($bv['min_spend'], 2) : 'No Min Spend'; ?></div>
+                  </div>
+
+                  <div>
+                    <?php if ($claimed): ?>
+                      <span style="background: #ECFDF5; color: #065F46; border: 1px solid #6EE7B7; font-weight: 800; font-size: 0.82rem; padding: 6px 14px; border-radius: 20px; display: inline-block;">✓ Claimed</span>
+                    <?php else: ?>
+                      <button type="button" class="btn btn-orange redeem-confirm-btn" 
+                              data-code="<?php echo $bCode; ?>"
+                              data-name="<?php echo htmlspecialchars($bv['name']); ?>"
+                              data-cost="0"
+                              data-terms="<?php echo htmlspecialchars($bv['terms']); ?>"
+                              style="padding: 6px 14px; font-size: 0.85rem; font-weight: 800; background: #EF4444; border: none;">
+                        Claim Gift 🎁
+                      </button>
+                    <?php endif; ?>
+                  </div>
+                </div>
+              <?php endforeach; ?>
+            </div>
+          </div>
+        <?php endif; ?>
+
+        <!-- STANDARD VOUCHERS LIST -->
         <div style="display: flex; flex-direction: column; gap: 18px;">
           
           <?php foreach ($vouchersConfig as $code => $v): 
@@ -252,13 +379,13 @@ if ($isLoggedIn) {
       <button type="button" class="btn btn-outline" onclick="closeRedeemModal()" style="flex: 1;">Cancel</button>
       <form action="" method="POST" id="redeemForm" style="flex: 1;">
         <input type="hidden" name="voucher_code" id="modalVoucherCodeInput">
-        <button type="submit" name="redeem_voucher" class="btn btn-orange btn-full" style="font-weight: 700;">Yes, Redeem Now! 🎉</button>
+        <button type="submit" name="redeem_voucher" class="btn btn-orange btn-full" style="font-weight: 700;">Yes, Claim / Redeem Now! 🎉</button>
       </form>
     </div>
   </div>
 </div>
 
-<!-- FULL HISTORY MODAL -->
+<!-- FULL POINTS HISTORY MODAL -->
 <div id="historyModal" class="modal-overlay">
   <div class="modal-content" style="max-width: 520px; padding: 26px; border-radius: 16px;">
     <button class="modal-close" onclick="closeHistoryModal()">&times;</button>
@@ -289,13 +416,66 @@ if ($isLoggedIn) {
   </div>
 </div>
 
+<!-- REDEMPTION HISTORY POPUP MODAL -->
+<div id="redemptionHistoryModal" class="modal-overlay">
+  <div class="modal-content" style="max-width: 560px; padding: 26px; border-radius: 18px;">
+    <button class="modal-close" onclick="closeRedemptionHistoryModal()">&times;</button>
+    
+    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 14px;">
+      <span style="font-size: 1.6rem;">📜</span>
+      <div>
+        <h3 style="color: var(--color-primary); margin: 0; font-family: var(--font-heading);">Redemption Voucher History</h3>
+        <p style="color: #666; font-size: 0.82rem; margin: 0;">Overview of all your claimed &amp; redeemed vouchers.</p>
+      </div>
+    </div>
+    
+    <?php if (empty($userVouchersList)): ?>
+      <div style="text-align: center; padding: 30px; color: #888; background: #FAF7F2; border-radius: 14px;">
+        <div style="font-size: 2rem; margin-bottom: 6px;">🎟️</div>
+        <div>No redeemed vouchers found yet.</div>
+      </div>
+    <?php else: ?>
+      <div style="max-height: 360px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; padding-right: 4px;">
+        <?php foreach ($userVouchersList as $uv): 
+          $st = strtoupper($uv['status'] ?? 'ACTIVE');
+          $stBg = ($st === 'USED') ? '#F3F4F6' : '#ECFDF5';
+          $stCol = ($st === 'USED') ? '#6B7280' : '#065F46';
+          $stBorder = ($st === 'USED') ? '#E5E7EB' : '#6EE7B7';
+        ?>
+          <div style="display: flex; justify-content: space-between; align-items: center; background: #FAF7F2; border: 1px solid #E8DDD0; padding: 12px 16px; border-radius: 12px;">
+            <div>
+              <div style="display: flex; align-items: center; gap: 8px;">
+                <span style="background: #C85A3E; color: #FFF; font-weight: 800; font-size: 0.72rem; padding: 2px 8px; border-radius: 4px; font-family: monospace;"><?php echo htmlspecialchars($uv['voucher_code']); ?></span>
+                <span style="font-weight: 800; color: #2C1C14; font-size: 0.9rem;">Discount: RM <?php echo number_format($uv['discount_amount'], 2); ?></span>
+              </div>
+              <div style="font-size: 0.76rem; color: #7A685A; margin-top: 4px;">
+                Claimed: <?php echo date('M d, Y · h:i A', strtotime($uv['created_at'])); ?>
+                <?php if ($uv['min_spend'] > 0): ?>
+                  · Min Spend: RM <?php echo number_format($uv['min_spend'], 2); ?>
+                <?php endif; ?>
+              </div>
+            </div>
+
+            <div>
+              <span style="background: <?php echo $stBg; ?>; color: <?php echo $stCol; ?>; border: 1px solid <?php echo $stBorder; ?>; font-weight: 800; font-size: 0.78rem; padding: 4px 10px; border-radius: 20px;">
+                <?php echo $st === 'USED' ? 'USED [USED]' : 'ACTIVE'; ?>
+              </span>
+            </div>
+          </div>
+        <?php endforeach; ?>
+      </div>
+    <?php endif; ?>
+  </div>
+</div>
+
 <script>
   const redeemModal = document.getElementById('redeemModal');
   const historyModal = document.getElementById('historyModal');
+  const redemptionHistoryModal = document.getElementById('redemptionHistoryModal');
 
   function openRedeemModal(code, name, cost, terms, isJustTerms = false) {
     document.getElementById('modalVoucherName').textContent = name;
-    document.getElementById('modalVoucherCost').textContent = 'Cost: ' + cost + ' Cozy Points ⭐';
+    document.getElementById('modalVoucherCost').textContent = cost > 0 ? ('Cost: ' + cost + ' Cozy Points ⭐') : 'Free Birthday Gift! 🎁';
     document.getElementById('modalTermsText').textContent = terms;
     document.getElementById('modalVoucherCodeInput').value = code;
 
@@ -311,6 +491,8 @@ if ($isLoggedIn) {
   function closeRedeemModal() { redeemModal.style.display = 'none'; }
   function openHistoryModal() { historyModal.style.display = 'flex'; }
   function closeHistoryModal() { historyModal.style.display = 'none'; }
+  function openRedemptionHistoryModal() { redemptionHistoryModal.style.display = 'flex'; }
+  function closeRedemptionHistoryModal() { redemptionHistoryModal.style.display = 'none'; }
 
   document.querySelectorAll('.view-terms-btn').forEach(btn => {
     btn.addEventListener('click', () => {
@@ -325,6 +507,8 @@ if ($isLoggedIn) {
     });
   });
 </script>
+
+<?php require_once '../includes/footer.php'; ?>
 
 </body>
 </html>

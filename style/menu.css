@@ -287,8 +287,10 @@
 
 .modal-desc {
   font-size: 0.9rem;
-  color: #666;
+  color: #665447;
   margin: 0;
+  line-height: 1.55;
+  white-space: pre-line;
 }
 
 /* ============ OPTION SELECTORS ============ */

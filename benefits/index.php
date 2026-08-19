@@ -8,9 +8,10 @@ $hasBirthdaySet = false;
 $birthdayMonthName = '';
 $birthdayFormatted = '';
 $daysUntilBirthday = 0;
+$userPoints = 0;
 
 if ($isLoggedIn) {
-    $stmt = $conn->prepare("SELECT is_rewards_member, birthday FROM users WHERE id = ?");
+    $stmt = $conn->prepare("SELECT is_rewards_member, birthday, points FROM users WHERE id = ?");
     $uid = (int) $_SESSION['user_id'];
     $stmt->bind_param('i', $uid);
     $stmt->execute();
@@ -18,6 +19,8 @@ if ($isLoggedIn) {
     $stmt->close();
     
     $isMember = $r && (int) $r['is_rewards_member'] === 1;
+    $userPoints = $r ? (int)($r['points'] ?? 0) : 0;
+
     if ($r && !empty($r['birthday']) && $r['birthday'] !== '0000-00-00') {
         $userBirthday = $r['birthday'];
         $hasBirthdaySet = true;
@@ -71,14 +74,14 @@ if ($isLoggedIn) {
 <section class="program-section">
   <div class="benefit-grid">
 
-    <!-- 1. Earn Cozy Points -->
+    <!-- 1. Earn Cozy Points (Interactive Popup Modal) -->
     <div class="benefit-card">
       <div class="benefit-photo"><img src="../images/points.jpg" alt="Earn Cozy Points"></div>
       <div class="benefit-info">
         <div class="benefit-icon">⭐</div>
         <h3>Earn Cozy Points</h3>
         <p>Earn 1 Cozy Point for every RM1 spent on drinks, food, or merchandise in-store or online. Every 100 points redeems RM1 off your next order.</p>
-        <a href="../rewards/index.php" class="benefit-link">Check points &amp; rewards &gt;</a>
+        <button type="button" class="benefit-popup-trigger" onclick="openModal('pointsModal')">Check points &amp; rewards &gt;</button>
       </div>
     </div>
 
@@ -93,14 +96,14 @@ if ($isLoggedIn) {
       </div>
     </div>
 
-    <!-- 3. Member Welcome Coffee -->
+    <!-- 3. Member Welcome Coffee (Interactive Popup Modal) -->
     <div class="benefit-card">
       <div class="benefit-photo"><img src="../images/day.jpg" alt="Welcome drink"></div>
       <div class="benefit-info">
         <div class="benefit-icon">☕</div>
         <h3>Monthly Welcome Perk</h3>
         <p>Show your digital Cozy Rewards card on your first visit each month for a complimentary hot coffee or tea on us.</p>
-        <a href="../rewards/index.php" class="benefit-link">View digital card &gt;</a>
+        <button type="button" class="benefit-popup-trigger" onclick="openModal('welcomeModal')">View monthly perk &gt;</button>
       </div>
     </div>
 
@@ -141,7 +144,46 @@ if ($isLoggedIn) {
 </section>
 
 <!-- ============================================ -->
-<!-- 1. BIRTHDAY TREAT MODAL -->
+<!-- 1. COZY POINTS MODAL -->
+<!-- ============================================ -->
+<div id="pointsModal" class="program-modal-overlay" onclick="closeModalOnOutsideClick(event, 'pointsModal')">
+  <div class="program-modal-card">
+    <button type="button" class="program-modal-close" onclick="closeModal('pointsModal')">&times;</button>
+    <div class="modal-header-badge">⭐ COZY POINTS PROGRAM</div>
+    
+    <?php if (!$isLoggedIn): ?>
+      <h3>Earn &amp; Redeem Cozy Points ⭐</h3>
+      <p>Log in or register for a free Cozy Rewards account to start earning points on every purchase!</p>
+      <div class="modal-detail-box">
+        <h4>✨ How Points Work:</h4>
+        <p style="margin: 4px 0 0 0; color: #665447;">Earn 1 Cozy Point for every RM1 spent in-store or online. Every 100 points redeems RM1 off your next coffee or meal!</p>
+      </div>
+      <div class="modal-action-row">
+        <a href="../login/index.php" class="cta-btn cta-btn-primary" style="font-size: 0.9rem; padding: 10px 24px;">Log In Now</a>
+        <a href="../register/index.php" class="cta-btn" style="font-size: 0.9rem; padding: 10px 24px; border: 1px solid #E5D9CC; color: #665447;">Register Free</a>
+      </div>
+    <?php else: ?>
+      <h3>Your Cozy Points Balance ⭐</h3>
+      <p>Every visit brings you closer to your next free coffee or discount!</p>
+      <div class="modal-detail-box">
+        <h4>⭐ Current Balance: <?php echo number_format($userPoints); ?> Cozy Points</h4>
+        <p style="margin: 4px 0 0 0; color: #C85A3E; font-weight: 700;">
+          Redeemable Discount Value: RM <?php echo number_format($userPoints / 100, 2); ?> OFF
+        </p>
+      </div>
+      <p style="font-size: 0.88rem; color: #7A685A;">
+        💡 Present your digital Cozy Rewards card at checkout to collect points automatically on every order.
+      </p>
+      <div class="modal-action-row">
+        <a href="../rewards/index.php" class="cta-btn cta-btn-primary" style="font-size: 0.9rem; padding: 10px 24px;">💳 View Digital Card</a>
+        <button type="button" class="cta-btn" onclick="closeModal('pointsModal')" style="font-size: 0.9rem; padding: 10px 24px; border: 1px solid #E5D9CC; color: #665447;">Close</button>
+      </div>
+    <?php endif; ?>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- 2. BIRTHDAY TREAT MODAL -->
 <!-- ============================================ -->
 <div id="birthdayModal" class="program-modal-overlay" onclick="closeModalOnOutsideClick(event, 'birthdayModal')">
   <div class="program-modal-card">
@@ -191,7 +233,46 @@ if ($isLoggedIn) {
 </div>
 
 <!-- ============================================ -->
-<!-- 2. WORKSHOPS & EVENTS MODAL (Walk-in Friendly) -->
+<!-- 3. MONTHLY WELCOME PERK MODAL -->
+<!-- ============================================ -->
+<div id="welcomeModal" class="program-modal-overlay" onclick="closeModalOnOutsideClick(event, 'welcomeModal')">
+  <div class="program-modal-card">
+    <button type="button" class="program-modal-close" onclick="closeModal('welcomeModal')">&times;</button>
+    <div class="modal-header-badge">☕ MONTHLY WELCOME PERK</div>
+    
+    <?php if (!$isLoggedIn): ?>
+      <h3>Complimentary Monthly Beverage ☕</h3>
+      <p>Log in or create a free Cozy Rewards account to claim a complimentary hot coffee or tea every month!</p>
+      <div class="modal-detail-box">
+        <h4>🎁 Member Perks:</h4>
+        <p style="margin: 4px 0 0 0; color: #665447;">Show your digital Cozy Rewards card on your first visit of each month for a free hot espresso or specialty tea on us.</p>
+      </div>
+      <div class="modal-action-row">
+        <a href="../login/index.php" class="cta-btn cta-btn-primary" style="font-size: 0.9rem; padding: 10px 24px;">Log In Now</a>
+        <a href="../register/index.php" class="cta-btn" style="font-size: 0.9rem; padding: 10px 24px; border: 1px solid #E5D9CC; color: #665447;">Register Free</a>
+      </div>
+    <?php else: ?>
+      <h3>Your Monthly Welcome Perk ☕</h3>
+      <p>We love treating our members like family!</p>
+      <div class="modal-detail-box">
+        <h4>☕ Monthly Perk Status: Active</h4>
+        <p style="margin: 4px 0 0 0; color: #059669; font-weight: 700;">
+          Ready to claim on your next visit!
+        </p>
+      </div>
+      <p style="font-size: 0.88rem; color: #7A685A;">
+        💡 Simply show your digital Cozy Rewards card at our counter on your first visit of the month to enjoy your free drink.
+      </p>
+      <div class="modal-action-row">
+        <a href="../rewards/index.php" class="cta-btn cta-btn-primary" style="font-size: 0.9rem; padding: 10px 24px;">💳 View Digital Card</a>
+        <button type="button" class="cta-btn" onclick="closeModal('welcomeModal')" style="font-size: 0.9rem; padding: 10px 24px; border: 1px solid #E5D9CC; color: #665447;">Close</button>
+      </div>
+    <?php endif; ?>
+  </div>
+</div>
+
+<!-- ============================================ -->
+<!-- 4. WORKSHOPS & EVENTS MODAL (Walk-in Friendly) -->
 <!-- ============================================ -->
 <div id="eventsModal" class="program-modal-overlay" onclick="closeModalOnOutsideClick(event, 'eventsModal')">
   <div class="program-modal-card">
@@ -231,7 +312,7 @@ if ($isLoggedIn) {
 </div>
 
 <!-- ============================================ -->
-<!-- 3. PARTNER PERKS MODAL -->
+<!-- 5. PARTNER PERKS MODAL -->
 <!-- ============================================ -->
 <div id="partnerModal" class="program-modal-overlay" onclick="closeModalOnOutsideClick(event, 'partnerModal')">
   <div class="program-modal-card">
@@ -265,7 +346,7 @@ if ($isLoggedIn) {
 </div>
 
 <!-- ============================================ -->
-<!-- 4. ECO GIVE BACK MODAL -->
+<!-- 6. ECO GIVE BACK MODAL -->
 <!-- ============================================ -->
 <div id="giveBackModal" class="program-modal-overlay" onclick="closeModalOnOutsideClick(event, 'giveBackModal')">
   <div class="program-modal-card">
@@ -303,6 +384,8 @@ function openModal(modalId) {
     if (modal) {
         modal.classList.add('active');
         document.body.style.overflow = 'hidden';
+        const modalCards = modal.querySelectorAll('.program-modal-card, .modal-content');
+        modalCards.forEach(card => { card.scrollTop = 0; });
     }
 }
 
@@ -311,6 +394,8 @@ function closeModal(modalId) {
     if (modal) {
         modal.classList.remove('active');
         document.body.style.overflow = '';
+        const modalCards = modal.querySelectorAll('.program-modal-card, .modal-content');
+        modalCards.forEach(card => { card.scrollTop = 0; });
     }
 }
 
@@ -322,12 +407,14 @@ function closeModalOnOutsideClick(event, modalId) {
 
 document.addEventListener('keydown', function(event) {
     if (event.key === 'Escape') {
-        ['birthdayModal', 'eventsModal', 'partnerModal', 'giveBackModal'].forEach(mId => {
+        ['pointsModal', 'birthdayModal', 'welcomeModal', 'eventsModal', 'partnerModal', 'giveBackModal'].forEach(mId => {
             closeModal(mId);
         });
     }
 });
 </script>
+
+<?php require_once '../includes/footer.php'; ?>
 
 </body>
 </html>

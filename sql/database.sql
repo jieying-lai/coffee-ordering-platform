@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3308
--- Generation Time: Aug 18, 2026 at 10:35 AM
+-- Generation Time: Aug 19, 2026 at 10:43 AM
 -- Server version: 8.4.7
 -- PHP Version: 8.3.28
 
@@ -58,38 +58,39 @@ CREATE TABLE IF NOT EXISTS `activities_photos` (
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `activity_id` (`activity_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=52 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `activities_photos`
 --
 
 INSERT INTO `activities_photos` (`id`, `activity_id`, `image_path`, `created_at`) VALUES
-(1, 1, 'images/1.jpg', '2026-08-18 10:24:19'),
-(2, 1, 'images/2.jpg', '2026-08-18 10:24:19'),
-(3, 1, 'images/3.jpg', '2026-08-18 10:24:19'),
-(4, 2, 'images/menu/1785943018_2e6489c6.jpg', '2026-08-18 10:24:19'),
-(5, 2, 'images/menu/1785944785_4362788e.jpeg', '2026-08-18 10:24:19'),
-(6, 3, 'images/menu/1785947072_8b5fb528.jpg', '2026-08-18 10:24:19'),
-(7, 3, 'images/3.jpg', '2026-08-18 10:24:19'),
-(8, 4, 'images/2.jpg', '2026-08-18 10:24:19'),
-(9, 4, 'images/menu/1785944926_2818b37d.jpeg', '2026-08-18 10:24:19'),
-(10, 5, 'images/menu/1785943018_2e6489c6.jpg', '2026-08-18 10:24:19'),
-(11, 6, 'images/1.jpg', '2026-08-18 10:24:19'),
-(12, 6, 'images/menu/1785947636_40c4e216.jpeg', '2026-08-18 10:24:19'),
-(13, 7, 'images/menu/1785944785_4362788e.jpeg', '2026-08-18 10:24:19'),
-(14, 8, 'images/3.jpg', '2026-08-18 10:24:19'),
-(15, 9, 'images/1.jpg', '2026-08-18 10:24:19'),
-(16, 9, 'images/2.jpg', '2026-08-18 10:24:19'),
-(17, 10, 'images/menu/1785947072_8b5fb528.jpg', '2026-08-18 10:24:19'),
-(18, 10, 'images/menu/1785947636_40c4e216.jpeg', '2026-08-18 10:24:19'),
-(19, 11, 'images/menu/1785944785_4362788e.jpeg', '2026-08-18 10:24:19'),
-(20, 11, 'images/3.jpg', '2026-08-18 10:24:19'),
-(21, 12, 'images/menu/1785947636_40c4e216.jpeg', '2026-08-18 10:24:19'),
-(22, 13, 'images/2.jpg', '2026-08-18 10:24:19'),
-(23, 14, 'images/menu/1785945576_c6ef0025.webp', '2026-08-18 10:24:19'),
-(24, 15, 'images/3.jpg', '2026-08-18 10:24:19'),
-(25, 15, 'images/1.jpg', '2026-08-18 10:24:19');
+(26, 1, 'uploads/activities/act_edit_1787134425_0.jpg', '2026-08-19 10:13:45'),
+(27, 1, 'uploads/activities/act_edit_1787134426_1.jpg', '2026-08-19 10:13:46'),
+(28, 2, 'uploads/activities/act_edit_1787134856_0.jpeg', '2026-08-19 10:20:56'),
+(29, 3, 'uploads/activities/act_edit_1787134946_0.jpg', '2026-08-19 10:22:26'),
+(30, 3, 'uploads/activities/act_edit_1787134946_1.jpg', '2026-08-19 10:22:26'),
+(31, 4, 'uploads/activities/act_edit_1787134992_0.jpg', '2026-08-19 10:23:12'),
+(32, 4, 'uploads/activities/act_edit_1787134992_1.jpg', '2026-08-19 10:23:12'),
+(33, 5, 'uploads/activities/act_edit_1787135196_0.jpeg', '2026-08-19 10:26:36'),
+(34, 5, 'uploads/activities/act_edit_1787135196_1.jpg', '2026-08-19 10:26:36'),
+(35, 6, 'uploads/activities/act_edit_1787135228_0.webp', '2026-08-19 10:27:08'),
+(36, 7, 'uploads/activities/act_edit_1787135330_0.jpg', '2026-08-19 10:28:50'),
+(37, 7, 'uploads/activities/act_edit_1787135330_1.jpg', '2026-08-19 10:28:50'),
+(38, 7, 'uploads/activities/act_edit_1787135330_2.jpg', '2026-08-19 10:28:50'),
+(39, 8, 'uploads/activities/act_edit_1787135372_0.webp', '2026-08-19 10:29:32'),
+(40, 9, 'uploads/activities/act_edit_1787135438_0.jpg', '2026-08-19 10:30:38'),
+(41, 9, 'uploads/activities/act_edit_1787135438_1.jpg', '2026-08-19 10:30:38'),
+(42, 9, 'uploads/activities/act_edit_1787135438_2.jpg', '2026-08-19 10:30:38'),
+(43, 9, 'uploads/activities/act_edit_1787135438_3.jpg', '2026-08-19 10:30:38'),
+(44, 10, 'uploads/activities/act_edit_1787135651_0.jpg', '2026-08-19 10:34:11'),
+(45, 11, 'uploads/activities/act_edit_1787135720_0.jpg', '2026-08-19 10:35:20'),
+(46, 11, 'uploads/activities/act_edit_1787135720_1.jpg', '2026-08-19 10:35:20'),
+(47, 12, 'uploads/activities/act_edit_1787135754_0.jpg', '2026-08-19 10:35:54'),
+(48, 14, 'uploads/activities/act_edit_1787135854_0.jpg', '2026-08-19 10:37:34'),
+(49, 14, 'uploads/activities/act_edit_1787135854_1.jpg', '2026-08-19 10:37:34'),
+(50, 15, 'uploads/activities/act_edit_1787135888_0.jpg', '2026-08-19 10:38:08'),
+(51, 15, 'uploads/activities/act_edit_1787135888_1.jpg', '2026-08-19 10:38:08');
 
 -- --------------------------------------------------------
 
@@ -113,8 +114,8 @@ CREATE TABLE IF NOT EXISTS `activities_posts` (
 --
 
 INSERT INTO `activities_posts` (`id`, `title`, `category`, `content`, `created_at`, `is_hidden`) VALUES
-(1, 'Monthly Corporate Coffee Gathering with XX Enterprise', 'event', 'We were delighted to host XX Enterprise Sdn. Bhd. for their monthly corporate coffee gathering at our flagship roast lab! Over 80 team members joined us for custom pour-over flights, interactive latte art demonstrations, and artisanal dessert pairings. Thank you for celebrating community and great coffee with us!', '2026-08-18 18:24:19', 0),
-(2, 'August Merdeka Celebration — Exclusive 31% OFF for Members!', 'promotion', 'Happy 67th Merdeka Month, Malaysia! To celebrate unity and freedom, all Cozy Rewards members enjoy an exclusive 31% OFF on our handcrafted seasonal beverage series throughout August. Simply present your digital card or order online to claim your discount.', '2026-08-16 18:24:19', 0),
+(1, 'Monthly Corporate Coffee Gathering with Apex Media Inc.', 'event', 'We were delighted to host Apex Media Inc. for their monthly corporate coffee gathering at our flagship roast lab! Over 80 team members joined us for custom pour-over flights, interactive latte art demonstrations, and artisanal dessert pairings. Thank you for celebrating community and great coffee with us!', '2026-08-18 18:24:19', 0),
+(2, 'Merdeka Celebration! Exclusive 31% OFF for Members!', 'promotion', 'Happy 69th Merdeka Month, Malaysia! To celebrate unity and freedom, all Cozy Rewards members enjoy an exclusive 31% OFF on our handcrafted seasonal beverage series until 16 Sept. Simply present your digital card or order online to claim your discount.', '2026-08-16 18:24:19', 0),
 (3, 'Grand Opening of Our Slow-Bar Roast Lab & Workshop Space', 'workshop', 'We are thrilled to announce the official opening of our Slow-Bar Roast Lab! Designed for coffee lovers, this dedicated space features hands-on V60 pour-over stations, espresso extraction gear, and cupping tables. Join us every Saturday for interactive barista sessions!', '2026-08-14 18:24:19', 0),
 (4, 'Weekend Acoustic Sunset Sessions & Cold Brew Tasting', 'event', 'Unwind every Friday evening with live acoustic music, ambient warm lighting, and complimentary tasting pours of our 18-hour steep Ethiopian Yirgacheffe cold brew. Bring a friend and enjoy the cozy atmosphere.', '2026-08-12 18:24:19', 0),
 (5, 'Buy 1 Free 1 Handcrafted Specialty Latte Thursdays', 'promotion', 'Thursdays are made for sharing! Treat yourself and a colleague to our signature Dirty Latte or Caramel Macchiato. Buy any handcrafted beverage every Thursday between 2 PM and 5 PM and receive a second drink on us.', '2026-08-10 18:24:19', 0),
@@ -125,7 +126,6 @@ INSERT INTO `activities_posts` (`id`, `title`, `category`, `content`, `created_a
 (10, 'Early Bird Breakfast Pairings: Fresh Pastry + Coffee at RM12', 'promotion', 'Start your morning right. Grab any freshly baked croissant or sourdough slice together with a hot Americano or Flat White for just RM12 before 10:30 AM daily.', '2026-07-31 18:24:19', 0),
 (11, 'Single-Origin Cupping & Sensory Flavor Wheel Session', 'workshop', 'Develop your coffee palate with our monthly sensory cupping session. We evaluated 6 single-origin coffees from Africa and South America to explore acidity, body, and aroma.', '2026-07-29 18:24:19', 0),
 (12, 'Rainy Afternoon Brews & Homemade Basque Cheesecake', 'daily', 'Rainy afternoons call for a hot pour-over and a slice of our homemade burnt Basque cheesecake. Drop by, grab your favorite window seat, and enjoy the cozy rain rhythm.', '2026-07-27 18:24:19', 0),
-(13, 'Extended Store Operating Hours for Exam & Work Season', 'announcement', 'Need a quiet, comfortable space with reliable Wi-Fi to study or work? We are extending our opening hours until 11:00 PM every day through the end of the month!', '2026-07-25 18:24:19', 0),
 (14, 'Cozy Rewards Members Double Points Weekend!', 'promotion', 'Earn 2x Cozy Points on every food, beverage, and bean bag purchase this coming Saturday and Sunday! Watch your points balance grow twice as fast toward your next free reward.', '2026-07-23 18:24:19', 0),
 (15, 'Neighborhood Coffee & Book Club Monthly Gathering', 'event', 'We gathered for our monthly book club over hot lattes and cinnamon rolls to discuss contemporary literature. Join our next meetup on the last Sunday of the month!', '2026-07-21 18:24:19', 0);
 
@@ -205,7 +205,7 @@ CREATE TABLE IF NOT EXISTS `blog_posts` (
 --
 
 INSERT INTO `blog_posts` (`id`, `user_id`, `ordered_item`, `mood`, `description`, `created_at`, `is_hidden`, `is_deleted`, `deleted_at`) VALUES
-(1, 2, '', 'harmony', '', '2026-08-05 17:13:44', 1, 0, NULL),
+(1, 2, '', 'harmony', '', '2026-08-05 17:13:44', 0, 0, NULL),
 (2, 2, 'Truffle Wild Mushroom Risotto', 'Happy', 'This Cozy Coffee Co. enviroment is very nice, dont have the smell of coffee will appear on your clothes after stay there 2 hours', '2026-08-05 17:16:01', 0, 0, NULL),
 (3, 2, '', 'Relaxed', '', '2026-08-05 17:27:33', 0, 0, NULL),
 (4, 2, 'Dirty Latte', 'Energized, Cozy, Grateful', 'best drink ever', '2026-08-05 17:34:44', 0, 0, NULL),
@@ -256,14 +256,17 @@ CREATE TABLE IF NOT EXISTS `chat_messages` (
   `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `chat_messages`
 --
 
 INSERT INTO `chat_messages` (`id`, `user_id`, `sender_type`, `message`, `is_read`, `created_at`) VALUES
-(1, 1, 'user', 'hi', 0, '2026-08-13 00:13:31');
+(1, 1, 'user', 'hi', 0, '2026-08-13 00:13:31'),
+(6, 1, 'admin', '1', 0, '2026-08-19 17:10:50'),
+(7, 1, 'admin', '1', 0, '2026-08-19 17:14:18'),
+(8, 1, 'user', 'qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq', 0, '2026-08-19 17:16:48');
 
 -- --------------------------------------------------------
 
@@ -291,7 +294,7 @@ CREATE TABLE IF NOT EXISTS `contact_info` (
 --
 
 INSERT INTO `contact_info` (`id`, `address`, `phone`, `email`, `hours`, `map_embed_url`, `instagram_url`, `facebook_url`, `tiktok_url`, `updated_at`) VALUES
-(1, '7, Bandar Sungai Long, 43000 Kajang, Selangor', '+60 12-345 6789', 'cozycoffee@gmail.com', 'Mon - Sun: 8:00 AM - 10:00 PM', 'https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d1346.744641350054!2d101.79352459067356!3d3.0400653684064136!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2smy!4v1783592577677!5m2!1sen!2smy', '#', '#', '#', '2026-08-18 08:25:54');
+(1, '7, Bandar Sungai Long, 43000 Kajang, Selangor', '+60 12-345 6789', 'cozycoffee@gmail.com', 'Mon - Sun: 8:00 AM - 10:00 PM', 'https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d1346.744641350054!2d101.79352459067356!3d3.0400653684064136!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2smy!4v1783592577677!5m2!1sen!2smy', 'https://www.instagram.com/cozy.coffee.co', 'https://www.facebook.com/cozy.coffee.co', 'https://www.tiktok.com/@cozy.coffee.co', '2026-08-19 00:40:17');
 
 -- --------------------------------------------------------
 
@@ -311,7 +314,7 @@ CREATE TABLE IF NOT EXISTS `menu_items` (
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`item_id`),
   KEY `category_id` (`category_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=95 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=96 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `menu_items`
@@ -324,15 +327,15 @@ INSERT INTO `menu_items` (`item_id`, `category_id`, `name`, `description`, `pric
 (5, 1, 'Australian Iced Coffee', 'Double shot espresso poured over chilled milk, topped with a scoop of premium vanilla ice cream and whipped cream.\r\n\r\n1:2:1 parts espresso, chilled milk, and vanilla ice cream\r\n\r\n~280-20 kcal\r\n\r\nSize: 12 oz (350 ml)', 13.90, '1785939552_1e50d81b.png', 5, '2026-08-05 14:15:03'),
 (6, 1, 'Affogato', 'A scoop of creamy vanilla ice cream drowned in a hot shot of freshly pulled espresso.\r\n\r\n1:1 ratio (1 shot espresso to 1 scoop ice cream)\r\n\r\n~140-60 kcal\r\n\r\nSize: 4 oz (120 ml)', 12.90, '1785939576_0449163b.jpeg', 6, '2026-08-05 14:15:03'),
 (8, 2, 'Dirty Latte', 'Cold milk base topped with a hot espresso shot, creating a striking visually layered effect and contrast of temperatures.\r\n\r\n1:2 parts espresso to cold milk\r\n\r\n~100-20 kcal\r\n\r\nSize: 5- oz (150-80 ml)', 14.90, '1785944949_d183b6ca.jpeg', 2, '2026-08-05 14:15:03'),
-(10, 2, 'Piccolo Latte', 'Ristretto shot topped with warm steamed milk and a light layer of foam for a strong espresso punch.\r\n\r\n1:2 parts ristretto to steamed milk\r\n\r\n~45-0 kcal\r\n\r\nSize: 4 oz (120 ml)', 11.90, '1785944839_fd4cf106.jpeg', 4, '2026-08-05 14:15:03'),
+(10, 2, 'Pineapple Coconut Smoothie Piña', 'Ristretto shot topped with warm steamed milk and a light layer of foam for a strong espresso punch.\r\n\r\n1:2 parts ristretto to steamed milk\r\n\r\n~45-0 kcal\r\n\r\nSize: 4 oz (120 ml)', 11.90, '1785944839_fd4cf106.jpeg', 4, '2026-08-05 14:15:03'),
 (13, 3, 'Houjicha Strawberry', 'Roasted Niko-Neko Tsubaki Houjicha layered with floral jasmine tea and crowned with a light, fruity strawberry cloud foam.\r\n\r\n1:1:1 parts houjicha to jasmine tea to strawberry cloud foam\r\n\r\n~150-90 kcal\r\n\r\nSize: 12 oz (350 ml)', 15.90, '1785945826_03e1df6e.webp', 1, '2026-08-05 14:15:03'),
 (14, 3, 'Honeycomb Iced Matcha', 'Smooth Uji matcha iced base topped with crunchy homemade honeycomb candy, delivering a sweet crisp bite to balance the rich green tea flavor.\r\n\r\n1:3 parts Uji matcha base to milk, topped with honeycomb crunch\r\n\r\n~160-00 kcal\r\n\r\nSize: 16 oz (480 ml)', 15.90, '1785939453_4868ef2c.png', 2, '2026-08-05 14:15:03'),
 (15, 3, 'Sesame Latte', 'Nutty blend of deeply roasted black sesame paste shaken or stirred into rich, creamy oat milk for a comforting, velvety treat.\r\n\r\n1:3 parts roasted black sesame paste to oat milk\r\n\r\n~180-20 kcal\r\n\r\nSize: 12 oz (350 ml)', 13.90, '1785940171_b9a46497.png', 3, '2026-08-05 14:15:03'),
 (16, 3, 'Salted Apple Elixir', 'Crisp salted green apple and tangy passion fruit shaken with fresh mint, finished with crisp soda water for a bright, refreshing sparkle.\r\n\r\n1:2 parts fruit-mint elixir base to soda water\r\n\r\n~90-20 kcal\r\n\r\nSize: 16 oz (480 ml)', 14.90, '1785945706_cc78cb04.jpeg', 4, '2026-08-05 14:15:03'),
-(17, 3, 'Seasalt Dark Choco Sp?nner', 'Decadent iced Callebaut dark chocolate poured over ice, crowned with sp?nner cream topping.\r\n\r\n1:2 parts iced dark chocolate base to signature sp?nner cream\r\n\r\n~240-80 kcal\r\n\r\nSize: 12 oz (350 ml)', 14.90, '1785940066_4a7ba797.png', 5, '2026-08-05 14:15:03'),
+(17, 3, 'Seasalt Dark Choco Spänner', 'Decadent iced Callebaut dark chocolate poured over ice, crowned with sp?nner cream topping.\r\n\r\n1:2 parts iced dark chocolate base to signature sp?nner cream\r\n\r\n~240-80 kcal\r\n\r\nSize: 12 oz (350 ml)', 14.90, '1785940066_4a7ba797.png', 5, '2026-08-05 14:15:03'),
 (18, 3, 'Babycino', 'Warm, frothed milk served in a mini espresso cup, topped with a dusting of cocoa powder for a kid-friendly cafe experience.\r\n\r\n1:0 parts warm frothed milk (caffeine-free)\r\n\r\n~30-5 kcal\r\n\r\nSize: 3 oz (90 ml)', 8.90, '1785945576_c6ef0025.webp', 6, '2026-08-05 14:15:03'),
 (19, 4, 'Morning Traffic', 'Tangy and refreshing fusion of sweet strawberries, tart kiwi, and zesty lemon juice, sweetened with honey and blended with probiotic Yakult for a crisp, fruity lift.\r\n\r\n1:2 parts strawberry-kiwi blend to lemon-honey Yakult\r\n\r\n~130 kcal\r\n\r\nSize: 12 oz (350 ml)', 14.90, '1785940089_fd95928b.png', 1, '2026-08-05 14:15:03'),
-(20, 4, 'Pink Passion', 'Vibrant, tropical blend of dragonfruit, tangy passionfruit, and sweet pineapple, whipped together with honey and creamy yogurt for a smooth, pitaya-pink punch.\r\n\r\n1:2 parts fruit blend to honey-yogurt base\r\n\r\n~220 kcal\r\n\r\nSize: 16 oz (480 ml)', 15.90, '1785939412_d4118e26.png', 2, '2026-08-05 14:15:03'),
+(20, 4, 'Pineapple Coconut Smoothie Piña', 'Vibrant, tropical blend of dragonfruit, tangy passionfruit, and sweet pineapple, whipped together with honey and creamy yogurt for a smooth, pitaya-pink punch.\r\n\r\n1:2 parts fruit blend to honey-yogurt base\r\n\r\n~220 kcal\r\n\r\nSize: 16 oz (480 ml)', 15.90, '1785939412_d4118e26.png', 2, '2026-08-05 14:15:03'),
 (21, 4, 'Blue Mango Bliss', 'Luscious layers of sweet mango puree and fresh milk topped with vibrant butterfly pea flower tea for a stunning, tropical indigo-and-gold treat.\r\n\r\n1:1:1 parts mango puree to fresh milk to butterfly pea flower tea\r\n\r\n~160 kcal\r\n\r\nSize: 12 oz (350 ml)', 15.90, '1785940115_096149c7.png', 3, '2026-08-05 14:15:03'),
 (22, 4, 'Butterfly Yuzunade', 'Zesty layer of citrusy yuzu, crushed orange, and tart lemon juice topped with vibrant, color-changing butterfly pea soda for an enchanting sparkle.\r\n\r\n1:2 parts citrus blend to butterfly pea soda\r\n\r\n~100 kcal\r\n\r\nSize: 12 oz (350 ml)', 13.90, '1785940132_b09a9c8a.png', 4, '2026-08-05 14:15:03'),
 (24, 5, 'Sun-Dried Tomato & Burrata Pasta', 'Pan-seared salmon fillet encrusted with aromatic fresh herbs, served alongside buttery mashed potatoes and roasted vegetables with a squeeze of fresh lemon.\r\n\r\nSalmon Fillet | Mashed Potatoes | Fresh Herbs | Butter | Garlic | Lemon | Seasonal Vegetables\r\n\r\n~520-40 kcal', 17.90, '1785947299_bd4d7386.jpeg', 2, '2026-08-05 14:15:03'),
@@ -348,7 +351,7 @@ INSERT INTO `menu_items` (`item_id`, `category_id`, `name`, `description`, `pric
 (37, 1, 'Mocha Delight', 'Rich espresso blended with chocolate syrup and steamed milk, topped with whipped cream and a drizzle of chocolate sauce.\r\n\r\n1:3 parts espresso to steamed milk (plus ~2 tbsp chocolate syrup)\r\n\r\n~290-20 kcal\r\n\r\nSize: 12 oz (350 ml)', 14.50, '1785943060_b29834c8.jpeg', 0, '2026-06-26 15:08:23'),
 (38, 1, 'Vanilla Bean Latte', 'Espresso blended with steamed milk and sweet vanilla bean paste or syrup, infused with real vanilla specks.\r\n\r\n1:3 parts espresso to steamed milk (plus ~2 tbsp vanilla bean syrup/paste)\r\n\r\n~200-30 kcal\r\n\r\nSize: 12 oz (350 ml)', 13.50, '1785943036_ae1279fa.jpeg', 0, '2026-06-26 15:08:23'),
 (39, 1, 'Salted Caramel Cappuccino', 'Bold cappuccino topped with salted caramel foam. Espresso combined with rich caramel sauce and steamed milk, topped with a thick layer of milk foam and a pinch of sea salt.\r\n\r\n1:1:1 parts espresso, steamed milk, and milk foam (plus ~1.5 tbsp caramel sauce & sea salt)\r\n\r\n~180-10 kcal\r\n\r\nSize: 8 oz (240 ml)', 15.00, '1785943018_2e6489c6.jpg', 0, '2026-08-02 15:08:23'),
-(40, 1, 'Pumpkin Spice Latte', 'Seasonal favorite with warm autumn spices. Espresso blended with steamed milk, sweet pumpkin spice sauce, and warm spices, topped with whipped cream and pumpkin pie spice.\r\n\r\n1:3 parts espresso to steamed milk (plus ~2 tbsp pumpkin spice sauce)\r\n\r\n~300-30 kcal\r\n\r\nSize: 12 oz (350 ml)', 15.50, '1785942993_f4bbbce5.jpeg', 0, '2026-06-26 15:08:23'),
+(40, 1, 'Pineapple Coconut Smoothie Piña', 'Seasonal favorite with warm autumn spices. Espresso blended with steamed milk, sweet pumpkin spice sauce, and warm spices, topped with whipped cream and pumpkin pie spice.\r\n\r\n1:3 parts espresso to steamed milk (plus ~2 tbsp pumpkin spice sauce)\r\n\r\n~300-30 kcal\r\n\r\nSize: 12 oz (350 ml)', 15.50, '1785942993_f4bbbce5.jpeg', 0, '2026-06-26 15:08:23'),
 (41, 1, 'Honey Cinnamon Latte', 'Espresso blended with steamed milk, natural honey, and ground cinnamon.\r\n\r\n1:3 parts espresso to steamed milk (plus ~1 tbsp honey & a dash of cinnamon)\r\n\r\n~200-30 kcal\r\n\r\nSize: 12 oz (350 ml)', 14.00, '1785942975_5d230054.jpeg', 0, '2026-06-26 15:08:23'),
 (42, 1, 'White Chocolate Mocha', 'Rich espresso combined with sweet white chocolate sauce and steamed milk, topped with sweetened whipped cream.\r\n\r\n1:3 parts espresso to steamed milk (plus ~2 tbsp white chocolate sauce)\r\n\r\n~400-30 kcal\r\n\r\nSize: 12 oz (350 ml)', 15.20, '1785942951_6db67de1.jpeg', 0, '2026-06-26 15:08:23'),
 (43, 1, 'Lavender Honey Latte', 'Floral lavender meets golden honey and espresso. Smooth espresso blended with steamed milk, natural honey, and subtle floral lavender syrup.\r\n\r\n1:3 parts espresso to steamed milk (plus ~1 tbsp honey & 2 pumps lavender syrup)\r\n\r\n~210-40 kcal\r\n\r\nSize: 12 oz (350 ml)', 15.80, '1785942926_c92101fc.jpeg', 0, '2026-06-26 15:08:23'),
@@ -356,10 +359,10 @@ INSERT INTO `menu_items` (`item_id`, `category_id`, `name`, `description`, `pric
 (45, 2, 'Espresso', 'Concentrated shot under high pressure. Rich crema on top. Intense, full-bodied flavor.\r\n\r\n1:0 parts espresso (pure shot)\r\n\r\n~5-0 kcal\r\n\r\nSize: 1 oz (30 ml)', 8.00, '1785944785_4362788e.jpeg', 0, '2026-06-26 15:08:23'),
 (46, 2, 'Americano', 'Espresso first, then water. Dilutes crema. Smooth taste.\r\nRich espresso diluted with hot water, producing a smooth, full-bodied cup with a light crema layer.\r\n\r\n2:1 parts hot water to espresso\r\n\r\n~5-0 kcal\r\n\r\nSize: 12 oz (350 ml)', 9.00, '1785944692_91327c53.jpeg', 0, '2026-06-26 15:08:23'),
 (47, 2, 'Cappuccino', 'Equal parts espresso, warm steamed milk, and a thick layer of airy milk foam.\r\n\r\n1:1:1 parts espresso, steamed milk, and milk foam\r\n\r\n~110-30 kcal\r\n\r\nSize: 8 oz (240 ml)', 11.00, '1785944359_886c1155.jpeg', 0, '2026-06-26 15:08:23'),
-(48, 2, 'Caf? Latte', 'Espresso with generous steamed milk and topped with a light layer of foam.\r\n\r\n1:3 parts espresso to steamed milk\r\n\r\n~120-50 kcal\r\n\r\nSize: 12 oz (350 ml)', 11.50, '1785944274_1ca028e2.jpg', 0, '2026-06-26 15:08:23'),
+(48, 2, 'Café Latte', 'Espresso with generous steamed milk and topped with a light layer of foam.\r\n\r\n1:3 parts espresso to steamed milk\r\n\r\n~120-50 kcal\r\n\r\nSize: 12 oz (350 ml)', 11.50, '1785944274_1ca028e2.jpg', 0, '2026-06-26 15:08:23'),
 (49, 2, 'Flat White', 'Double shot of espresso combined with microfoamed steamed milk for a velvety, smooth texture with a thin layer of fine foam.\r\n\r\n1:2 parts espresso to microfoamed milk\r\n\r\n~120-40 kcal\r\n\r\nSize: 6 oz (180 ml)', 12.00, '1785944230_d45e6877.jpeg', 0, '2026-08-04 15:08:23'),
 (50, 2, 'Long Black', 'Water first, then espresso. Retains crema. Stronger taste. Double shot of espresso poured directly over hot water, preserving a rich layer of crema.\r\n\r\n2:1 parts hot water to double espresso shot\r\n\r\n~5-0 kcal\r\n\r\nSize: 6 oz (180 ml)', 9.50, '1785943347_a6ba0057.jpeg', 0, '2026-06-26 15:08:23'),
-(51, 2, 'Caf? au Lait', 'Freshly brewed drip coffee combined with an equal portion of warm steamed milk.\r\n\r\n1:1 parts drip coffee to steamed milk\r\n\r\n~70-0 kcal\r\n\r\nSize: 8 oz (240 ml)', 10.00, '1785943285_c326b067.jpeg', 0, '2026-06-26 15:08:23'),
+(51, 2, 'Café au Lait', 'Freshly brewed drip coffee combined with an equal portion of warm steamed milk.\r\n\r\n1:1 parts drip coffee to steamed milk\r\n\r\n~70-0 kcal\r\n\r\nSize: 8 oz (240 ml)', 10.00, '1785943285_c326b067.jpeg', 0, '2026-06-26 15:08:23'),
 (52, 2, 'Cortado', 'Equal parts rich espresso and warm steamed milk to reduce acidity without cutting the bold coffee flavor.\r\n\r\n1:1 parts espresso to steamed milk\r\n\r\n~35-0 kcal\r\n\r\nSize: 4 oz (120 ml)', 11.20, '1785943257_843997cb.jpeg', 0, '2026-06-26 15:08:23'),
 (53, 2, 'Doppio', 'Two rich shots of pure espresso extracted under high pressure for double the depth and flavor.\r\n\r\n1:0 ratio (pure double shot espresso, no milk or water added)\r\n\r\n~5-0 kcal\r\n\r\nSize: 2 oz (60 ml)', 9.80, '1785943174_72bf13a1.jpeg', 0, '2026-06-26 15:08:23'),
 (54, 2, 'Macchiato', 'A shot of rich espresso \"stained\" with a small dollop of steamed milk foam.\r\n\r\n4:1 parts espresso to milk foam\r\n\r\n~10-5 kcal\r\n\r\nSize: 2 oz (60 ml)', 10.50, '1785943140_572298d5.png', 0, '2026-06-26 15:08:23'),
@@ -381,7 +384,7 @@ INSERT INTO `menu_items` (`item_id`, `category_id`, `name`, `description`, `pric
 (70, 4, 'Citrus Sparkler', 'Bright, sparkling blend of fresh orange and lemon juices topped with bubbly soda and fresh mint leaves for a zesty, invigorating twist.\r\n\r\n1:3 parts citrus juice base to sparkling soda\r\n\r\n~90-20 kcal\r\n\r\nSize: 16 oz (480 ml)', 10.50, '1785946248_392792ee.jpeg', 0, '2026-06-26 15:08:23'),
 (71, 4, 'Watermelon Cooler', 'Refreshing mix of fresh crushed watermelon and crisp soda, served over ice for a light, hydrating summer sip.\r\n\r\n1:2 parts fresh watermelon juice base to sparkling soda\r\n\r\n~80-10 kcal\r\n\r\nSize: 16 oz (480 ml)', 11.50, '1785946195_342a9d88.webp', 0, '2026-06-26 15:08:23'),
 (72, 4, 'Blue Lagoon Soda', 'Tropical blend of juicy pineapple and rich coconut cream, delivering a smooth, alcohol-free pi?a colada experience.\r\n\r\n1:2 parts coconut cream base to blended pineapple\r\n\r\n~200-50 kcal\r\n\r\nSize: 16 oz (480 ml)', 12.00, '1785946010_f4bf2233.jpeg', 0, '2026-06-26 15:08:23'),
-(73, 4, 'Pineapple Coconut Smoothie Pi?a', 'Tropical blend of juicy pineapple and rich coconut cream, delivering a smooth, alcohol-free pi?a colada experience.\r\n\r\n1:2 parts coconut cream base to blended pineapple\r\n\r\n~200-50 kcal\r\n\r\nSize: 16 oz (480 ml)', 14.20, '1785945919_cbf6e535.jpeg', 0, '2026-06-26 15:08:23'),
+(73, 4, 'Pineapple Coconut Smoothie Piña', 'Tropical blend of juicy pineapple and rich coconut cream, delivering a smooth, alcohol-free pi?a colada experience.\r\n\r\n1:2 parts coconut cream base to blended pineapple\r\n\r\n~200-50 kcal\r\n\r\nSize: 16 oz (480 ml)', 14.20, '1785945919_cbf6e535.jpeg', 0, '2026-06-26 15:08:23'),
 (74, 4, 'Avocado Chocolate Smoothie', 'Velvety blend of ripe avocado and rich cocoa, creating a smooth, chocolatey smoothie with a naturally creamy texture.\r\n\r\n1:2 parts avocado-cocoa base to milk or alternative\r\n\r\n~220-70 kcal\r\n\r\nSize: 16 oz (480 ml)', 15.00, '1785945878_ddcb2058.jpeg', 0, '2026-06-26 15:08:23'),
 (75, 5, 'Classic Club Sandwich', 'Triple-decker toasted sandwich layered with sliced turkey, crispy bacon, fresh lettuce, juicy tomato, and mayonnaise.\r\n\r\nToasted Bread | Turkey Breast | Bacon | Lettuce | Tomato | Mayonnaise\r\n\r\n~500-20 kcal', 18.90, '1785947072_8b5fb528.jpg', 0, '2026-06-26 15:08:23'),
 (77, 5, 'Chicken Caesar Wrap', 'Tender grilled chicken, crisp romaine lettuce, and shaved Parmesan tossed in creamy Caesar dressing and wrapped in a flour tortilla.\r\n\r\nChicken Breast | Flour Tortilla | Romaine Lettuce | Parmesan Cheese | Caesar Dressing | Garlic Croutons\r\n\r\n~420-40 kcal', 16.50, '1785947032_8817b71c.jpeg', 0, '2026-06-26 15:08:23'),
@@ -416,7 +419,16 @@ CREATE TABLE IF NOT EXISTS `notifications` (
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `notifications`
+--
+
+INSERT INTO `notifications` (`id`, `user_id`, `title`, `message`, `type`, `link`, `is_read`, `created_at`) VALUES
+(1, 1, '☕ Order #11 Placed!', 'Your order was placed successfully. You earned +13 Cozy Points!', 'order', '../profile/orders.php', 1, '2026-08-19 02:26:27'),
+(2, 1, '☕ Order #12 Placed!', 'Your order was placed successfully. You earned +13 Cozy Points!', 'order', '../profile/orders.php', 1, '2026-08-19 02:46:55'),
+(3, 1, '☕ Order #13 Placed!', 'Your order was placed successfully. You earned +22 Cozy Points!', 'order', '../profile/orders.php', 1, '2026-08-19 02:54:27');
 
 -- --------------------------------------------------------
 
@@ -427,20 +439,42 @@ CREATE TABLE IF NOT EXISTS `notifications` (
 DROP TABLE IF EXISTS `orders`;
 CREATE TABLE IF NOT EXISTS `orders` (
   `order_id` int NOT NULL AUTO_INCREMENT,
-  `user_id` int NOT NULL,
+  `user_id` int DEFAULT NULL,
   `order_date` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `total_amount` decimal(8,2) NOT NULL,
   `status` enum('Pending','Preparing','Ready','Completed') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT 'Pending',
+  `fulfillment_type` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT 'Dine-In',
+  `table_number` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `payment_method` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT 'Pay at Counter',
+  `contact_number` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `delivery_address` text COLLATE utf8mb4_unicode_ci,
+  `byo_tumbler` tinyint(1) DEFAULT '0',
+  `byo_container` tinyint(1) DEFAULT '0',
+  `special_instructions` text COLLATE utf8mb4_unicode_ci,
   PRIMARY KEY (`order_id`),
   KEY `user_id` (`user_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `orders`
 --
 
-INSERT INTO `orders` (`order_id`, `user_id`, `order_date`, `total_amount`, `status`) VALUES
-(1, 1, '2026-08-12 14:48:19', 18.90, 'Preparing');
+INSERT INTO `orders` (`order_id`, `user_id`, `order_date`, `total_amount`, `status`, `fulfillment_type`, `table_number`, `payment_method`, `contact_number`, `delivery_address`, `byo_tumbler`, `byo_container`, `special_instructions`) VALUES
+(1, 1, '2026-08-12 14:48:19', 18.90, 'Completed', 'Dine-In', NULL, 'Pay at Counter', NULL, NULL, 0, 0, NULL),
+(2, NULL, '2026-08-19 02:18:15', 28.50, 'Pending', 'Takeaway Pickup', NULL, 'Pay at Counter', '012-9998888', NULL, 1, 0, NULL),
+(3, 1, '2026-08-19 02:18:15', 28.50, 'Pending', 'Dine-In', 'Table 4', 'Pay at Counter', '012-9998888', NULL, 1, 0, NULL),
+(4, 1, '2026-08-19 02:19:16', 13.90, 'Pending', 'Dine-In', 'Table 1', 'Pay at Counter', '+601120970647', NULL, 0, 0, NULL),
+(5, NULL, '2026-08-19 02:19:43', 13.90, 'Pending', 'Dine-In', 'Table 1', 'Pay at Counter', '+601120970647', NULL, 0, 0, NULL),
+(6, NULL, '2026-08-19 02:20:53', 13.90, 'Pending', 'Dine-In', 'Table 1', 'Online Banking (FPX)', '+601120970647', NULL, 0, 0, NULL),
+(7, NULL, '2026-08-19 02:21:09', 13.90, 'Pending', 'Dine-In', 'Table 1', 'Credit/Debit Card', '+601120970647', NULL, 0, 0, NULL),
+(8, NULL, '2026-08-19 02:21:25', 13.90, 'Pending', 'Dine-In', 'Table 1', 'Touch \'n Go E-Wallet', '+601120970647', NULL, 0, 0, NULL),
+(9, 1, '2026-08-19 02:22:11', 13.90, 'Pending', 'Dine-In', 'Table 12', 'Credit/Debit Card', '+601120970647', NULL, 0, 0, NULL),
+(10, 1, '2026-08-19 02:25:52', 35.00, 'Pending', 'Dine-In', 'Table 7', 'Online Banking (FPX)', '012-3334444', NULL, 1, 0, NULL),
+(11, 1, '2026-08-19 02:26:27', 13.90, 'Completed', 'Dine-In', 'Table 12', 'Credit/Debit Card', '+601120970647', NULL, 0, 0, NULL),
+(12, 1, '2026-08-19 02:46:55', 13.90, 'Preparing', 'Dine-In', 'Table 1', 'Pay at Counter', '+601120970647', NULL, 0, 0, NULL),
+(13, 1, '2026-08-19 02:54:27', 12.90, 'Preparing', 'Takeaway Pickup', NULL, 'Pay at Counter', '+601120970647', NULL, 1, 1, NULL),
+(14, NULL, '2026-08-19 05:05:51', 13.90, 'Completed', 'Dine-In', 'Table 1', 'Pay at Counter', '+601120970647', NULL, 0, 0, NULL),
+(15, NULL, '2026-08-19 05:53:15', 15.90, 'Preparing', 'Dine-In', 'Table 1', 'Pay at Counter', '+601120970647', NULL, 0, 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -459,14 +493,26 @@ CREATE TABLE IF NOT EXISTS `order_items` (
   PRIMARY KEY (`order_item_id`),
   KEY `order_id` (`order_id`),
   KEY `item_id` (`item_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=MyISAM AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `order_items`
 --
 
 INSERT INTO `order_items` (`order_item_id`, `order_id`, `item_id`, `quantity`, `price_at_order`, `item_options`) VALUES
-(1, 1, 2, 1, 13.90, 'Hot, No Sugar');
+(1, 1, 2, 1, 13.90, 'Hot, No Sugar'),
+(2, 2, 8, 2, 14.25, 'Iced, Less Sugar'),
+(3, 4, 5, 1, 13.90, 'Regular Ice, Regular Sugar'),
+(4, 5, 5, 1, 13.90, 'Regular Ice, Regular Sugar'),
+(5, 6, 5, 1, 13.90, 'Regular Ice, Regular Sugar'),
+(6, 7, 3, 1, 13.90, 'Regular Ice, Regular Sugar'),
+(7, 8, 3, 1, 13.90, 'Regular Ice, Regular Sugar'),
+(8, 9, 36, 1, 13.90, 'Regular Ice, Regular Sugar'),
+(9, 11, 36, 1, 13.90, 'Regular Ice, Regular Sugar'),
+(10, 12, 2, 1, 13.90, 'Regular Ice, Regular Sugar'),
+(11, 13, 4, 1, 12.90, 'Regular Ice, Regular Sugar'),
+(12, 14, 3, 1, 13.90, 'Regular Ice, Regular Sugar'),
+(13, 15, 14, 1, 15.90, 'Regular Ice, Regular Sugar');
 
 -- --------------------------------------------------------
 
@@ -512,14 +558,82 @@ CREATE TABLE IF NOT EXISTS `points_history` (
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `points_history`
 --
 
 INSERT INTO `points_history` (`id`, `user_id`, `points`, `description`, `created_at`) VALUES
-(1, 1, -50, 'Redeemed Coupon: COZY3OFF', '2026-08-12 15:40:57');
+(1, 1, -50, 'Redeemed Coupon: COZY3OFF', '2026-08-12 15:40:57'),
+(2, 1, 13, 'Earned from Order #11', '2026-08-19 02:26:27'),
+(3, 1, 13, 'Earned from Order #12', '2026-08-19 02:46:55'),
+(4, 1, 22, 'Earned from Order #13 (includes +10 BYO Eco Bonus)', '2026-08-19 02:54:27');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `promo_codes`
+--
+
+DROP TABLE IF EXISTS `promo_codes`;
+CREATE TABLE IF NOT EXISTS `promo_codes` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `code` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `title` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `discount_type` enum('fixed','percentage','free_item') COLLATE utf8mb4_unicode_ci DEFAULT 'fixed',
+  `discount_value` decimal(8,2) NOT NULL DEFAULT '0.00',
+  `category_target` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT 'all',
+  `min_spend` decimal(8,2) DEFAULT '0.00',
+  `is_active` tinyint(1) DEFAULT '1',
+  `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `code` (`code`)
+) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `promo_codes`
+--
+
+INSERT INTO `promo_codes` (`id`, `code`, `title`, `discount_type`, `discount_value`, `category_target`, `min_spend`, `is_active`, `created_at`) VALUES
+(1, 'COZY3OFF', 'RM3 Off Any Coffee Order', 'fixed', 3.00, 'all', 10.00, 1, '2026-08-19 02:58:33'),
+(2, 'COZYPASTRY', 'Free Fresh Bakery Pastry (RM8 Off)', 'fixed', 8.00, 'all', 15.00, 1, '2026-08-19 02:58:33'),
+(3, 'COZY50OFF', '50% Off Specialty Coffee', 'percentage', 50.00, 'all', 20.00, 1, '2026-08-19 02:58:33'),
+(4, 'MERDEKA67', '🇲🇾 Merdeka Celebration Promo (20% Off)', 'percentage', 20.00, 'all', 15.00, 1, '2026-08-19 02:58:33'),
+(5, 'BDAYCAKEFREE', '🎂 Birthday Gift: Free Slice of Dessert / Cake', 'free_item', 12.00, 'dessert', 0.00, 1, '2026-08-19 02:58:33'),
+(6, 'BDAY50OFF', '🎉 Birthday Gift: 50% Off Total Bill', 'percentage', 50.00, 'all', 15.00, 1, '2026-08-19 02:58:33');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `special_offers`
+--
+
+DROP TABLE IF EXISTS `special_offers`;
+CREATE TABLE IF NOT EXISTS `special_offers` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `item_id` int NOT NULL,
+  `offer_title` varchar(100) DEFAULT 'Member Special',
+  `discount_type` enum('percentage','fixed_price') NOT NULL DEFAULT 'percentage',
+  `discount_value` decimal(10,2) NOT NULL,
+  `category_type` enum('drink','food') NOT NULL DEFAULT 'drink',
+  `is_active` tinyint(1) DEFAULT '1',
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `item_id` (`item_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `special_offers`
+--
+
+INSERT INTO `special_offers` (`id`, `item_id`, `offer_title`, `discount_type`, `discount_value`, `category_type`, `is_active`, `created_at`) VALUES
+(1, 5, 'Member Special (15% OFF)', 'percentage', 15.00, 'drink', 1, '2026-08-19 08:22:45'),
+(2, 55, 'Barista Choice (20% OFF)', 'percentage', 20.00, 'drink', 1, '2026-08-19 08:22:45'),
+(3, 56, 'Special Deal (RM5.00)', 'fixed_price', 5.00, 'drink', 1, '2026-08-19 08:22:45'),
+(4, 31, 'Lunch Special (15% OFF)', 'percentage', 15.00, 'food', 1, '2026-08-19 08:22:45'),
+(5, 33, 'Chef Favorite (15% OFF)', 'percentage', 15.00, 'food', 1, '2026-08-19 08:22:45'),
+(6, 85, 'Pastry Deal (RM12.00)', 'fixed_price', 12.00, 'food', 1, '2026-08-19 08:22:45');
 
 -- --------------------------------------------------------
 
@@ -543,6 +657,8 @@ CREATE TABLE IF NOT EXISTS `users` (
   `rewards_points` int NOT NULL DEFAULT '0',
   `rewards_member_no` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `rewards_joined_at` timestamp NULL DEFAULT NULL,
+  `points` int NOT NULL DEFAULT '0',
+  `last_notif_read_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`),
   UNIQUE KEY `username` (`username`)
@@ -552,10 +668,10 @@ CREATE TABLE IF NOT EXISTS `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `fullname`, `email`, `username`, `password`, `created_at`, `birthday`, `gender`, `phone`, `profile_pic`, `is_rewards_member`, `rewards_points`, `rewards_member_no`, `rewards_joined_at`) VALUES
-(1, 'Jie Ying', 'jieying47@1utar.my', 'laijieying', '$2y$10$kNkzG8Ab1FuWgfVbtbz7P.aGvTAKgdEFHsuzrq5b71TtwwiRVbwxy', '2026-08-01 21:32:31', '2006-04-07', 'Female', '+601120970647', 'user_1_1785652687.jpg', 1, 0, 'CR000001', '2026-08-12 14:42:42'),
-(2, 'Chok Shi Ying', 'chokshiying06@gmail.com', 'yingchok', '$2y$10$Amklq4awtRbRlrfNk82VzuzhFOP1gJvuhvZIKXpXmu4k.nj.h2tKm', '2026-08-05 07:57:54', NULL, NULL, NULL, 'user_2_1785922625.jpg', 0, 0, NULL, NULL),
-(3, 'Zhi Qing', 'changzhiqing1996@gmail.com', 'ZhiQing', '$2y$10$tsJdBo23ikIpXBLAYxbyfuOQe7C/yviTlDC54y9nttvNAgWcKOrbG', '2026-08-08 01:47:26', '2006-08-08', NULL, '+60192723941', 'default.png', 1, 50, 'CR000003', '2026-08-08 01:49:04');
+INSERT INTO `users` (`id`, `fullname`, `email`, `username`, `password`, `created_at`, `birthday`, `gender`, `phone`, `profile_pic`, `is_rewards_member`, `rewards_points`, `rewards_member_no`, `rewards_joined_at`, `points`, `last_notif_read_at`) VALUES
+(1, 'Jie Ying', 'jieying47@1utar.my', 'laijieying', '$2y$10$kNkzG8Ab1FuWgfVbtbz7P.aGvTAKgdEFHsuzrq5b71TtwwiRVbwxy', '2026-08-01 21:32:31', '2006-04-07', 'Female', '+601120970647', 'user_1_1785652687.jpg', 1, 93, 'CR000001', '2026-08-12 14:42:42', 93, '2026-08-19 15:00:33'),
+(2, 'Chok Shi Ying', 'chokshiying06@gmail.com', 'yingchok', '$2y$10$Amklq4awtRbRlrfNk82VzuzhFOP1gJvuhvZIKXpXmu4k.nj.h2tKm', '2026-08-05 07:57:54', NULL, NULL, NULL, 'user_2_1785922625.jpg', 0, 0, NULL, NULL, 0, NULL),
+(3, 'Zhi Qing', 'changzhiqing1996@gmail.com', 'ZhiQing', '$2y$10$tsJdBo23ikIpXBLAYxbyfuOQe7C/yviTlDC54y9nttvNAgWcKOrbG', '2026-08-08 01:47:26', '2006-08-08', NULL, '+60192723941', 'default.png', 1, 50, 'CR000003', '2026-08-08 01:49:04', 50, NULL);
 
 -- --------------------------------------------------------
 
@@ -573,6 +689,7 @@ CREATE TABLE IF NOT EXISTS `user_vouchers` (
   `terms` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `is_used` tinyint(1) DEFAULT '0',
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `status` enum('ACTIVE','USED','EXPIRED') COLLATE utf8mb4_unicode_ci DEFAULT 'ACTIVE',
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -581,8 +698,8 @@ CREATE TABLE IF NOT EXISTS `user_vouchers` (
 -- Dumping data for table `user_vouchers`
 --
 
-INSERT INTO `user_vouchers` (`id`, `user_id`, `voucher_code`, `discount_amount`, `min_spend`, `terms`, `is_used`, `created_at`) VALUES
-(1, 1, 'COZY3OFF', 3.00, 10.00, 'Valid for RM3 off any takeaway order over RM10. Cannot be combined with other promos.', 0, '2026-08-12 15:40:57');
+INSERT INTO `user_vouchers` (`id`, `user_id`, `voucher_code`, `discount_amount`, `min_spend`, `terms`, `is_used`, `created_at`, `status`) VALUES
+(1, 1, 'COZY3OFF', 3.00, 10.00, 'Valid for RM3 off any takeaway order over RM10. Cannot be combined with other promos.', 0, '2026-08-12 15:40:57', 'ACTIVE');
 
 --
 -- Constraints for dumped tables

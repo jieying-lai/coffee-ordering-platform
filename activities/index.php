@@ -40,29 +40,29 @@ if ($res) {
   <link rel="stylesheet" href="../style/programs.css">
   <title>Cozy Coffee Co. — Store Activities &amp; Brand Journal</title>
   <style>
-    /* ============ COMPACT 5-COLUMN FEED GRID (IG / 小红书 Style) ============ */
+    /* ============ ELEGANT VISUAL-FIRST JOURNAL GRID (3 COLUMNS WITH ROOMY CARD LAYOUT) ============ */
     .activities-container {
-      max-width: 1360px;
-      margin: 24px auto 60px;
-      padding: 0 3%;
+      max-width: 1240px;
+      margin: 30px auto 70px;
+      padding: 0 4%;
       box-sizing: border-box;
     }
 
     .category-filter-bar {
       display: flex;
       justify-content: center;
-      gap: 8px;
+      gap: 10px;
       flex-wrap: wrap;
-      margin-bottom: 28px;
+      margin-bottom: 36px;
     }
 
     .cat-filter-btn {
-      padding: 8px 18px;
+      padding: 9px 22px;
       border-radius: 30px;
       background: #FFFFFF;
       border: 1.5px solid #E8DDD0;
       color: #665447;
-      font-size: 0.85rem;
+      font-size: 0.88rem;
       font-weight: 700;
       cursor: pointer;
       transition: all 0.25s ease;
@@ -73,61 +73,51 @@ if ($res) {
       background: linear-gradient(135deg, #C85A3E 0%, #A8472F 100%);
       color: #FFFFFF;
       border-color: #C85A3E;
-      box-shadow: 0 6px 16px rgba(200, 90, 62, 0.3);
+      box-shadow: 0 6px 18px rgba(200, 90, 62, 0.3);
       transform: translateY(-2px);
     }
 
-    /* 5 Columns Grid on Large Screen */
+    /* 3 Columns Grid on Large Screen for Wide, Spacious Breathing Room */
     .activities-feed-grid {
       display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 18px;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
     }
 
-    @media (max-width: 1200px) {
-      .activities-feed-grid {
-        grid-template-columns: repeat(4, 1fr);
-      }
-    }
-
-    @media (max-width: 990px) {
-      .activities-feed-grid {
-        grid-template-columns: repeat(3, 1fr);
-      }
-    }
-
-    @media (max-width: 720px) {
+    @media (max-width: 1024px) {
       .activities-feed-grid {
         grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
       }
     }
 
-    @media (max-width: 480px) {
+    @media (max-width: 640px) {
       .activities-feed-grid {
         grid-template-columns: 1fr;
+        gap: 18px;
       }
     }
 
     .activity-post-card {
       background: #FFFFFF;
-      border-radius: 18px;
+      border-radius: 22px;
       border: 1.5px solid #E8DDD0;
-      box-shadow: 0 6px 20px rgba(60, 42, 33, 0.04);
+      box-shadow: 0 8px 24px rgba(60, 42, 33, 0.04);
       overflow: hidden;
-      transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: transform 0.32s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.32s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.32s ease;
       display: flex;
       flex-direction: column;
       cursor: pointer;
     }
 
     .activity-post-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 14px 32px rgba(60, 42, 33, 0.1);
+      transform: translateY(-6px);
+      box-shadow: 0 18px 42px rgba(60, 42, 33, 0.12);
       border-color: #C85A3E;
     }
 
     .card-cover-box {
-      height: 160px;
+      height: 220px;
       width: 100%;
       position: relative;
       overflow: hidden;
@@ -148,34 +138,34 @@ if ($res) {
 
     .card-category-badge {
       position: absolute;
-      top: 10px;
-      left: 10px;
-      padding: 3px 10px;
+      top: 14px;
+      left: 14px;
+      padding: 4px 12px;
       border-radius: 20px;
-      background: rgba(24, 15, 10, 0.78);
-      backdrop-filter: blur(6px);
+      background: rgba(24, 15, 10, 0.82);
+      backdrop-filter: blur(8px);
       color: #F2C94C;
-      font-size: 0.72rem;
+      font-size: 0.75rem;
       font-weight: 800;
-      border: 1px solid rgba(242, 201, 76, 0.3);
-      letter-spacing: 0.3px;
+      border: 1px solid rgba(242, 201, 76, 0.35);
+      letter-spacing: 0.4px;
     }
 
     .card-photo-count-badge {
       position: absolute;
-      bottom: 10px;
-      right: 10px;
-      padding: 3px 8px;
+      bottom: 14px;
+      right: 14px;
+      padding: 4px 10px;
       border-radius: 16px;
-      background: rgba(0, 0, 0, 0.65);
-      backdrop-filter: blur(6px);
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(8px);
       color: #FFFFFF;
-      font-size: 0.7rem;
+      font-size: 0.72rem;
       font-weight: 700;
     }
 
     .card-body-content {
-      padding: 14px 14px 16px;
+      padding: 20px 22px 22px;
       flex: 1;
       display: flex;
       flex-direction: column;
@@ -184,13 +174,13 @@ if ($res) {
     .brand-official-header {
       display: flex;
       align-items: center;
-      gap: 8px;
-      margin-bottom: 8px;
+      gap: 10px;
+      margin-bottom: 12px;
     }
 
     .brand-avatar {
-      width: 28px;
-      height: 28px;
+      width: 32px;
+      height: 32px;
       border-radius: 50%;
       background: #3C2A21;
       border: 1.5px solid #C85A3E;
@@ -198,8 +188,9 @@ if ($res) {
       align-items: center;
       justify-content: center;
       color: #F2C94C;
-      font-size: 12px;
+      font-size: 14px;
       font-weight: bold;
+      flex-shrink: 0;
     }
 
     .brand-meta {
@@ -209,7 +200,7 @@ if ($res) {
 
     .brand-name {
       font-weight: 800;
-      font-size: 0.8rem;
+      font-size: 0.85rem;
       color: #2C1C14;
       display: flex;
       align-items: center;
@@ -217,17 +208,18 @@ if ($res) {
     }
 
     .brand-date {
-      font-size: 0.72rem;
-      color: #8A7769;
+      font-size: 0.75rem;
+      color: #8C7A6D;
+      font-weight: 600;
     }
 
     .card-title {
-      font-family: var(--font-heading);
-      font-size: 0.98rem;
+      font-family: var(--font-heading, serif);
+      font-size: 1.12rem;
       font-weight: 800;
       color: #2C1C14;
-      margin: 0 0 6px 0;
-      line-height: 1.35;
+      margin: 0 0 8px 0;
+      line-height: 1.38;
       display: -webkit-box;
       -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
@@ -235,10 +227,10 @@ if ($res) {
     }
 
     .card-snippet {
-      font-size: 0.84rem;
-      color: #665447;
-      line-height: 1.5;
-      margin: 0 0 12px 0;
+      font-size: 0.88rem;
+      color: #7A685A;
+      line-height: 1.58;
+      margin: 0 0 16px 0;
       flex: 1;
       display: -webkit-box;
       -webkit-line-clamp: 2;
@@ -247,33 +239,34 @@ if ($res) {
     }
 
     .card-action-btn {
-      font-size: 0.8rem;
+      font-size: 0.85rem;
       font-weight: 800;
       color: #C85A3E;
       display: inline-flex;
       align-items: center;
-      gap: 4px;
+      gap: 6px;
       transition: transform 0.2s ease;
+      margin-top: auto;
     }
 
     .activity-post-card:hover .card-action-btn {
-      transform: translateX(4px);
+      transform: translateX(5px);
     }
 
     /* ============ IN-MODAL SLIDER / CAROUSEL ============ */
     .modal-carousel-box {
-      margin-bottom: 20px;
+      margin-bottom: 16px;
       border-radius: 18px;
       overflow: hidden;
       background: #1C130E;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.15);
       border: 1.5px solid #E5D9CC;
     }
 
     .carousel-stage {
       position: relative;
       width: 100%;
-      height: 330px;
+      height: 280px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -287,7 +280,7 @@ if ($res) {
       max-height: 100%;
       object-fit: contain;
       display: block;
-      border-radius: 8px;
+      border-radius: 10px;
       transition: opacity 0.25s ease;
     }
 
@@ -295,20 +288,20 @@ if ($res) {
       position: absolute;
       top: 50%;
       transform: translateY(-50%);
-      width: 36px;
-      height: 36px;
+      width: 40px;
+      height: 40px;
       border-radius: 50%;
-      background: rgba(255, 255, 255, 0.88);
+      background: rgba(255, 255, 255, 0.92);
       border: none;
       color: #2C1C14;
-      font-size: 22px;
+      font-size: 24px;
       font-weight: bold;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
       transition: all 0.2s ease;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
       z-index: 10;
     }
 
@@ -326,7 +319,7 @@ if ($res) {
       right: 14px;
       padding: 4px 12px;
       border-radius: 20px;
-      background: rgba(0, 0, 0, 0.7);
+      background: rgba(0, 0, 0, 0.75);
       backdrop-filter: blur(6px);
       color: #FFFFFF;
       font-size: 0.78rem;
@@ -354,26 +347,26 @@ if ($res) {
   <!-- CATEGORY FILTER BAR -->
   <div class="category-filter-bar">
     <button type="button" class="cat-filter-btn active" data-cat="all">All Stories</button>
-    <button type="button" class="cat-filter-btn" data-cat="event">🎉 Events</button>
-    <button type="button" class="cat-filter-btn" data-cat="promotion">🏷️ Promotions</button>
-    <button type="button" class="cat-filter-btn" data-cat="workshop">🧑‍🍳 Workshops</button>
-    <button type="button" class="cat-filter-btn" data-cat="daily">☕ Daily Moments</button>
-    <button type="button" class="cat-filter-btn" data-cat="announcement">📢 Announcements</button>
+    <button type="button" class="cat-filter-btn" data-cat="event">Events</button>
+    <button type="button" class="cat-filter-btn" data-cat="promotion">Promotions</button>
+    <button type="button" class="cat-filter-btn" data-cat="workshop">Workshops</button>
+    <button type="button" class="cat-filter-btn" data-cat="daily">Daily Moments</button>
+    <button type="button" class="cat-filter-btn" data-cat="announcement">Announcements</button>
   </div>
 
-  <!-- COMPACT 5-COLUMN FEED GRID -->
+  <!-- ELEGANT 3-COLUMN VISUAL JOURNAL GRID -->
   <div class="activities-feed-grid">
     <?php if (!empty($activities)): ?>
       <?php foreach ($activities as $act): ?>
         <?php
           $catBadges = [
-            'event' => '🎉 Event',
-            'promotion' => '🏷️ Promotion',
-            'workshop' => '🧑‍🍳 Workshop',
-            'daily' => '☕ Daily',
-            'announcement' => '📢 Announcement'
+            'event' => 'Event',
+            'promotion' => 'Promotion',
+            'workshop' => 'Workshop',
+            'daily' => 'Daily',
+            'announcement' => 'Announcement'
           ];
-          $badgeText = $catBadges[$act['category']] ?? '📍 Activity';
+          $badgeText = $catBadges[$act['category']] ?? 'Activity';
           $coverPhoto = !empty($act['cover_photo']) ? '../' . $act['cover_photo'] : '../images/1.jpg';
           $photosJson = htmlspecialchars(json_encode($act['photos']), ENT_QUOTES, 'UTF-8');
         ?>
@@ -387,36 +380,33 @@ if ($res) {
           </div>
 
           <div class="card-body-content">
-            <div class="brand-official-header">
-              <div class="brand-avatar">☕</div>
-              <div class="brand-meta">
-                <span class="brand-name">Cozy Coffee Co. <span style="color: #C85A3E; font-size: 10px;">✦</span></span>
-                <span class="brand-date"><?php echo date('M d, Y', strtotime($act['created_at'])); ?></span>
-              </div>
-            </div>
-
             <h3 class="card-title"><?php echo htmlspecialchars($act['title']); ?></h3>
             <p class="card-snippet"><?php echo htmlspecialchars($act['content']); ?></p>
             
-            <div class="card-action-btn">
-              Read Story ✦
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-top: auto; padding-top: 12px; border-top: 1px dashed #F0E6DC;">
+              <span style="font-size: 0.78rem; color: #8C7A6D; font-weight: 600;">
+                📅 <?php echo date('M d, Y', strtotime($act['created_at'])); ?>
+              </span>
+              <div class="card-action-btn" style="margin-top: 0;">
+                Read Full Story &rarr;
+              </div>
             </div>
           </div>
         </div>
       <?php endforeach; ?>
     <?php else: ?>
-      <p style="grid-column: 1 / -1; text-align: center; color: #888; padding: 40px;">No store activities published yet. Stay tuned!</p>
+      <p style="grid-column: 1 / -1; text-align: center; color: #888; padding: 50px; background: #FFFFFF; border-radius: 20px; border: 1.5px solid #E8DDD0;">No store activities published yet. Stay tuned!</p>
     <?php endif; ?>
   </div>
 
 </div>
 
-<!-- STORY DETAIL POPUP MODAL WITH SLIDER (NO LIGHTBOX POPUP) -->
+<!-- STORY DETAIL POPUP MODAL WITH SLIDER -->
 <div id="activityDetailModal" class="program-modal-overlay" onclick="closeModalOnOutsideClick(event, 'activityDetailModal')">
-  <div class="program-modal-card" style="max-width: 620px; padding: 32px 28px;">
+  <div class="program-modal-card" style="max-width: 660px; padding: 26px; max-height: 92vh;">
     <button type="button" class="program-modal-close" onclick="closeModal('activityDetailModal')">&times;</button>
     
-    <div style="display: flex; align-items: center; margin-bottom: 16px; padding-right: 48px;">
+    <div style="display: flex; align-items: center; margin-bottom: 18px; padding-right: 48px;">
       <div class="brand-official-header" style="margin: 0;">
         <div class="brand-avatar">☕</div>
         <div class="brand-meta">
@@ -437,6 +427,9 @@ if ($res) {
         <button type="button" id="carouselNextBtn" class="carousel-btn next-btn" onclick="nextCarouselPhoto()">&rsaquo;</button>
         <span id="carouselCounterBadge" class="carousel-counter-badge">1 / 1</span>
       </div>
+
+      <!-- INTERACTIVE PHOTO THUMBNAILS STRIP -->
+      <div id="modalThumbStrip" style="display: flex; gap: 8px; padding: 10px 14px; background: #261A13; overflow-x: auto;"></div>
     </div>
 
     <h3 id="modalTitle" style="font-family: var(--font-heading); font-size: 1.4rem; color: #2C1C14; margin-bottom: 14px; font-weight: 800; line-height: 1.35;"></h3>
@@ -453,6 +446,29 @@ if ($res) {
 <script>
 let modalPhotosList = [];
 let currentPhotoIndex = 0;
+
+// Category Filter Handling
+document.addEventListener('DOMContentLoaded', function() {
+    const filterBtns = document.querySelectorAll('.cat-filter-btn');
+    const cards = document.querySelectorAll('.activity-post-card');
+
+    filterBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+            filterBtns.forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+
+            const cat = this.getAttribute('data-cat');
+            cards.forEach(card => {
+                const cardCat = card.getAttribute('data-category');
+                if (cat === 'all' || cardCat === cat) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        });
+    });
+});
 
 function openActivityModal(title, categoryBadge, postDate, content, photos) {
     document.getElementById('modalTitle').textContent = title;
@@ -495,6 +511,33 @@ function updateCarouselStage() {
         if (prevBtn) prevBtn.style.display = 'flex';
         if (nextBtn) nextBtn.style.display = 'flex';
     }
+
+    renderModalThumbnails();
+}
+
+function renderModalThumbnails() {
+    const strip = document.getElementById('modalThumbStrip');
+    if (!strip) return;
+    if (modalPhotosList.length <= 1) {
+        strip.style.display = 'none';
+        return;
+    }
+    strip.style.display = 'flex';
+    let html = '';
+    modalPhotosList.forEach((p, idx) => {
+        const isSel = idx === currentPhotoIndex;
+        html += `
+            <img src="../${p}" onclick="setCarouselIndex(${idx})" style="width: 52px; height: 52px; border-radius: 8px; object-fit: cover; cursor: pointer; border: 2px solid ${isSel ? '#C85A3E' : 'transparent'}; opacity: ${isSel ? '1' : '0.6'}; transition: all 0.2s ease;" alt="Thumbnail">
+        `;
+    });
+    strip.innerHTML = html;
+}
+
+function setCarouselIndex(idx) {
+    if (idx >= 0 && idx < modalPhotosList.length) {
+        currentPhotoIndex = idx;
+        updateCarouselStage();
+    }
 }
 
 function prevCarouselPhoto() {
@@ -531,36 +574,14 @@ function closeModal(modalId) {
     }
 }
 
-function closeModalOnOutsideClick(event, modalId) {
-    if (event.target.id === modalId) {
+function closeModalOnOutsideClick(e, modalId) {
+    if (e.target.id === modalId) {
         closeModal(modalId);
     }
 }
-
-// Category Filter JS
-document.querySelectorAll('.cat-filter-btn').forEach(btn => {
-    btn.addEventListener('click', function() {
-        document.querySelectorAll('.cat-filter-btn').forEach(b => b.classList.remove('active'));
-        this.classList.add('active');
-
-        const cat = this.dataset.cat;
-        const cards = document.querySelectorAll('.activity-post-card');
-        cards.forEach(card => {
-            if (cat === 'all' || card.dataset.category === cat) {
-                card.style.display = 'flex';
-            } else {
-                card.style.display = 'none';
-            }
-        });
-    });
-});
-
-document.addEventListener('keydown', function(event) {
-    if (event.key === 'Escape') {
-        closeModal('activityDetailModal');
-    }
-});
 </script>
+
+<?php require_once '../includes/footer.php'; ?>
 
 </body>
 </html>

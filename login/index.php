@@ -8,36 +8,57 @@
   <title>Cozy Coffee Co. — Customer Login</title>
   <style>
     /* Premium Light Theme Layout */
+    .input-group, .password-group {
+      position: relative !important;
+    }
+    .password-group input, input[type="password"] {
+      padding-right: 48px !important;
+    }
+    .show-password {
+      position: absolute !important;
+      top: 50% !important;
+      right: 12px !important;
+      transform: translateY(-50%) !important;
+      background: transparent !important;
+      border: none !important;
+      cursor: pointer !important;
+      font-size: 1.2rem !important;
+      padding: 4px !important;
+      color: #7A695D !important;
+      z-index: 10 !important;
+    }
+
     body.cust-login-body {
-      margin: 0;
-      padding: 0;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: linear-gradient(135deg, #FAF6F0 0%, #F5EDE2 50%, #FAF6F0 100%);
+      margin: 0 !important;
+      padding: 0 !important;
+      min-height: 100vh !important;
+      display: flex !important;
+      flex-direction: column !important;
+      justify-content: space-between !important;
+      align-items: stretch !important;
+      background: linear-gradient(135deg, #FAF6F0 0%, #F5EDE2 50%, #FAF6F0 100%) !important;
       font-family: var(--font-body, 'Plus Jakarta Sans', sans-serif);
       color: #3C2A21;
     }
 
     .cust-auth-card {
       width: 92%;
-      max-width: 980px;
-      margin: 40px auto;
+      max-width: 900px;
+      margin: 24px auto;
       display: flex;
-      border-radius: 24px;
+      border-radius: 22px;
       overflow: hidden;
-      box-shadow: 0 20px 60px rgba(60, 42, 33, 0.12);
+      box-shadow: 0 16px 48px rgba(60, 42, 33, 0.12);
       border: 1px solid #EFE6DC;
       background: #FFFFFF;
-      min-height: 560px;
+      min-height: 480px;
     }
 
     /* Left Light Hero Panel */
     .cust-auth-hero {
       flex: 1.1;
       background: linear-gradient(145deg, #F7EFE5 0%, #EFE3D3 100%);
-      padding: 44px 40px;
+      padding: 32px 36px;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
@@ -49,7 +70,7 @@
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      padding: 6px 14px;
+      padding: 5px 14px;
       background: rgba(200, 90, 62, 0.12);
       border: 1px solid rgba(200, 90, 62, 0.25);
       color: #C85A3E;
@@ -63,27 +84,27 @@
 
     .hero-title-light {
       font-family: var(--font-heading, serif);
-      font-size: 2.2rem;
+      font-size: 1.85rem;
       font-weight: 800;
       line-height: 1.25;
       color: #3C2A21;
-      margin: 16px 0 12px;
+      margin: 12px 0 10px;
     }
 
     .hero-desc-light {
-      font-size: 0.92rem;
+      font-size: 0.88rem;
       color: #665447;
-      line-height: 1.6;
-      margin-bottom: 24px;
+      line-height: 1.55;
+      margin-bottom: 16px;
     }
 
     .hero-img-box {
       width: 100%;
-      height: 180px;
-      border-radius: 16px;
+      height: 140px;
+      border-radius: 14px;
       overflow: hidden;
-      box-shadow: 0 8px 24px rgba(60, 42, 33, 0.12);
-      margin-bottom: 20px;
+      box-shadow: 0 6px 20px rgba(60, 42, 33, 0.1);
+      margin-bottom: 16px;
     }
 
     .hero-img-box img {
@@ -98,39 +119,39 @@
       margin: 0;
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 8px;
     }
 
     .hero-features-light li {
       display: flex;
       align-items: center;
       gap: 10px;
-      font-size: 0.88rem;
+      font-size: 0.85rem;
       color: #4A3B32;
       font-weight: 600;
     }
 
     /* Right Form Container */
     .cust-auth-form-wrap {
-      flex: 1;
+      flex: 1.1;
       background: #FFFFFF;
-      padding: 44px 40px;
+      padding: 32px 36px;
       display: flex;
       flex-direction: column;
       justify-content: center;
     }
 
     .form-header-light h2 {
-      font-size: 1.8rem;
+      font-size: 1.65rem;
       font-weight: 800;
       color: #3C2A21;
-      margin: 0 0 6px;
+      margin: 0 0 4px;
     }
 
     .form-header-light p {
-      font-size: 0.88rem;
+      font-size: 0.86rem;
       color: #7A695D;
-      margin: 0 0 24px;
+      margin: 0 0 16px;
     }
 
     /* Chrome Autofill Repair */
@@ -218,31 +239,31 @@
 
 <body class="cust-login-body">
 
-  <div class="cust-auth-card">
-    
-    <!-- LEFT HERO PANEL (LIGHT LATTE THEME) -->
-    <div class="cust-auth-hero">
-      <div>
-        <a href="../home/index.php" class="back-home-link">← Back to Store Home</a>
-        <span class="hero-badge-light">☕ Cozy Coffee Rewards</span>
-        <h1 class="hero-title-light">Welcome back to Cozy Coffee</h1>
-        <p class="hero-desc-light">Sign in to your account to track your orders, earn Cozy Points, unlock member-only drink deals, and manage your saved profile.</p>
+  <div style="flex: 1 0 auto; display: flex; align-items: center; justify-content: center; width: 100%; padding: 40px 0;">
+    <div class="cust-auth-card">
+      
+      <!-- LEFT HERO PANEL (LIGHT LATTE THEME) -->
+      <div class="cust-auth-hero">
+        <div>
+          <a href="../home/index.php" class="back-home-link">← Back to Home page</a>
+          <h1 class="hero-title-light"><span style="font-family: var(--font-heading); font-style: italic; color: #C85A3E;">Welcome back</span> to Cozy Coffee</h1>
+          <p class="hero-desc-light">Sign in to your account to track your orders, earn Cozy Points, unlock member only drink deals, and manage your saved profile.</p>
 
-        <div class="hero-img-box">
-          <img src="../images/coffee-hero.jpg" alt="Cozy Coffee Artisan Brews">
+          <div class="hero-img-box">
+            <img src="../images/coffee-hero.jpg" alt="Cozy Coffee Artisan Brews">
+          </div>
+
+          <ul class="hero-features-light">
+            <li>✨ <span>Earn Cozy Points on every purchase</span></li>
+            <li>🏷️ <span>Access member only 15% OFF deals</span></li>
+            <li>💬 <span>Live customer care barista support</span></li>
+          </ul>
         </div>
 
-        <ul class="hero-features-light">
-          <li>✨ <span>Earn Cozy Points on every purchase</span></li>
-          <li>🏷️ <span>Access member-only 15% OFF deals</span></li>
-          <li>💬 <span>Live customer care barista support</span></li>
-        </ul>
+        <div style="margin-top: 24px; font-size: 0.85rem; color: #8A7769;">
+          <a href="../admin/index.php" style="color: #C85A3E; font-weight: 700; text-decoration: underline;">Login as Admin</a>
+        </div>
       </div>
-
-      <div style="margin-top: 24px; font-size: 0.82rem; color: #8A7769;">
-        Staff or Admin personnel? <a href="../admin/index.php" style="color: #C85A3E; font-weight: 700;">Login to Barista Admin →</a>
-      </div>
-    </div>
 
     <!-- RIGHT FORM CONTAINER -->
     <div class="cust-auth-form-wrap">
@@ -298,18 +319,18 @@
         </div>
 
         <button type="submit" class="cust-btn-primary" id="signInBtn">
-          Sign In to My Account
+          Sign In
         </button>
 
-        <div style="text-align: center; margin-top: 24px; font-size: 0.9rem; color: #666;">
-          Don't have an account yet? 
-          <a href="../register/index.php" style="color: #C85A3E; font-weight: 800; text-decoration: none;">Register Now →</a>
+        <div style="text-align: center; margin-top: 22px; font-size: 0.9rem; color: #666;">
+          <div>Don't have an account yet?</div>
+          <a href="../register/index.php" style="color: #C85A3E; font-weight: 800; text-decoration: underline; margin-top: 6px; display: inline-block;">Register Now</a>
         </div>
 
       </form>
     </div>
-
   </div>
+</div>
 
   <script>
     const showPasswordButton = document.getElementById("showPassword");
@@ -340,5 +361,8 @@
       });
     }
   </script>
+
+<?php require_once '../includes/footer.php'; ?>
+
 </body>
 </html>
