@@ -100,7 +100,7 @@ const footerPolicyTexts = {
     <div style="color: #4A3B32; font-size: 0.9rem; line-height: 1.65; display: flex; flex-direction: column; gap: 14px;">
       <p><strong>1. Order Placement:</strong> All coffee, food, and dessert orders placed via our web platform or dine-in QR codes are transmitted directly to our kitchen barista team.</p>
       <p><strong>2. Voucher Code Rules:</strong> Only 1 promo voucher code can be applied per checkout transaction. Minimum spend and category rules (e.g. Birthday Cake Vouchers) apply.</p>
-      <p><strong>3. Cozy Rewards Points:</strong> Points earned from completed orders and BYO eco bonuses (+10 points for Tumbler / +10 points for Container) cannot be transferred or exchanged for cash.</p>
+      <p><strong>3. Cozy Rewards Points:</strong> Points earned from completed orders and BYO eco bonuses (+10 points for Tumbler, +10 points for Container) cannot be transferred or exchanged for cash.</p>
       <p><strong>4. Live Kitchen Status:</strong> Order statuses (Pending, Handcrafting, Ready) are updated live by store baristas.</p>
     </div>
   `,
@@ -114,7 +114,7 @@ const footerPolicyTexts = {
     </div>
     <div style="color: #4A3B32; font-size: 0.9rem; line-height: 1.65; display: flex; flex-direction: column; gap: 14px;">
       <p><strong>1. Barista Quality Guarantee:</strong> If your coffee beverage or dish does not meet your expectations or customization preference (temperature, sweetness, ice), notify our counter team immediately for a complimentary remake.</p>
-      <p><strong>2. Incorrect Items / Wrong Order:</strong> If an item is missing or prepared incorrectly, we will immediately provide the correct item or process a counter refund.</p>
+      <p><strong>2. Incorrect Items:</strong> If an item is missing or prepared incorrectly, we will immediately provide the correct item or process a counter refund.</p>
       <p><strong>3. Online Order Cancellations:</strong> Orders in "Pending" status may be modified or cancelled by contacting store staff before preparation begins.</p>
     </div>
   `

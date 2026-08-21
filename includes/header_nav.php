@@ -85,7 +85,7 @@ $cartCount = !empty($_SESSION['cart']) ? count($_SESSION['cart']) : 0;
     <?php if (isset($_SESSION['user_id'])): ?>
       <div class="user-profile-menu">
         <a href="<?php echo $basePrefix; ?>profile/index.php" class="user-profile-btn <?php echo $activePage === 'profile' ? 'active' : ''; ?>">
-          👤 <?php echo htmlspecialchars($_SESSION['fullname'] ?? $_SESSION['username']); ?> ▾
+          <?php echo htmlspecialchars($_SESSION['fullname'] ?? $_SESSION['username']); ?> ▾
         </a>
         <div class="dropdown profile-dropdown">
           <a href="<?php echo $basePrefix; ?>profile/index.php">My Profile</a>
@@ -154,7 +154,7 @@ $cartCount = !empty($_SESSION['cart']) ? count($_SESSION['cart']) : 0;
   <!-- Chat Box Container -->
   <div id="csChatBox" style="display: none; position: absolute; bottom: 70px; left: 0; width: 320px; background: #ffffff; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.18); border: 1px solid var(--color-border); overflow: hidden; flex-direction: column;">
     <div style="background: linear-gradient(135deg, #2C1C14 0%, #1A100B 100%); color: #FAF7F2; padding: 14px 16px; border-bottom: 1.5px solid #C85A3E;">
-      <div style="font-weight: 800; font-size: 0.95rem; color: #FFFFFF;">☕ Customer Care &amp; Feedback</div>
+      <div style="font-weight: 800; font-size: 0.95rem; color: #FFFFFF;">☕ Customer Care</div>
       <div style="font-size: 0.75rem; color: #F2C94C; font-weight: 700; margin-top: 2px;">We usually reply in a few minutes</div>
     </div>
     

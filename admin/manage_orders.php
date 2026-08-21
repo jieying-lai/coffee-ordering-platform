@@ -104,7 +104,7 @@ if ($resStats) {
 
 // Fetch Orders
 $ordersQuery = "
-    SELECT o.*, u.fullname, u.email 
+    SELECT o.*, u.fullname, u.email, u.username 
     FROM orders o 
     LEFT JOIN users u ON u.id = o.user_id 
     $whereClause 
@@ -574,8 +574,7 @@ if ($ordersResult) {
                 <div class="order-id">Order #<?php echo $ord['order_id']; ?></div>
                 <div class="order-time">
                   📅 <?php echo date('M d, Y · h:i A', strtotime($ord['order_date'])); ?>
-                  · Customer: <strong><?php echo htmlspecialchars($ord['fullname'] ?? 'Guest User'); ?></strong> 
-                  (<?php echo htmlspecialchars($ord['email'] ?? 'N/A'); ?>)
+                  · Customer: <strong><?php echo !empty($ord['username']) ? '@' . htmlspecialchars($ord['username']) : (!empty($ord['fullname']) ? htmlspecialchars($ord['fullname']) : 'Guest User'); ?></strong>
                 </div>
                 <div style="font-size: 0.82rem; font-weight: 700; color: #C85A3E; margin-top: 4px;">
                   💳 Payment: <strong><?php echo htmlspecialchars($ord['payment_method'] ?? 'Pay at Counter'); ?></strong>

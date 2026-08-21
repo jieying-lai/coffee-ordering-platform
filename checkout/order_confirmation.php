@@ -191,18 +191,82 @@ if ($orderId > 0) {
       </div>
     <?php endif; ?>
 
-    <div style="display: flex; gap: 12px; flex-wrap: wrap;">
-      <a href="../orders/track.php?order_id=<?php echo $orderId; ?>&contact=<?php echo urlencode($dbOrder['contact_number'] ?? ''); ?>" class="btn btn-orange btn-full" style="flex: 1; min-width: 220px; height: 48px; border-radius: 12px; font-weight: 800; font-size: 0.95rem; justify-content: center; display: flex; align-items: center; text-decoration: none;">
-        ⚡ Track Live Order Status #<?php echo $orderId; ?>
+    <style>
+      .confirmation-btn-group {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        margin-top: 28px;
+      }
+      .btn-primary-confirm {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        background: linear-gradient(135deg, #C85A3E 0%, #A8472F 100%);
+        color: #FFFFFF !important;
+        padding: 14px 24px;
+        border-radius: 14px;
+        font-weight: 800;
+        font-size: 1rem;
+        text-decoration: none;
+        box-shadow: 0 6px 20px rgba(200, 90, 62, 0.28);
+        transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+        text-align: center;
+      }
+      .btn-primary-confirm:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 10px 25px rgba(200, 90, 62, 0.38);
+        background: linear-gradient(135deg, #B54F34 0%, #963D26 100%);
+      }
+      .secondary-btn-row {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        gap: 12px;
+      }
+      .btn-secondary-confirm {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        background: #FFFFFF;
+        border: 1.5px solid #E8DDD0;
+        color: #4A3B32 !important;
+        padding: 12px 20px;
+        border-radius: 14px;
+        font-weight: 700;
+        font-size: 0.92rem;
+        text-decoration: none;
+        box-shadow: 0 2px 8px rgba(60, 42, 33, 0.04);
+        transition: all 0.2s ease;
+        white-space: nowrap;
+      }
+      .btn-secondary-confirm:hover {
+        background: #FAF7F2;
+        border-color: #C85A3E;
+        color: #C85A3E !important;
+        transform: translateY(-1.5px);
+        box-shadow: 0 6px 16px rgba(60, 42, 33, 0.08);
+      }
+    </style>
+
+    <div class="confirmation-btn-group">
+      <!-- MAIN PRIMARY HIGHLIGHT ACTION: TRACK LIVE ORDER -->
+      <a href="../orders/track.php?order_id=<?php echo $orderId; ?>&contact=<?php echo urlencode($dbOrder['contact_number'] ?? ''); ?>" class="btn-primary-confirm">
+        ⚡ Track Live Order Status (#<?php echo $orderId; ?>)
       </a>
-      <?php if (isset($_SESSION['user_id'])): ?>
-        <a href="../profile/orders.php" class="btn btn-outline btn-full" style="flex: 1; min-width: 180px; height: 48px; border-radius: 12px; font-weight: 800; font-size: 0.95rem; justify-content: center; display: flex; align-items: center; text-decoration: none; border: 1.5px solid #C85A3E; color: #C85A3E;">
-          📋 My Account Orders
+      
+      <!-- SECONDARY ACTIONS IN EQUAL PROPORTIONAL GRID -->
+      <div class="secondary-btn-row">
+        <?php if (isset($_SESSION['user_id'])): ?>
+          <a href="../profile/orders.php" class="btn-secondary-confirm">
+            📋 My Account Orders
+          </a>
+        <?php endif; ?>
+        <a href="../menu/index.php" class="btn-secondary-confirm">
+          ☕ Back to Menu
         </a>
-      <?php endif; ?>
-      <a href="../menu/index.php" class="btn btn-outline btn-full" style="flex: 1; min-width: 160px; height: 48px; border-radius: 12px; font-weight: 700; font-size: 0.95rem; justify-content: center; text-align: center; border: 1.5px solid #E5D9CC; color: #665447; text-decoration: none; display: flex; align-items: center;">
-        ☕ Back to Menu
-      </a>
+      </div>
     </div>
 
   </div>

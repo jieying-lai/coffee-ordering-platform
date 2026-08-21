@@ -19,6 +19,35 @@ $stmt->execute();
 $user = $stmt->get_result()->fetch_assoc();
 $stmt->close();
 
+// Handle profile picture removal
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['remove_avatar'])) {
+    $currentPic = $user['profile_pic'] ?? '';
+    if (!empty($currentPic) && $currentPic !== 'default.png') {
+        $filePaths = [
+            '../images/profiles/' . $currentPic,
+            '../uploads/avatars/' . $currentPic,
+            '../' . $currentPic
+        ];
+        foreach ($filePaths as $fp) {
+            if (file_exists($fp) && !is_dir($fp)) {
+                @unlink($fp);
+            }
+        }
+    }
+    
+    $updateStmt = $conn->prepare("UPDATE users SET profile_pic = '' WHERE id = ?");
+    $updateStmt->bind_param("i", $userId);
+    if ($updateStmt->execute()) {
+        $message = "Profile picture removed successfully!";
+        $message_type = "success";
+        $user['profile_pic'] = '';
+    } else {
+        $message = "Failed to remove profile picture.";
+        $message_type = "error";
+    }
+    $updateStmt->close();
+}
+
 // Handle profile update
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_profile'])) {
     $fullname = trim($_POST['fullname'] ?? '');
@@ -113,17 +142,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['change_password'])) {
     }
 }
 
+// Check profile picture availability vs Initial letter avatar fallback
 $pic = $user['profile_pic'] ?? '';
-$avatar = '../images/avatar-placeholder.png';
-if (!empty($pic)) {
+$hasProfilePic = false;
+$avatarSrc = '';
+$firstLetter = strtoupper(mb_substr(trim(($user['fullname'] ?? $user['username']) ?: 'C'), 0, 1));
+
+if (!empty($pic) && $pic !== 'default.png') {
     if (preg_match('/^https?:\/\//i', $pic)) {
-        $avatar = $pic;
+        $avatarSrc = $pic;
+        $hasProfilePic = true;
     } elseif (file_exists('../images/profiles/' . $pic)) {
-        $avatar = '../images/profiles/' . $pic;
+        $avatarSrc = '../images/profiles/' . $pic;
+        $hasProfilePic = true;
     } elseif (file_exists('../uploads/avatars/' . $pic)) {
-        $avatar = '../uploads/avatars/' . $pic;
+        $avatarSrc = '../uploads/avatars/' . $pic;
+        $hasProfilePic = true;
     } elseif (file_exists('../' . $pic)) {
-        $avatar = '../' . $pic;
+        $avatarSrc = '../' . $pic;
+        $hasProfilePic = true;
     }
 }
 ?>
@@ -147,7 +184,7 @@ if (!empty($pic)) {
 <!-- SUB NAVIGATION TAB BAR (SEAMLESS WARM BACKGROUND) -->
 <div style="background: rgba(249, 244, 236, 0.95); border-bottom: 1.5px solid #E8DDD0; padding: 12px 5%; box-shadow: 0 4px 12px rgba(60,42,33,0.03);">
   <div style="max-width: 960px; margin: 0 auto; display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
-    <a href="index.php" style="padding: 9px 22px; border-radius: 20px; font-size: 0.88rem; font-weight: 800; background: var(--color-accent-dark); color: #ffffff; text-decoration: none; box-shadow: 0 4px 12px rgba(140,109,88,0.3);">👤 Edit My Profile</a>
+    <a href="index.php" style="padding: 9px 22px; border-radius: 20px; font-size: 0.88rem; font-weight: 800; background: var(--color-accent-dark); color: #ffffff; text-decoration: none; box-shadow: 0 4px 12px rgba(140,109,88,0.3);">Edit My Profile</a>
     <a href="orders.php" style="padding: 9px 22px; border-radius: 20px; font-size: 0.88rem; font-weight: 700; background: #FFFFFF; color: #665447; border: 1.5px solid #E5D9CC; text-decoration: none;">📦 My Orders &amp; Live Status</a>
     <a href="../rewards/index.php" style="padding: 9px 22px; border-radius: 20px; font-size: 0.88rem; font-weight: 700; background: #FFFFFF; color: #665447; border: 1.5px solid #E5D9CC; text-decoration: none;">⭐ Cozy Rewards</a>
   </div>
@@ -158,7 +195,7 @@ if (!empty($pic)) {
   
   <div class="profile-card" style="background: #FFFFFF; border-radius: 22px; border: 1.5px solid #E8DDD0; padding: 32px; box-shadow: 0 8px 24px rgba(60,42,33,0.04);">
     
-    <h2 style="font-family: var(--font-heading); color: #2C1C14; font-size: 1.6rem; font-weight: 800; margin-top: 0; margin-bottom: 18px;">👤 My Profile</h2>
+    <h2 style="font-family: var(--font-heading); color: #2C1C14; font-size: 1.6rem; font-weight: 800; margin-top: 0; margin-bottom: 18px;">My Profile</h2>
 
     <div class="alert" style="background: #FAF4EB; border: 1.5px solid #E8DDD0; border-radius: 14px; padding: 14px 18px; margin-bottom: 22px; display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap;">
       <?php if ((int) ($user['is_rewards_member'] ?? 0) === 1): ?>
@@ -176,17 +213,36 @@ if (!empty($pic)) {
       </div>
     <?php endif; ?>
 
-    <form action="index.php" method="POST" enctype="multipart/form-data">
+    <form action="index.php" method="POST" enctype="multipart/form-data" id="profileForm">
 
-      <!-- PROFILE PICTURE UPLOAD -->
-      <div class="avatar-section">
-        <div class="avatar-preview">
-          <img src="<?php echo $avatar; ?>" id="avatarImg" alt="Profile Picture">
+      <!-- PROFILE PICTURE UPLOAD & REMOVE SECTION -->
+      <div class="avatar-section" style="display: flex; align-items: center; gap: 20px; flex-wrap: wrap; margin-bottom: 24px;">
+        
+        <!-- AVATAR CONTAINER (PHOTO OR FIRST LETTER BADGE) -->
+        <div class="avatar-preview" id="avatarContainer" style="width: 96px; height: 96px; border-radius: 50%; flex-shrink: 0;">
+          <?php if ($hasProfilePic): ?>
+            <img src="<?php echo htmlspecialchars($avatarSrc); ?>" id="avatarImg" alt="Profile Picture" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 3px solid #C85A3E; box-shadow: 0 6px 18px rgba(200,90,62,0.22);">
+          <?php else: ?>
+            <div id="initialAvatarBadge" style="width: 100%; height: 100%; border-radius: 50%; background: linear-gradient(135deg, #C85A3E 0%, #A8472F 100%); color: #FFFFFF; font-weight: 800; font-size: 40px; display: flex; align-items: center; justify-content: center; border: 3px solid #C85A3E; box-shadow: 0 6px 18px rgba(200,90,62,0.22); text-transform: uppercase;">
+              <?php echo htmlspecialchars($firstLetter); ?>
+            </div>
+          <?php endif; ?>
         </div>
-        <div class="avatar-upload">
-          <label for="profile_pic" class="btn-upload">📷 Change Photo</label>
-          <input type="file" id="profile_pic" name="profile_pic" accept="image/*" onchange="previewImage(this)">
+
+        <!-- ACTION BUTTONS: CHANGE PHOTO & REMOVE PHOTO -->
+        <div class="avatar-upload-actions" style="display: flex; gap: 10px; flex-wrap: wrap; align-items: center;">
+          <label for="profile_pic" class="btn-upload" style="cursor: pointer; padding: 10px 18px; background: #FAF4EB; border: 1.5px solid #E8DDD0; border-radius: 20px; font-size: 0.85rem; font-weight: 800; color: #4A3B32; display: inline-flex; align-items: center; gap: 6px; transition: all 0.2s ease; box-shadow: 0 2px 8px rgba(60,42,33,0.04);">
+            <span>📷</span> Change Photo
+          </label>
+          <input type="file" id="profile_pic" name="profile_pic" accept="image/*" onchange="previewImage(this)" style="display: none;">
+
+          <?php if ($hasProfilePic): ?>
+            <button type="submit" name="remove_avatar" class="btn-remove-avatar" onclick="return confirm('⚠️ Remove your profile picture? Your profile will automatically display your name\'s initial letter badge.')" style="padding: 10px 18px; background: #FEF2F2; border: 1.5px solid #FCA5A5; border-radius: 20px; font-size: 0.85rem; font-weight: 800; color: #DC2626; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; transition: all 0.2s ease;">
+              <span>🗑️</span> Remove Photo
+            </button>
+          <?php endif; ?>
         </div>
+
       </div>
 
       <hr class="divider" style="border: none; border-top: 1.5px solid #FAF4EB; margin: 24px 0;">
@@ -231,7 +287,7 @@ if (!empty($pic)) {
 
       </div>
 
-      <div class="actions-row" style="margin-top: 24px;">
+      <div class="actions-row" style="margin-top: 24px; display: flex; gap: 12px; flex-wrap: wrap;">
         <button type="submit" name="update_profile" class="btn btn-orange" style="font-weight: 800; padding: 12px 24px; border-radius: 12px;">Save Changes</button>
         <button type="button" class="btn btn-outline" onclick="openPassModal()" style="font-weight: 700; padding: 12px 24px; border-radius: 12px;">🔒 Change Password</button>
       </div>
@@ -271,7 +327,10 @@ if (!empty($pic)) {
     if (input.files && input.files[0]) {
       const reader = new FileReader();
       reader.onload = function(e) {
-        document.getElementById('avatarImg').src = e.target.result;
+        const container = document.getElementById('avatarContainer');
+        if (container) {
+          container.innerHTML = `<img src="${e.target.result}" id="avatarImg" alt="Profile Picture" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 3px solid #C85A3E; box-shadow: 0 6px 18px rgba(200,90,62,0.22);">`;
+        }
       }
       reader.readAsDataURL(input.files[0]);
     }

@@ -107,7 +107,7 @@ $adminActivePage = $adminActivePage ?? '';
 
       <div class="appbar-breadcrumb">
         <a href="dashboard.php" style="color: #7A685A; text-decoration: none; font-weight: 700; transition: color 0.2s ease;" onmouseover="this.style.color='#C85A3E'" onmouseout="this.style.color='#7A685A'">Barista Admin</a>
-        <span class="sep">/</span>
+        <span class="sep">›</span>
         <span class="current-page"><?php echo htmlspecialchars($appbarTitle); ?></span>
       </div>
     </div>

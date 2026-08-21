@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3308
--- Generation Time: Aug 19, 2026 at 10:43 AM
+-- Generation Time: Aug 21, 2026 at 01:51 PM
 -- Server version: 8.4.7
 -- PHP Version: 8.3.28
 
@@ -35,7 +35,7 @@ CREATE TABLE IF NOT EXISTS `about_us` (
   `body_text` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `about_us`
@@ -143,7 +143,7 @@ CREATE TABLE IF NOT EXISTS `admins` (
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`admin_id`),
   UNIQUE KEY `username` (`username`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `admins`
@@ -166,7 +166,7 @@ CREATE TABLE IF NOT EXISTS `blog_photos` (
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `post_id` (`post_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `blog_photos`
@@ -198,19 +198,26 @@ CREATE TABLE IF NOT EXISTS `blog_posts` (
   `deleted_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `blog_posts`
 --
 
 INSERT INTO `blog_posts` (`id`, `user_id`, `ordered_item`, `mood`, `description`, `created_at`, `is_hidden`, `is_deleted`, `deleted_at`) VALUES
-(1, 2, '', 'harmony', '', '2026-08-05 17:13:44', 0, 0, NULL),
-(2, 2, 'Truffle Wild Mushroom Risotto', 'Happy', 'This Cozy Coffee Co. enviroment is very nice, dont have the smell of coffee will appear on your clothes after stay there 2 hours', '2026-08-05 17:16:01', 0, 0, NULL),
-(3, 2, '', 'Relaxed', '', '2026-08-05 17:27:33', 0, 0, NULL),
-(4, 2, 'Dirty Latte', 'Energized, Cozy, Grateful', 'best drink ever', '2026-08-05 17:34:44', 0, 0, NULL),
+(1, 2, '', 'harmony', '', '2026-08-05 17:13:44', 0, 1, '2026-08-21 21:42:48'),
+(2, 2, 'Truffle Wild Mushroom Risotto', 'Happy', 'This Cozy Coffee Co. enviroment is very nice, dont have the smell of coffee will appear on your clothes after stay there 2 hours', '2026-08-05 17:16:01', 0, 1, '2026-08-21 21:42:43'),
+(3, 2, '', 'Relaxed', '', '2026-08-05 17:27:33', 0, 1, '2026-08-21 21:42:40'),
+(4, 2, 'Dirty Latte', 'Energized, Cozy, Grateful', 'best drink ever', '2026-08-05 17:34:44', 0, 1, '2026-08-21 21:42:36'),
 (5, 1, 'Einspanner', 'Happy', '', '2026-08-14 12:27:17', 0, 0, NULL),
-(6, 1, 'Einspanner', 'Relaxed', '', '2026-08-18 17:33:36', 0, 0, NULL);
+(6, 1, 'Einspanner', 'Relaxed', '', '2026-08-18 17:33:36', 0, 0, NULL),
+(7, 4, 'Einspanner, Sun-Dried Tomato & Burrata Pasta', 'Happy, Cozy', 'Paired a velvety Einspanner with Burrata Pasta on a sunny Tuesday afternoon. Super cozy atmosphere at Cozy Coffee Co.!', '2026-07-02 11:30:00', 0, 0, NULL),
+(8, 5, 'Honeycomb Iced Matcha, Artisanal Smoked Salmon Avocado Toast', 'Energized, Relaxed', 'Starting my weekend right with Honeycomb Matcha and Avocado Toast. Absolute bliss! 🍵✨', '2026-07-04 13:10:00', 0, 0, NULL),
+(9, 7, 'Houjicha Strawberry, Butterfly Yuzunade', 'Cozy, Grateful', 'Tried the Houjicha Strawberry for the first time. The strawberry layer is so refreshing with the smoky tea flavor!', '2026-07-09 10:30:00', 0, 0, NULL),
+(10, 8, 'Australian Iced Coffee, Sun-Dried Tomato & Burrata Pasta', 'Happy', 'Lunch break refill! High quality coffee as always.', '2026-07-13 12:15:00', 0, 0, NULL),
+(11, 6, 'Coconut Latte, Sun-Dried Tomato & Burrata Pasta', 'Relaxed', 'Smooth coconut flavor in the latte. Perfect spot for afternoon remote work.', '2026-07-21 16:30:00', 0, 0, NULL),
+(12, 9, 'Honeycomb Iced Matcha, Artisanal Smoked Salmon Avocado Toast', 'Nostalgic, Cozy', 'Brought my friend here today. We loved the aesthetic and the food presentation!', '2026-08-07 12:00:00', 0, 0, NULL),
+(13, 10, 'Einspanner, Artisanal Smoked Salmon Avocado Toast', 'Energized, Happy', 'That thick cream on top of the Einspanner is unmatched! Highly recommended.', '2026-08-16 17:20:00', 0, 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -226,7 +233,7 @@ CREATE TABLE IF NOT EXISTS `categories` (
   `display_order` int NOT NULL DEFAULT '0',
   PRIMARY KEY (`category_id`),
   UNIQUE KEY `category_key` (`category_key`)
-) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `categories`
@@ -256,7 +263,7 @@ CREATE TABLE IF NOT EXISTS `chat_messages` (
   `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `chat_messages`
@@ -266,7 +273,13 @@ INSERT INTO `chat_messages` (`id`, `user_id`, `sender_type`, `message`, `is_read
 (1, 1, 'user', 'hi', 0, '2026-08-13 00:13:31'),
 (6, 1, 'admin', '1', 0, '2026-08-19 17:10:50'),
 (7, 1, 'admin', '1', 0, '2026-08-19 17:14:18'),
-(8, 1, 'user', 'qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq', 0, '2026-08-19 17:16:48');
+(8, 1, 'user', 'qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq', 0, '2026-08-19 17:16:48'),
+(9, 4, 'user', 'Hi, do you offer non-dairy oat milk for Einspanner?', 1, '2026-07-01 14:00:00'),
+(10, 4, 'admin', 'Hi Marcus! Yes, we have Oatly oat milk available upon request at checkout.', 1, '2026-07-01 14:05:00'),
+(11, 5, 'user', 'Hello! What are your peak weekend hours?', 1, '2026-07-03 16:20:00'),
+(12, 5, 'admin', 'Hi Hannah! Our peak hours are usually 1:00 PM to 4:00 PM on Saturdays & Sundays.', 1, '2026-07-03 16:25:00'),
+(13, 7, 'user', 'Thank you for the wonderful Honeycomb Matcha today!', 1, '2026-08-10 14:00:00'),
+(14, 7, 'admin', 'You are most welcome Chloe! Glad you enjoyed it ✨', 1, '2026-08-10 14:02:00');
 
 -- --------------------------------------------------------
 
@@ -287,7 +300,7 @@ CREATE TABLE IF NOT EXISTS `contact_info` (
   `tiktok_url` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `contact_info`
@@ -314,7 +327,7 @@ CREATE TABLE IF NOT EXISTS `menu_items` (
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`item_id`),
   KEY `category_id` (`category_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=96 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=96 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `menu_items`
@@ -411,15 +424,15 @@ DROP TABLE IF EXISTS `notifications`;
 CREATE TABLE IF NOT EXISTS `notifications` (
   `id` int NOT NULL AUTO_INCREMENT,
   `user_id` int NOT NULL DEFAULT '0',
-  `title` varchar(150) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `message` text COLLATE utf8mb4_unicode_ci NOT NULL,
-  `type` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'general',
-  `link` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `title` varchar(150) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `message` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `type` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL DEFAULT 'general',
+  `link` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `is_read` tinyint(1) DEFAULT '0',
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=201 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `notifications`
@@ -428,7 +441,45 @@ CREATE TABLE IF NOT EXISTS `notifications` (
 INSERT INTO `notifications` (`id`, `user_id`, `title`, `message`, `type`, `link`, `is_read`, `created_at`) VALUES
 (1, 1, '☕ Order #11 Placed!', 'Your order was placed successfully. You earned +13 Cozy Points!', 'order', '../profile/orders.php', 1, '2026-08-19 02:26:27'),
 (2, 1, '☕ Order #12 Placed!', 'Your order was placed successfully. You earned +13 Cozy Points!', 'order', '../profile/orders.php', 1, '2026-08-19 02:46:55'),
-(3, 1, '☕ Order #13 Placed!', 'Your order was placed successfully. You earned +22 Cozy Points!', 'order', '../profile/orders.php', 1, '2026-08-19 02:54:27');
+(3, 1, '☕ Order #13 Placed!', 'Your order was placed successfully. You earned +22 Cozy Points!', 'order', '../profile/orders.php', 1, '2026-08-19 02:54:27'),
+(101, 4, 'Order Completed ✨', 'Your Order #101 is completed. Thank you for visiting Cozy Coffee Co.!', 'order', 'orders/track.php?order_id=101', 1, '2026-07-02 10:15:00'),
+(102, 4, 'Order Completed ✨', 'Your Order #102 is completed. Thank you for visiting Cozy Coffee Co.!', 'order', 'orders/track.php?order_id=102', 1, '2026-07-10 14:30:00'),
+(103, 4, 'Order Completed ✨', 'Your Order #103 is completed. Thank you for visiting Cozy Coffee Co.!', 'order', 'orders/track.php?order_id=103', 1, '2026-07-18 09:45:00'),
+(104, 4, 'Order Completed ✨', 'Your Order #104 is completed. Thank you for visiting Cozy Coffee Co.!', 'order', 'orders/track.php?order_id=104', 1, '2026-07-28 16:20:00'),
+(105, 4, 'Order Completed ✨', 'Your Order #105 is completed. Thank you for visiting Cozy Coffee Co.!', 'order', 'orders/track.php?order_id=105', 1, '2026-08-05 11:10:00'),
+(106, 4, 'Order Completed ✨', 'Your Order #106 is completed. Thank you for visiting Cozy Coffee Co.!', 'order', 'orders/track.php?order_id=106', 1, '2026-08-18 15:40:00'),
+(107, 5, 'Order Completed ✨', 'Your Order #107 is completed. Thank you for visiting Cozy Coffee Co.!', 'order', 'orders/track.php?order_id=107', 1, '2026-07-04 12:00:00'),
+(108, 5, 'Order Completed ✨', 'Your Order #108 is completed. Thank you for visiting Cozy Coffee Co.!', 'order', 'orders/track.php?order_id=108', 1, '2026-07-09 15:20:00'),
+(109, 5, 'Order Completed ✨', 'Your Order #109 is completed. Thank you for visiting Cozy Coffee Co.!', 'order', 'orders/track.php?order_id=109', 1, '2026-07-15 11:45:00'),
+(110, 5, 'Order Completed ✨', 'Your Order #110 is completed. Thank you for visiting Cozy Coffee Co.!', 'order', 'orders/track.php?order_id=110', 1, '2026-07-22 14:10:00'),
+(111, 5, 'Order Completed ✨', 'Your Order #111 is completed. Thank you for visiting Cozy Coffee Co.!', 'order', 'orders/track.php?order_id=111', 1, '2026-07-30 09:30:00'),
+(112, 5, 'Order Completed ✨', 'Your Order #112 is completed. Thank you for visiting Cozy Coffee Co.!', 'order', 'orders/track.php?order_id=112', 1, '2026-08-06 16:50:00'),
+(113, 5, 'Order Completed ✨', 'Your Order #113 is completed. Thank you for visiting Cozy Coffee Co.!', 'order', 'orders/track.php?order_id=113', 1, '2026-08-12 10:30:00'),
+(114, 5, 'Order Completed ✨', 'Your Order #114 is completed. Thank you for visiting Cozy Coffee Co.!', 'order', 'orders/track.php?order_id=114', 1, '2026-08-19 13:15:00'),
+(115, 6, 'Order Completed ✨', 'Your Order #115 is completed. Thank you for visiting Cozy Coffee Co.!', 'order', 'orders/track.php?order_id=115', 1, '2026-07-06 11:00:00'),
+(116, 6, 'Order Completed ✨', 'Your Order #116 is completed. Thank you for visiting Cozy Coffee Co.!', 'order', 'orders/track.php?order_id=116', 1, '2026-07-21 15:45:00'),
+(117, 6, 'Order Completed ✨', 'Your Order #117 is completed. Thank you for visiting Cozy Coffee Co.!', 'order', 'orders/track.php?order_id=117', 1, '2026-08-11 10:20:00'),
+(118, 7, 'Order Completed ✨', 'Your Order #118 is completed. Thank you for visiting Cozy Coffee Co.!', 'order', 'orders/track.php?order_id=118', 1, '2026-07-09 09:10:00'),
+(119, 7, 'Order Completed ✨', 'Your Order #119 is completed. Thank you for visiting Cozy Coffee Co.!', 'order', 'orders/track.php?order_id=119', 1, '2026-07-14 14:00:00'),
+(120, 7, 'Order Completed ✨', 'Your Order #120 is completed. Thank you for visiting Cozy Coffee Co.!', 'order', 'orders/track.php?order_id=120', 1, '2026-07-19 11:30:00'),
+(121, 7, 'Order Completed ✨', 'Your Order #121 is completed. Thank you for visiting Cozy Coffee Co.!', 'order', 'orders/track.php?order_id=121', 1, '2026-07-25 16:15:00'),
+(122, 7, 'Order Completed ✨', 'Your Order #122 is completed. Thank you for visiting Cozy Coffee Co.!', 'order', 'orders/track.php?order_id=122', 1, '2026-07-31 10:45:00'),
+(123, 7, 'Order Completed ✨', 'Your Order #123 is completed. Thank you for visiting Cozy Coffee Co.!', 'order', 'orders/track.php?order_id=123', 1, '2026-08-04 13:50:00'),
+(124, 7, 'Order Completed ✨', 'Your Order #124 is completed. Thank you for visiting Cozy Coffee Co.!', 'order', 'orders/track.php?order_id=124', 1, '2026-08-09 15:10:00'),
+(125, 7, 'Order Completed ✨', 'Your Order #125 is completed. Thank you for visiting Cozy Coffee Co.!', 'order', 'orders/track.php?order_id=125', 1, '2026-08-15 11:00:00'),
+(126, 7, 'Order Completed ✨', 'Your Order #126 is completed. Thank you for visiting Cozy Coffee Co.!', 'order', 'orders/track.php?order_id=126', 1, '2026-08-20 14:25:00'),
+(127, 8, 'Order Completed ✨', 'Your Order #127 is completed. Thank you for visiting Cozy Coffee Co.!', 'order', 'orders/track.php?order_id=127', 1, '2026-07-13 10:40:00'),
+(128, 8, 'Order Completed ✨', 'Your Order #128 is completed. Thank you for visiting Cozy Coffee Co.!', 'order', 'orders/track.php?order_id=128', 1, '2026-07-23 15:15:00'),
+(129, 8, 'Order Completed ✨', 'Your Order #129 is completed. Thank you for visiting Cozy Coffee Co.!', 'order', 'orders/track.php?order_id=129', 1, '2026-08-01 12:30:00'),
+(130, 8, 'Order Completed ✨', 'Your Order #130 is completed. Thank you for visiting Cozy Coffee Co.!', 'order', 'orders/track.php?order_id=130', 1, '2026-08-10 16:00:00'),
+(131, 8, 'Order Completed ✨', 'Your Order #131 is completed. Thank you for visiting Cozy Coffee Co.!', 'order', 'orders/track.php?order_id=131', 1, '2026-08-17 11:20:00'),
+(132, 9, 'Order Completed ✨', 'Your Order #132 is completed. Thank you for visiting Cozy Coffee Co.!', 'order', 'orders/track.php?order_id=132', 1, '2026-07-17 14:10:00'),
+(133, 9, 'Order Completed ✨', 'Your Order #133 is completed. Thank you for visiting Cozy Coffee Co.!', 'order', 'orders/track.php?order_id=133', 1, '2026-08-07 10:50:00'),
+(134, 10, 'Order Completed ✨', 'Your Order #134 is completed. Thank you for visiting Cozy Coffee Co.!', 'order', 'orders/track.php?order_id=134', 1, '2026-07-21 09:30:00'),
+(135, 10, 'Order Completed ✨', 'Your Order #135 is completed. Thank you for visiting Cozy Coffee Co.!', 'order', 'orders/track.php?order_id=135', 1, '2026-07-29 15:00:00'),
+(136, 10, 'Order Completed ✨', 'Your Order #136 is completed. Thank you for visiting Cozy Coffee Co.!', 'order', 'orders/track.php?order_id=136', 1, '2026-08-08 11:40:00'),
+(137, 10, 'Order Completed ✨', 'Your Order #137 is completed. Thank you for visiting Cozy Coffee Co.!', 'order', 'orders/track.php?order_id=137', 1, '2026-08-16 16:10:00'),
+(200, 2, '☕ Order #200 Placed!', 'Your order was placed successfully. You earned +13 Cozy Points!', 'order', '../profile/orders.php', 0, '2026-08-21 13:44:23');
 
 -- --------------------------------------------------------
 
@@ -443,17 +494,17 @@ CREATE TABLE IF NOT EXISTS `orders` (
   `order_date` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   `total_amount` decimal(8,2) NOT NULL,
   `status` enum('Pending','Preparing','Ready','Completed') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT 'Pending',
-  `fulfillment_type` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT 'Dine-In',
-  `table_number` varchar(20) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `payment_method` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT 'Pay at Counter',
-  `contact_number` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `delivery_address` text COLLATE utf8mb4_unicode_ci,
+  `fulfillment_type` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT 'Dine-In',
+  `table_number` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `payment_method` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT 'Pay at Counter',
+  `contact_number` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `delivery_address` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   `byo_tumbler` tinyint(1) DEFAULT '0',
   `byo_container` tinyint(1) DEFAULT '0',
-  `special_instructions` text COLLATE utf8mb4_unicode_ci,
+  `special_instructions` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   PRIMARY KEY (`order_id`),
   KEY `user_id` (`user_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=201 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `orders`
@@ -461,20 +512,58 @@ CREATE TABLE IF NOT EXISTS `orders` (
 
 INSERT INTO `orders` (`order_id`, `user_id`, `order_date`, `total_amount`, `status`, `fulfillment_type`, `table_number`, `payment_method`, `contact_number`, `delivery_address`, `byo_tumbler`, `byo_container`, `special_instructions`) VALUES
 (1, 1, '2026-08-12 14:48:19', 18.90, 'Completed', 'Dine-In', NULL, 'Pay at Counter', NULL, NULL, 0, 0, NULL),
-(2, NULL, '2026-08-19 02:18:15', 28.50, 'Pending', 'Takeaway Pickup', NULL, 'Pay at Counter', '012-9998888', NULL, 1, 0, NULL),
-(3, 1, '2026-08-19 02:18:15', 28.50, 'Pending', 'Dine-In', 'Table 4', 'Pay at Counter', '012-9998888', NULL, 1, 0, NULL),
-(4, 1, '2026-08-19 02:19:16', 13.90, 'Pending', 'Dine-In', 'Table 1', 'Pay at Counter', '+601120970647', NULL, 0, 0, NULL),
-(5, NULL, '2026-08-19 02:19:43', 13.90, 'Pending', 'Dine-In', 'Table 1', 'Pay at Counter', '+601120970647', NULL, 0, 0, NULL),
-(6, NULL, '2026-08-19 02:20:53', 13.90, 'Pending', 'Dine-In', 'Table 1', 'Online Banking (FPX)', '+601120970647', NULL, 0, 0, NULL),
-(7, NULL, '2026-08-19 02:21:09', 13.90, 'Pending', 'Dine-In', 'Table 1', 'Credit/Debit Card', '+601120970647', NULL, 0, 0, NULL),
-(8, NULL, '2026-08-19 02:21:25', 13.90, 'Pending', 'Dine-In', 'Table 1', 'Touch \'n Go E-Wallet', '+601120970647', NULL, 0, 0, NULL),
-(9, 1, '2026-08-19 02:22:11', 13.90, 'Pending', 'Dine-In', 'Table 12', 'Credit/Debit Card', '+601120970647', NULL, 0, 0, NULL),
-(10, 1, '2026-08-19 02:25:52', 35.00, 'Pending', 'Dine-In', 'Table 7', 'Online Banking (FPX)', '012-3334444', NULL, 1, 0, NULL),
+(2, NULL, '2026-08-19 02:18:15', 28.50, 'Completed', 'Takeaway Pickup', NULL, 'Pay at Counter', '012-9998888', NULL, 1, 0, NULL),
+(3, 1, '2026-08-19 02:18:15', 28.50, 'Completed', 'Dine-In', 'Table 4', 'Pay at Counter', '012-9998888', NULL, 1, 0, NULL),
+(4, 1, '2026-08-19 02:19:16', 13.90, 'Completed', 'Dine-In', 'Table 1', 'Pay at Counter', '+601120970647', NULL, 0, 0, NULL),
+(5, NULL, '2026-08-19 02:19:43', 13.90, 'Completed', 'Dine-In', 'Table 1', 'Pay at Counter', '+601120970647', NULL, 0, 0, NULL),
+(6, NULL, '2026-08-19 02:20:53', 13.90, 'Completed', 'Dine-In', 'Table 1', 'Online Banking (FPX)', '+601120970647', NULL, 0, 0, NULL),
+(7, NULL, '2026-08-19 02:21:09', 13.90, 'Completed', 'Dine-In', 'Table 1', 'Credit/Debit Card', '+601120970647', NULL, 0, 0, NULL),
+(8, NULL, '2026-08-19 02:21:25', 13.90, 'Completed', 'Dine-In', 'Table 1', 'Touch \'n Go E-Wallet', '+601120970647', NULL, 0, 0, NULL),
+(9, 1, '2026-08-19 02:22:11', 13.90, 'Completed', 'Dine-In', 'Table 12', 'Credit/Debit Card', '+601120970647', NULL, 0, 0, NULL),
+(10, 1, '2026-08-19 02:25:52', 35.00, 'Completed', 'Dine-In', 'Table 7', 'Online Banking (FPX)', '012-3334444', NULL, 1, 0, NULL),
 (11, 1, '2026-08-19 02:26:27', 13.90, 'Completed', 'Dine-In', 'Table 12', 'Credit/Debit Card', '+601120970647', NULL, 0, 0, NULL),
 (12, 1, '2026-08-19 02:46:55', 13.90, 'Preparing', 'Dine-In', 'Table 1', 'Pay at Counter', '+601120970647', NULL, 0, 0, NULL),
 (13, 1, '2026-08-19 02:54:27', 12.90, 'Preparing', 'Takeaway Pickup', NULL, 'Pay at Counter', '+601120970647', NULL, 1, 1, NULL),
 (14, NULL, '2026-08-19 05:05:51', 13.90, 'Completed', 'Dine-In', 'Table 1', 'Pay at Counter', '+601120970647', NULL, 0, 0, NULL),
-(15, NULL, '2026-08-19 05:53:15', 15.90, 'Preparing', 'Dine-In', 'Table 1', 'Pay at Counter', '+601120970647', NULL, 0, 0, NULL);
+(15, NULL, '2026-08-19 05:53:15', 15.90, 'Completed', 'Dine-In', 'Table 1', 'Pay at Counter', '+601120970647', NULL, 0, 0, NULL),
+(101, 4, '2026-07-02 10:15:00', 31.80, 'Completed', 'Dine-In', 'T-04', 'Credit Card', '012-3489123', '', 0, 0, 'Less ice please'),
+(102, 4, '2026-07-10 14:30:00', 41.70, 'Completed', 'Takeaway', '', 'E-Wallet (TNG)', '012-3489123', '', 0, 0, 'Less ice please'),
+(103, 4, '2026-07-18 09:45:00', 38.80, 'Completed', 'Dine-In', 'T-02', 'Pay at Counter', '012-3489123', '', 0, 0, 'Less ice please'),
+(104, 4, '2026-07-28 16:20:00', 48.70, 'Completed', 'Dine-In', 'T-07', 'Credit Card', '012-3489123', '', 0, 0, 'Less ice please'),
+(105, 4, '2026-08-05 11:10:00', 31.80, 'Completed', 'Takeaway', '', 'E-Wallet (TNG)', '012-3489123', '', 0, 0, 'Less ice please'),
+(106, 4, '2026-08-18 15:40:00', 28.80, 'Completed', 'Dine-In', 'T-04', 'Credit Card', '012-3489123', '', 0, 0, 'Less ice please'),
+(107, 5, '2026-07-04 12:00:00', 40.80, 'Completed', 'Dine-In', 'T-01', 'Credit Card', '016-8829102', '', 0, 0, 'Less ice please'),
+(108, 5, '2026-07-09 15:20:00', 31.80, 'Completed', 'Takeaway', '', 'E-Wallet (TNG)', '016-8829102', '', 0, 0, 'Less ice please'),
+(109, 5, '2026-07-15 11:45:00', 47.70, 'Completed', 'Dine-In', 'T-03', 'Credit Card', '016-8829102', '', 0, 0, 'Less ice please'),
+(110, 5, '2026-07-22 14:10:00', 40.70, 'Completed', 'Dine-In', 'T-05', 'Pay at Counter', '016-8829102', '', 0, 0, 'Less ice please'),
+(111, 5, '2026-07-30 09:30:00', 29.80, 'Completed', 'Takeaway', '', 'E-Wallet (TNG)', '016-8829102', '', 0, 0, 'Less ice please'),
+(112, 5, '2026-08-06 16:50:00', 34.80, 'Completed', 'Dine-In', 'T-08', 'Credit Card', '016-8829102', '', 0, 0, 'Less ice please'),
+(113, 5, '2026-08-12 10:30:00', 29.80, 'Completed', 'Dine-In', 'T-01', 'Credit Card', '016-8829102', '', 0, 0, 'Less ice please'),
+(114, 5, '2026-08-19 13:15:00', 31.80, 'Completed', 'Takeaway', '', 'E-Wallet (TNG)', '016-8829102', '', 0, 0, 'Less ice please'),
+(115, 6, '2026-07-06 11:00:00', 43.70, 'Completed', 'Dine-In', 'T-06', 'Pay at Counter', '019-2231904', '', 0, 0, 'Less ice please'),
+(116, 6, '2026-07-21 15:45:00', 28.80, 'Completed', 'Takeaway', '', 'Credit Card', '019-2231904', '', 0, 0, 'Less ice please'),
+(117, 6, '2026-08-11 10:20:00', 38.80, 'Completed', 'Dine-In', 'T-06', 'Pay at Counter', '019-2231904', '', 0, 0, 'Less ice please'),
+(118, 7, '2026-07-09 09:10:00', 29.80, 'Completed', 'Dine-In', 'T-09', 'Credit Card', '011-5540192', '', 0, 0, 'Less ice please'),
+(119, 7, '2026-07-14 14:00:00', 43.70, 'Completed', 'Takeaway', '', 'E-Wallet (TNG)', '011-5540192', '', 0, 0, 'Less ice please'),
+(120, 7, '2026-07-19 11:30:00', 39.80, 'Completed', 'Dine-In', 'T-03', 'Credit Card', '011-5540192', '', 0, 0, 'Less ice please'),
+(121, 7, '2026-07-25 16:15:00', 49.70, 'Completed', 'Dine-In', 'T-09', 'Credit Card', '011-5540192', '', 0, 0, 'Less ice please'),
+(122, 7, '2026-07-31 10:45:00', 29.80, 'Completed', 'Takeaway', '', 'E-Wallet (TNG)', '011-5540192', '', 0, 0, 'Less ice please'),
+(123, 7, '2026-08-04 13:50:00', 34.80, 'Completed', 'Dine-In', 'T-02', 'Credit Card', '011-5540192', '', 0, 0, 'Less ice please'),
+(124, 7, '2026-08-09 15:10:00', 31.80, 'Completed', 'Takeaway', '', 'E-Wallet (TNG)', '011-5540192', '', 0, 0, 'Less ice please'),
+(125, 7, '2026-08-15 11:00:00', 53.70, 'Completed', 'Dine-In', 'T-09', 'Credit Card', '011-5540192', '', 0, 0, 'Less ice please'),
+(126, 7, '2026-08-20 14:25:00', 29.80, 'Completed', 'Dine-In', 'T-04', 'Credit Card', '011-5540192', '', 0, 0, 'Less ice please'),
+(127, 8, '2026-07-13 10:40:00', 45.70, 'Completed', 'Dine-In', 'T-05', 'Pay at Counter', '017-9921043', '', 0, 0, 'Less ice please'),
+(128, 8, '2026-07-23 15:15:00', 28.80, 'Completed', 'Takeaway', '', 'Credit Card', '017-9921043', '', 0, 0, 'Less ice please'),
+(129, 8, '2026-08-01 12:30:00', 33.80, 'Completed', 'Dine-In', 'T-07', 'Pay at Counter', '017-9921043', '', 0, 0, 'Less ice please'),
+(130, 8, '2026-08-10 16:00:00', 27.80, 'Completed', 'Takeaway', '', 'Credit Card', '017-9921043', '', 0, 0, 'Less ice please'),
+(131, 8, '2026-08-17 11:20:00', 38.80, 'Completed', 'Dine-In', 'T-05', 'Credit Card', '017-9921043', '', 0, 0, 'Less ice please'),
+(132, 9, '2026-07-17 14:10:00', 29.80, 'Completed', 'Dine-In', 'T-08', 'Credit Card', '013-4412095', '', 0, 0, 'Less ice please'),
+(133, 9, '2026-08-07 10:50:00', 40.80, 'Completed', 'Takeaway', '', 'E-Wallet (TNG)', '013-4412095', '', 0, 0, 'Less ice please'),
+(134, 10, '2026-07-21 09:30:00', 31.80, 'Completed', 'Dine-In', 'T-10', 'Credit Card', '018-7712940', '', 0, 0, 'Less ice please'),
+(135, 10, '2026-07-29 15:00:00', 43.70, 'Completed', 'Takeaway', '', 'Credit Card', '018-7712940', '', 0, 0, 'Less ice please'),
+(136, 10, '2026-08-08 11:40:00', 34.80, 'Completed', 'Dine-In', 'T-10', 'Pay at Counter', '018-7712940', '', 0, 0, 'Less ice please'),
+(137, 10, '2026-08-16 16:10:00', 38.80, 'Completed', 'Dine-In', 'T-02', 'Credit Card', '018-7712940', '', 0, 0, 'Less ice please'),
+(200, 2, '2026-08-21 13:44:23', 13.90, 'Pending', 'Dine-In', 'Table 1', 'Pay at Counter', '+60123456789', NULL, 0, 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -489,11 +578,11 @@ CREATE TABLE IF NOT EXISTS `order_items` (
   `item_id` int NOT NULL,
   `quantity` int NOT NULL DEFAULT '1',
   `price_at_order` decimal(6,2) NOT NULL,
-  `item_options` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `item_options` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`order_item_id`),
   KEY `order_id` (`order_id`),
   KEY `item_id` (`item_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=201 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `order_items`
@@ -512,7 +601,80 @@ INSERT INTO `order_items` (`order_item_id`, `order_id`, `item_id`, `quantity`, `
 (10, 12, 2, 1, 13.90, 'Regular Ice, Regular Sugar'),
 (11, 13, 4, 1, 12.90, 'Regular Ice, Regular Sugar'),
 (12, 14, 3, 1, 13.90, 'Regular Ice, Regular Sugar'),
-(13, 15, 14, 1, 15.90, 'Regular Ice, Regular Sugar');
+(13, 15, 14, 1, 15.90, 'Regular Ice, Regular Sugar'),
+(101, 101, 2, 1, 13.90, 'Standard'),
+(102, 101, 24, 1, 17.90, 'Standard'),
+(103, 102, 3, 2, 13.90, 'Standard'),
+(104, 102, 15, 1, 13.90, 'Standard'),
+(105, 103, 5, 1, 13.90, 'Standard'),
+(106, 103, 28, 1, 24.90, 'Standard'),
+(107, 104, 2, 2, 13.90, 'Standard'),
+(108, 104, 25, 1, 20.90, 'Standard'),
+(109, 105, 13, 1, 15.90, 'Standard'),
+(110, 105, 14, 1, 15.90, 'Standard'),
+(111, 106, 2, 1, 13.90, 'Standard'),
+(112, 106, 8, 1, 14.90, 'Standard'),
+(113, 107, 14, 1, 15.90, 'Standard'),
+(114, 107, 28, 1, 24.90, 'Standard'),
+(115, 108, 13, 2, 15.90, 'Standard'),
+(116, 109, 2, 1, 13.90, 'Standard'),
+(117, 109, 21, 1, 15.90, 'Standard'),
+(118, 109, 24, 1, 17.90, 'Standard'),
+(119, 110, 6, 2, 12.90, 'Standard'),
+(120, 110, 17, 1, 14.90, 'Standard'),
+(121, 111, 14, 1, 15.90, 'Standard'),
+(122, 111, 3, 1, 13.90, 'Standard'),
+(123, 112, 25, 1, 20.90, 'Standard'),
+(124, 112, 22, 1, 13.90, 'Standard'),
+(125, 113, 2, 1, 13.90, 'Standard'),
+(126, 113, 13, 1, 15.90, 'Standard'),
+(127, 114, 14, 2, 15.90, 'Standard'),
+(128, 115, 4, 2, 12.90, 'Standard'),
+(129, 115, 24, 1, 17.90, 'Standard'),
+(130, 116, 5, 1, 13.90, 'Standard'),
+(131, 116, 8, 1, 14.90, 'Standard'),
+(132, 117, 2, 1, 13.90, 'Standard'),
+(133, 117, 28, 1, 24.90, 'Standard'),
+(134, 118, 13, 1, 15.90, 'Standard'),
+(135, 118, 22, 1, 13.90, 'Standard'),
+(136, 119, 2, 2, 13.90, 'Standard'),
+(137, 119, 14, 1, 15.90, 'Standard'),
+(138, 120, 28, 1, 24.90, 'Standard'),
+(139, 120, 17, 1, 14.90, 'Standard'),
+(140, 121, 21, 2, 15.90, 'Standard'),
+(141, 121, 24, 1, 17.90, 'Standard'),
+(142, 122, 13, 1, 15.90, 'Standard'),
+(143, 122, 3, 1, 13.90, 'Standard'),
+(144, 123, 2, 1, 13.90, 'Standard'),
+(145, 123, 25, 1, 20.90, 'Standard'),
+(146, 124, 14, 2, 15.90, 'Standard'),
+(147, 125, 2, 1, 13.90, 'Standard'),
+(148, 125, 28, 1, 24.90, 'Standard'),
+(149, 125, 16, 1, 14.90, 'Standard'),
+(150, 126, 13, 1, 15.90, 'Standard'),
+(151, 126, 2, 1, 13.90, 'Standard'),
+(152, 127, 5, 2, 13.90, 'Standard'),
+(153, 127, 24, 1, 17.90, 'Standard'),
+(154, 128, 2, 1, 13.90, 'Standard'),
+(155, 128, 8, 1, 14.90, 'Standard'),
+(156, 129, 25, 1, 20.90, 'Standard'),
+(157, 129, 4, 1, 12.90, 'Standard'),
+(158, 130, 3, 2, 13.90, 'Standard'),
+(159, 131, 2, 1, 13.90, 'Standard'),
+(160, 131, 28, 1, 24.90, 'Standard'),
+(161, 132, 13, 1, 15.90, 'Standard'),
+(162, 132, 22, 1, 13.90, 'Standard'),
+(163, 133, 14, 1, 15.90, 'Standard'),
+(164, 133, 28, 1, 24.90, 'Standard'),
+(165, 134, 2, 1, 13.90, 'Standard'),
+(166, 134, 24, 1, 17.90, 'Standard'),
+(167, 135, 8, 2, 14.90, 'Standard'),
+(168, 135, 15, 1, 13.90, 'Standard'),
+(169, 136, 25, 1, 20.90, 'Standard'),
+(170, 136, 5, 1, 13.90, 'Standard'),
+(171, 137, 2, 1, 13.90, 'Standard'),
+(172, 137, 28, 1, 24.90, 'Standard'),
+(200, 200, 3, 1, 13.90, 'Regular Ice, Regular Sugar');
 
 -- --------------------------------------------------------
 
@@ -533,7 +695,7 @@ CREATE TABLE IF NOT EXISTS `otp_verifications` (
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `otp_verifications`
@@ -541,7 +703,8 @@ CREATE TABLE IF NOT EXISTS `otp_verifications` (
 
 INSERT INTO `otp_verifications` (`id`, `user_id`, `phone`, `birthdate`, `activation_code`, `is_verified`, `attempt_count`, `expires_at`, `created_at`) VALUES
 (1, 3, '+60192723941', '2006-08-08', '888953', 1, 0, '2026-08-08 01:51:47', '2026-08-08 01:48:47'),
-(2, 1, '+601120970647', '2006-04-07', '982169', 1, 0, '2026-08-12 14:45:27', '2026-08-12 14:42:27');
+(2, 1, '+601120970647', '2006-04-07', '982169', 1, 0, '2026-08-12 14:45:27', '2026-08-12 14:42:27'),
+(3, 2, '+60123456789', '2006-08-16', '349878', 1, 0, '2026-08-21 13:46:43', '2026-08-21 13:43:43');
 
 -- --------------------------------------------------------
 
@@ -554,11 +717,11 @@ CREATE TABLE IF NOT EXISTS `points_history` (
   `id` int NOT NULL AUTO_INCREMENT,
   `user_id` int NOT NULL,
   `points` int NOT NULL,
-  `description` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `description` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=201 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `points_history`
@@ -568,7 +731,45 @@ INSERT INTO `points_history` (`id`, `user_id`, `points`, `description`, `created
 (1, 1, -50, 'Redeemed Coupon: COZY3OFF', '2026-08-12 15:40:57'),
 (2, 1, 13, 'Earned from Order #11', '2026-08-19 02:26:27'),
 (3, 1, 13, 'Earned from Order #12', '2026-08-19 02:46:55'),
-(4, 1, 22, 'Earned from Order #13 (includes +10 BYO Eco Bonus)', '2026-08-19 02:54:27');
+(4, 1, 22, 'Earned from Order #13 (includes +10 BYO Eco Bonus)', '2026-08-19 02:54:27'),
+(101, 4, 318, 'Earned from Order #101', '2026-07-02 10:15:00'),
+(102, 4, 417, 'Earned from Order #102', '2026-07-10 14:30:00'),
+(103, 4, 388, 'Earned from Order #103', '2026-07-18 09:45:00'),
+(104, 4, 487, 'Earned from Order #104', '2026-07-28 16:20:00'),
+(105, 4, 318, 'Earned from Order #105', '2026-08-05 11:10:00'),
+(106, 4, 288, 'Earned from Order #106', '2026-08-18 15:40:00'),
+(107, 5, 408, 'Earned from Order #107', '2026-07-04 12:00:00'),
+(108, 5, 318, 'Earned from Order #108', '2026-07-09 15:20:00'),
+(109, 5, 477, 'Earned from Order #109', '2026-07-15 11:45:00'),
+(110, 5, 407, 'Earned from Order #110', '2026-07-22 14:10:00'),
+(111, 5, 298, 'Earned from Order #111', '2026-07-30 09:30:00'),
+(112, 5, 348, 'Earned from Order #112', '2026-08-06 16:50:00'),
+(113, 5, 298, 'Earned from Order #113', '2026-08-12 10:30:00'),
+(114, 5, 318, 'Earned from Order #114', '2026-08-19 13:15:00'),
+(115, 6, 437, 'Earned from Order #115', '2026-07-06 11:00:00'),
+(116, 6, 288, 'Earned from Order #116', '2026-07-21 15:45:00'),
+(117, 6, 388, 'Earned from Order #117', '2026-08-11 10:20:00'),
+(118, 7, 298, 'Earned from Order #118', '2026-07-09 09:10:00'),
+(119, 7, 437, 'Earned from Order #119', '2026-07-14 14:00:00'),
+(120, 7, 398, 'Earned from Order #120', '2026-07-19 11:30:00'),
+(121, 7, 497, 'Earned from Order #121', '2026-07-25 16:15:00'),
+(122, 7, 298, 'Earned from Order #122', '2026-07-31 10:45:00'),
+(123, 7, 348, 'Earned from Order #123', '2026-08-04 13:50:00'),
+(124, 7, 318, 'Earned from Order #124', '2026-08-09 15:10:00'),
+(125, 7, 537, 'Earned from Order #125', '2026-08-15 11:00:00'),
+(126, 7, 298, 'Earned from Order #126', '2026-08-20 14:25:00'),
+(127, 8, 457, 'Earned from Order #127', '2026-07-13 10:40:00'),
+(128, 8, 288, 'Earned from Order #128', '2026-07-23 15:15:00'),
+(129, 8, 338, 'Earned from Order #129', '2026-08-01 12:30:00'),
+(130, 8, 278, 'Earned from Order #130', '2026-08-10 16:00:00'),
+(131, 8, 388, 'Earned from Order #131', '2026-08-17 11:20:00'),
+(132, 9, 298, 'Earned from Order #132', '2026-07-17 14:10:00'),
+(133, 9, 408, 'Earned from Order #133', '2026-08-07 10:50:00'),
+(134, 10, 318, 'Earned from Order #134', '2026-07-21 09:30:00'),
+(135, 10, 437, 'Earned from Order #135', '2026-07-29 15:00:00'),
+(136, 10, 348, 'Earned from Order #136', '2026-08-08 11:40:00'),
+(137, 10, 388, 'Earned from Order #137', '2026-08-16 16:10:00'),
+(200, 2, 13, 'Earned from Order #200', '2026-08-21 13:44:23');
 
 -- --------------------------------------------------------
 
@@ -579,17 +780,17 @@ INSERT INTO `points_history` (`id`, `user_id`, `points`, `description`, `created
 DROP TABLE IF EXISTS `promo_codes`;
 CREATE TABLE IF NOT EXISTS `promo_codes` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `code` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `title` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `discount_type` enum('fixed','percentage','free_item') COLLATE utf8mb4_unicode_ci DEFAULT 'fixed',
+  `code` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `discount_type` enum('fixed','percentage','free_item') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT 'fixed',
   `discount_value` decimal(8,2) NOT NULL DEFAULT '0.00',
-  `category_target` varchar(50) COLLATE utf8mb4_unicode_ci DEFAULT 'all',
+  `category_target` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT 'all',
   `min_spend` decimal(8,2) DEFAULT '0.00',
   `is_active` tinyint(1) DEFAULT '1',
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `code` (`code`)
-) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `promo_codes`
@@ -662,7 +863,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `email` (`email`),
   UNIQUE KEY `username` (`username`)
-) ENGINE=MyISAM AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `users`
@@ -670,8 +871,15 @@ CREATE TABLE IF NOT EXISTS `users` (
 
 INSERT INTO `users` (`id`, `fullname`, `email`, `username`, `password`, `created_at`, `birthday`, `gender`, `phone`, `profile_pic`, `is_rewards_member`, `rewards_points`, `rewards_member_no`, `rewards_joined_at`, `points`, `last_notif_read_at`) VALUES
 (1, 'Jie Ying', 'jieying47@1utar.my', 'laijieying', '$2y$10$kNkzG8Ab1FuWgfVbtbz7P.aGvTAKgdEFHsuzrq5b71TtwwiRVbwxy', '2026-08-01 21:32:31', '2006-04-07', 'Female', '+601120970647', 'user_1_1785652687.jpg', 1, 93, 'CR000001', '2026-08-12 14:42:42', 93, '2026-08-19 15:00:33'),
-(2, 'Chok Shi Ying', 'chokshiying06@gmail.com', 'yingchok', '$2y$10$Amklq4awtRbRlrfNk82VzuzhFOP1gJvuhvZIKXpXmu4k.nj.h2tKm', '2026-08-05 07:57:54', NULL, NULL, NULL, 'user_2_1785922625.jpg', 0, 0, NULL, NULL, 0, NULL),
-(3, 'Zhi Qing', 'changzhiqing1996@gmail.com', 'ZhiQing', '$2y$10$tsJdBo23ikIpXBLAYxbyfuOQe7C/yviTlDC54y9nttvNAgWcKOrbG', '2026-08-08 01:47:26', '2006-08-08', NULL, '+60192723941', 'default.png', 1, 50, 'CR000003', '2026-08-08 01:49:04', 50, NULL);
+(2, 'Chok Shi Ying', 'chokshiying06@gmail.com', 'yingchok', '$2y$10$Amklq4awtRbRlrfNk82VzuzhFOP1gJvuhvZIKXpXmu4k.nj.h2tKm', '2026-08-05 07:57:54', '2006-08-16', '', '+60123456789', 'user_2_1785922625.jpg', 1, 63, 'CR000002', '2026-08-21 13:43:51', 13, '2026-08-21 21:43:58'),
+(3, 'Zhi Qing', 'changzhiqing1996@gmail.com', 'ZhiQing', '$2y$10$tsJdBo23ikIpXBLAYxbyfuOQe7C/yviTlDC54y9nttvNAgWcKOrbG', '2026-08-08 01:47:26', '2006-08-08', NULL, '+60192723941', 'default.png', 1, 50, 'CR000003', '2026-08-08 01:49:04', 50, NULL),
+(4, 'Marcus Tan', 'marcus.tan@gmail.com', 'marcustan', '$2y$10$DfhI19G60L79vSuAcNwRsO..OiI8uqsl8DqW1/s0a0RMxeJl0CBjq', '2026-07-01 09:15:00', '1996-05-14', 'Male', '012-3489123', '', 1, 1850, 'CC-882910', '2026-07-01 09:20:00', 1850, NULL),
+(5, 'Hannah Lim', 'hannah.lim@outlook.com', 'hannahlim', '$2y$10$DfhI19G60L79vSuAcNwRsO..OiI8uqsl8DqW1/s0a0RMxeJl0CBjq', '2026-07-03 11:30:00', '1998-09-22', 'Female', '016-8829102', '', 1, 2400, 'CC-882911', '2026-07-03 11:35:00', 2400, NULL),
+(6, 'David Chen', 'david.chen@yahoo.com', 'davidchen', '$2y$10$DfhI19G60L79vSuAcNwRsO..OiI8uqsl8DqW1/s0a0RMxeJl0CBjq', '2026-07-05 14:10:00', '1993-11-03', 'Male', '019-2231904', '', 1, 920, 'CC-882912', '2026-07-05 14:15:00', 920, NULL),
+(7, 'Chloe Wong', 'chloe.wong@gmail.com', 'chloewong', '$2y$10$DfhI19G60L79vSuAcNwRsO..OiI8uqsl8DqW1/s0a0RMxeJl0CBjq', '2026-07-08 10:05:00', '2001-03-18', 'Female', '011-5540192', '', 1, 3100, 'CC-882913', '2026-07-08 10:10:00', 3100, NULL),
+(8, 'Jason Lee', 'jason.lee@hotmail.com', 'jasonlee', '$2y$10$DfhI19G60L79vSuAcNwRsO..OiI8uqsl8DqW1/s0a0RMxeJl0CBjq', '2026-07-12 16:45:00', '1995-07-29', 'Male', '017-9921043', '', 1, 1420, 'CC-882914', '2026-07-12 16:50:00', 1420, NULL),
+(9, 'Sophie Taylor', 'sophie.taylor@gmail.com', 'sophietaylor', '$2y$10$DfhI19G60L79vSuAcNwRsO..OiI8uqsl8DqW1/s0a0RMxeJl0CBjq', '2026-07-16 08:20:00', '1999-12-08', 'Female', '013-4412095', '', 1, 780, 'CC-882915', '2026-07-16 08:25:00', 780, NULL),
+(10, 'Lucas Fernandez', 'lucas.fernandez@gmail.com', 'lucasf', '$2y$10$DfhI19G60L79vSuAcNwRsO..OiI8uqsl8DqW1/s0a0RMxeJl0CBjq', '2026-07-20 13:00:00', '1997-04-05', 'Male', '018-7712940', '', 1, 1650, 'CC-882916', '2026-07-20 13:05:00', 1650, NULL);
 
 -- --------------------------------------------------------
 
@@ -683,23 +891,32 @@ DROP TABLE IF EXISTS `user_vouchers`;
 CREATE TABLE IF NOT EXISTS `user_vouchers` (
   `id` int NOT NULL AUTO_INCREMENT,
   `user_id` int NOT NULL,
-  `voucher_code` varchar(50) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `voucher_code` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `discount_amount` decimal(6,2) NOT NULL,
   `min_spend` decimal(6,2) NOT NULL DEFAULT '0.00',
-  `terms` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `terms` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `is_used` tinyint(1) DEFAULT '0',
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  `status` enum('ACTIVE','USED','EXPIRED') COLLATE utf8mb4_unicode_ci DEFAULT 'ACTIVE',
+  `status` enum('ACTIVE','USED','EXPIRED') CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT 'ACTIVE',
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `user_vouchers`
 --
 
 INSERT INTO `user_vouchers` (`id`, `user_id`, `voucher_code`, `discount_amount`, `min_spend`, `terms`, `is_used`, `created_at`, `status`) VALUES
-(1, 1, 'COZY3OFF', 3.00, 10.00, 'Valid for RM3 off any takeaway order over RM10. Cannot be combined with other promos.', 0, '2026-08-12 15:40:57', 'ACTIVE');
+(1, 1, 'COZY3OFF', 3.00, 10.00, 'Valid for RM3 off any takeaway order over RM10. Cannot be combined with other promos.', 0, '2026-08-12 15:40:57', 'ACTIVE'),
+(2, 4, 'WELCOME10', 10.00, 30.00, '10% off welcome voucher', 1, '2026-07-01 09:20:00', 'ACTIVE'),
+(3, 5, 'WELCOME10', 10.00, 30.00, '10% off welcome voucher', 1, '2026-07-03 11:35:00', 'USED'),
+(4, 5, 'FREECOFFEE', 13.90, 20.00, 'Free Classic Coffee Reward', 0, '2026-08-01 10:00:00', 'ACTIVE'),
+(5, 6, 'WELCOME10', 10.00, 30.00, '10% off welcome voucher', 0, '2026-07-05 14:15:00', 'ACTIVE'),
+(6, 7, 'WELCOME10', 10.00, 30.00, '10% off welcome voucher', 1, '2026-07-08 10:10:00', 'USED'),
+(7, 7, 'MATCHALOVER', 15.90, 25.00, 'Free Matcha Drink Reward', 0, '2026-08-10 12:00:00', 'ACTIVE'),
+(8, 8, 'WELCOME10', 10.00, 30.00, '10% off welcome voucher', 0, '2026-07-12 16:50:00', 'ACTIVE'),
+(9, 9, 'WELCOME10', 10.00, 30.00, '10% off welcome voucher', 0, '2026-07-16 08:25:00', 'ACTIVE'),
+(10, 10, 'WELCOME10', 10.00, 30.00, '10% off welcome voucher', 0, '2026-07-20 13:05:00', 'ACTIVE');
 
 --
 -- Constraints for dumped tables

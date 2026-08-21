@@ -8,6 +8,53 @@ if (!isset($_SESSION['admin_id'])) {
     exit();
 }
 
+// Handle AJAX Get Thread Data without page reload
+if (isset($_GET['action']) && $_GET['action'] === 'get_thread') {
+    $reqUserId = (int)($_GET['user_id'] ?? 0);
+    $activeUser = null;
+    $activeMessages = [];
+    
+    if ($reqUserId > 0) {
+        $uStmt = $conn->prepare("SELECT id, 
+                                        COALESCE(fullname, username, CONCAT('Customer #', id)) as fullname, 
+                                        COALESCE(email, 'Registered User') as email,
+                                        username, profile_pic, birthday, gender, phone, created_at, points, rewards_points, is_rewards_member
+                                 FROM users WHERE id = ?");
+        $uStmt->bind_param("i", $reqUserId);
+        $uStmt->execute();
+        $activeUser = $uStmt->get_result()->fetch_assoc();
+        $uStmt->close();
+
+        $mStmt = $conn->prepare("SELECT * FROM chat_messages WHERE user_id = ? ORDER BY created_at ASC");
+        $mStmt->bind_param("i", $reqUserId);
+        $mStmt->execute();
+        $mRes = $mStmt->get_result();
+        while ($r = $mRes->fetch_assoc()) {
+            $r['formatted_date'] = formatSmartChatDate($r['created_at']);
+            $r['date_header'] = formatSmartDateHeader($r['created_at']);
+            $activeMessages[] = $r;
+        }
+        $mStmt->close();
+    }
+
+    $lastMsg = !empty($activeMessages) ? end($activeMessages) : null;
+    $isUnreplied = ($lastMsg && $lastMsg['sender_type'] === 'user');
+    
+    $avatarPath = getUserAvatarPath($activeUser['profile_pic'] ?? '');
+    $initial = strtoupper(substr($activeUser['fullname'] ?? 'C', 0, 1));
+
+    header('Content-Type: application/json');
+    echo json_encode([
+        'status' => 'success',
+        'user' => $activeUser,
+        'avatar_path' => $avatarPath,
+        'initial' => $initial,
+        'is_unreplied' => $isUnreplied,
+        'messages' => $activeMessages
+    ]);
+    exit();
+}
+
 $selectedUserId = isset($_GET['user_id']) ? (int)$_GET['user_id'] : 0;
 $messageSent = '';
 
@@ -333,6 +380,8 @@ $activeIsUnreplied = ($activeLastMsg && $activeLastMsg['sender_type'] === 'user'
           $avatarPath = getUserAvatarPath($cu['profile_pic'] ?? '');
         ?>
           <a href="manage_chat.php?user_id=<?php echo $cu['user_id']; ?>" 
+             onclick="return switchChatUser(event, <?php echo $cu['user_id']; ?>, this);"
+             data-user-id="<?php echo $cu['user_id']; ?>"
              class="chat-user-item <?php echo $isSelected ? 'active' : ''; ?> <?php echo $isUnreplied ? 'unreplied-item' : ''; ?>"
              style="text-decoration: none; display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 14px; background: <?php echo $isSelected ? 'linear-gradient(135deg, #C85A3E 0%, #A8472F 100%)' : '#FFFFFF'; ?>; color: <?php echo $isSelected ? '#FFFFFF' : '#2C1C14'; ?>; border: 1.5px solid <?php echo $isSelected ? '#C85A3E' : ($isUnreplied ? '#FCD34D' : '#E8DDD0'); ?>; box-shadow: <?php echo $isSelected ? '0 6px 18px rgba(200, 90, 62, 0.3)' : '0 2px 8px rgba(60, 42, 33, 0.03)'; ?>;">
             
@@ -386,7 +435,7 @@ $activeIsUnreplied = ($activeLastMsg && $activeLastMsg['sender_type'] === 'user'
 
             <div onclick="openUserDetailModal()" class="clickable-user-header" style="display: flex; align-items: center; gap: 14px;" title="Click to view Customer Details">
               <!-- AVATAR IMAGE OR INITIAL BADGE -->
-              <div style="width: 46px; height: 46px; border-radius: 50%; background: #C85A3E; color: #FFFFFF; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1rem; border: 1.5px solid #A8472F; box-shadow: 0 4px 10px rgba(200,90,62,0.25); overflow: hidden; flex-shrink: 0;">
+              <div id="threadHeaderAvatar" style="width: 46px; height: 46px; border-radius: 50%; background: #C85A3E; color: #FFFFFF; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 1rem; border: 1.5px solid #A8472F; box-shadow: 0 4px 10px rgba(200,90,62,0.25); overflow: hidden; flex-shrink: 0;">
                 <?php if (!empty($activeAvatar)): ?>
                   <img src="<?php echo htmlspecialchars($activeAvatar); ?>" alt="" style="width: 100%; height: 100%; object-fit: cover;">
                 <?php else: ?>
@@ -396,7 +445,7 @@ $activeIsUnreplied = ($activeLastMsg && $activeLastMsg['sender_type'] === 'user'
               <div>
                 <!-- SHOW ONLY FULL NAME IN DIALOG THREAD HEADER -->
                 <h3 style="margin: 0; font-size: 1.15rem; color: #2C1C14; font-family: var(--font-heading, serif); font-weight: 800; display: flex; align-items: center; gap: 8px;">
-                  <span><?php echo htmlspecialchars($activeUser['fullname'] ?? 'Customer'); ?></span>
+                  <span id="threadHeaderFullname"><?php echo htmlspecialchars($activeUser['fullname'] ?? 'Customer'); ?></span>
                   <span style="font-size: 0.76rem; font-weight: 700; color: #C85A3E; background: #FFFFFF; border: 1.5px solid #E8DDD0; padding: 2px 10px; border-radius: 12px; font-family: var(--font-body);">View Profile</span>
                 </h3>
               </div>
@@ -473,7 +522,7 @@ $activeIsUnreplied = ($activeLastMsg && $activeLastMsg['sender_type'] === 'user'
     </div>
 
     <!-- AVATAR PHOTO OR INITIAL -->
-    <div style="margin: 0 auto 16px; width: 90px; height: 90px; border-radius: 50%; border: 3px solid #E8DDD0; overflow: hidden; box-shadow: 0 6px 20px rgba(60,42,33,0.12); display: flex; align-items: center; justify-content: center; background: #FAF4EB;">
+    <div id="modalUserAvatar" style="margin: 0 auto 16px; width: 90px; height: 90px; border-radius: 50%; border: 3px solid #E8DDD0; overflow: hidden; box-shadow: 0 6px 20px rgba(60,42,33,0.12); display: flex; align-items: center; justify-content: center; background: #FAF4EB;">
       <?php if (!empty($activeAvatar)): ?>
         <img src="<?php echo htmlspecialchars($activeAvatar); ?>" alt="Customer Avatar" style="width: 100%; height: 100%; object-fit: cover;">
       <?php else: ?>
@@ -481,7 +530,7 @@ $activeIsUnreplied = ($activeLastMsg && $activeLastMsg['sender_type'] === 'user'
       <?php endif; ?>
     </div>
 
-    <h3 style="font-family: var(--font-heading); font-size: 1.35rem; color: #2C1C14; margin: 0 0 18px 0; font-weight: 800;">
+    <h3 id="modalUserFullname" style="font-family: var(--font-heading); font-size: 1.35rem; color: #2C1C14; margin: 0 0 18px 0; font-weight: 800;">
       <?php echo htmlspecialchars($activeUser['fullname'] ?? 'Customer'); ?>
     </h3>
 
@@ -489,31 +538,31 @@ $activeIsUnreplied = ($activeLastMsg && $activeLastMsg['sender_type'] === 'user'
     <div style="background: #FAF7F2; border: 1.5px solid #E8DDD0; border-radius: 16px; padding: 18px; text-align: left; display: flex; flex-direction: column; gap: 12px; font-size: 0.9rem;">
       <div style="display: flex; justify-content: space-between; align-items: center;">
         <span style="color: #7A685A; font-weight: 600;">Username</span>
-        <strong style="color: #2C1C14; font-size: 0.88rem;"><?php echo htmlspecialchars(!empty($activeUser['username']) ? $activeUser['username'] : 'N/A'); ?></strong>
+        <strong id="modalUsername" style="color: #2C1C14; font-size: 0.88rem;"><?php echo htmlspecialchars(!empty($activeUser['username']) ? $activeUser['username'] : 'N/A'); ?></strong>
       </div>
       <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px dashed #E8DDD0; padding-top: 10px;">
         <span style="color: #7A685A; font-weight: 600;">Email Address</span>
-        <strong style="color: #2C1C14; font-size: 0.88rem;"><?php echo htmlspecialchars($activeUser['email'] ?? 'N/A'); ?></strong>
+        <strong id="modalEmail" style="color: #2C1C14; font-size: 0.88rem;"><?php echo htmlspecialchars($activeUser['email'] ?? 'N/A'); ?></strong>
       </div>
       <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px dashed #E8DDD0; padding-top: 10px;">
         <span style="color: #7A685A; font-weight: 600;">Phone Number</span>
-        <strong style="color: #2C1C14; font-size: 0.88rem;"><?php echo htmlspecialchars(!empty($activeUser['phone']) ? $activeUser['phone'] : 'Not provided'); ?></strong>
+        <strong id="modalPhone" style="color: #2C1C14; font-size: 0.88rem;"><?php echo htmlspecialchars(!empty($activeUser['phone']) ? $activeUser['phone'] : 'Not provided'); ?></strong>
       </div>
       <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px dashed #E8DDD0; padding-top: 10px;">
         <span style="color: #7A685A; font-weight: 600;">Birthday</span>
-        <strong style="color: #2C1C14; font-size: 0.88rem;"><?php echo htmlspecialchars(!empty($activeUser['birthday']) && $activeUser['birthday'] !== '0000-00-00' ? date('F d, Y', strtotime($activeUser['birthday'])) : 'Not specified'); ?></strong>
+        <strong id="modalBirthday" style="color: #2C1C14; font-size: 0.88rem;"><?php echo htmlspecialchars(!empty($activeUser['birthday']) && $activeUser['birthday'] !== '0000-00-00' ? date('F d, Y', strtotime($activeUser['birthday'])) : 'Not specified'); ?></strong>
       </div>
       <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px dashed #E8DDD0; padding-top: 10px;">
         <span style="color: #7A685A; font-weight: 600;">Gender</span>
-        <strong style="color: #2C1C14; font-size: 0.88rem;"><?php echo htmlspecialchars(!empty($activeUser['gender']) ? ucfirst($activeUser['gender']) : 'Unspecified'); ?></strong>
+        <strong id="modalGender" style="color: #2C1C14; font-size: 0.88rem;"><?php echo htmlspecialchars(!empty($activeUser['gender']) ? ucfirst($activeUser['gender']) : 'Unspecified'); ?></strong>
       </div>
       <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px dashed #E8DDD0; padding-top: 10px;">
         <span style="color: #7A685A; font-weight: 600;">Joined Date</span>
-        <strong style="color: #2C1C14; font-size: 0.88rem;"><?php echo htmlspecialchars(!empty($activeUser['created_at']) ? date('M d, Y', strtotime($activeUser['created_at'])) : 'N/A'); ?></strong>
+        <strong id="modalJoinedDate" style="color: #2C1C14; font-size: 0.88rem;"><?php echo htmlspecialchars(!empty($activeUser['created_at']) ? date('M d, Y', strtotime($activeUser['created_at'])) : 'N/A'); ?></strong>
       </div>
       <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px dashed #E8DDD0; padding-top: 10px;">
         <span style="color: #7A685A; font-weight: 600;">Rewards Points</span>
-        <span style="background: #ECFDF5; color: #059669; border: 1px solid #A7F3D0; font-weight: 800; font-size: 0.82rem; padding: 3px 10px; border-radius: 12px;">
+        <span id="modalPoints" style="background: #ECFDF5; color: #059669; border: 1px solid #A7F3D0; font-weight: 800; font-size: 0.82rem; padding: 3px 10px; border-radius: 12px;">
           <?php echo number_format((int)($activeUser['rewards_points'] ?? $activeUser['points'] ?? 0)); ?> pts
         </span>
       </div>
@@ -664,6 +713,177 @@ if (replyForm) {
     })
     .catch(err => console.error('Error sending reply:', err));
   });
+}
+
+// Instant AJAX Thread Switcher (Zero Page Reload & Zero Scroll Jumping)
+function switchChatUser(e, userId, el) {
+  if (e) e.preventDefault();
+
+  // 1. Update browser URL cleanly without page reload or scrolling
+  history.pushState(null, '', 'manage_chat.php?user_id=' + userId);
+
+  // 2. Update active style on conversation list items immediately
+  document.querySelectorAll('.chat-user-item').forEach(item => {
+    item.classList.remove('active');
+    item.style.background = '#FFFFFF';
+    item.style.color = '#2C1C14';
+    item.style.boxShadow = '0 2px 8px rgba(60, 42, 33, 0.03)';
+    const isUnreplied = item.classList.contains('unreplied-item');
+    item.style.borderColor = isUnreplied ? '#FCD34D' : '#E8DDD0';
+
+    const avatar = item.children[0];
+    if (avatar) {
+      avatar.style.background = '#FAF4EB';
+      avatar.style.color = '#C85A3E';
+      avatar.style.borderColor = '#E8DDD0';
+    }
+    const nameSpan = item.querySelector('.user-fullname');
+    if (nameSpan) {
+      nameSpan.style.color = '#2C1C14';
+      nameSpan.style.fontWeight = isUnreplied ? '900' : '700';
+    }
+    const lastMsg = item.querySelector('.user-last-msg');
+    if (lastMsg) lastMsg.style.color = isUnreplied ? '#2C1C14' : '#665447';
+    const lastTime = item.querySelector('.user-last-time');
+    if (lastTime) lastTime.style.color = '#8C7A6D';
+  });
+
+  if (el) {
+    el.classList.add('active');
+    el.style.background = 'linear-gradient(135deg, #C85A3E 0%, #A8472F 100%)';
+    el.style.color = '#FFFFFF';
+    el.style.borderColor = '#C85A3E';
+    el.style.boxShadow = '0 6px 18px rgba(200, 90, 62, 0.3)';
+
+    const avatar = el.children[0];
+    if (avatar) {
+      avatar.style.background = 'rgba(255,255,255,0.22)';
+      avatar.style.color = '#FFFFFF';
+      avatar.style.borderColor = 'rgba(255,255,255,0.35)';
+    }
+    const nameSpan = el.querySelector('.user-fullname');
+    if (nameSpan) {
+      nameSpan.style.color = '#FFFFFF';
+      nameSpan.style.fontWeight = '900';
+    }
+    const lastMsg = el.querySelector('.user-last-msg');
+    if (lastMsg) lastMsg.style.color = '#FAF7F2';
+    const lastTime = el.querySelector('.user-last-time');
+    if (lastTime) lastTime.style.color = '#FFE8E0';
+  }
+
+  // 3. Update hidden form input & action
+  const replyInput = document.getElementById('reply_user_id');
+  if (replyInput) replyInput.value = userId;
+
+  const replyForm = document.getElementById('adminReplyForm');
+  if (replyForm) replyForm.action = 'manage_chat.php?user_id=' + userId;
+
+  // 4. Fetch thread data via AJAX
+  fetch('manage_chat.php?action=get_thread&user_id=' + userId)
+  .then(r => r.json())
+  .then(data => {
+    if (data.status === 'success') {
+      const u = data.user || {};
+      
+      // Update Header
+      const hFullname = document.getElementById('threadHeaderFullname');
+      if (hFullname) hFullname.textContent = u.fullname || 'Customer';
+
+      const hAvatar = document.getElementById('threadHeaderAvatar');
+      if (hAvatar) {
+        if (data.avatar_path) {
+          hAvatar.innerHTML = `<img src="${escapeHtml(data.avatar_path)}" alt="" style="width: 100%; height: 100%; object-fit: cover;">`;
+        } else {
+          hAvatar.textContent = data.initial || 'C';
+        }
+      }
+
+      const badge = document.getElementById('chatHeaderBadge');
+      if (badge) {
+        badge.textContent = data.is_unreplied ? 'Needs Reply' : 'Replied';
+        badge.style.background = data.is_unreplied ? '#FEF3C7' : '#ECFDF5';
+        badge.style.color = data.is_unreplied ? '#D97706' : '#059669';
+        badge.style.borderColor = data.is_unreplied ? '#FCD34D' : '#A7F3D0';
+      }
+
+      // Update Modal
+      const mAvatar = document.getElementById('modalUserAvatar');
+      if (mAvatar) {
+        if (data.avatar_path) {
+          mAvatar.innerHTML = `<img src="${escapeHtml(data.avatar_path)}" alt="Customer Avatar" style="width: 100%; height: 100%; object-fit: cover;">`;
+        } else {
+          mAvatar.innerHTML = `<div style="font-size: 2.2rem; font-weight: 800; color: #C85A3E;">${escapeHtml(data.initial || 'C')}</div>`;
+        }
+      }
+
+      const mFullname = document.getElementById('modalUserFullname');
+      if (mFullname) mFullname.textContent = u.fullname || 'Customer';
+
+      const mUsername = document.getElementById('modalUsername');
+      if (mUsername) mUsername.textContent = u.username || 'N/A';
+
+      const mEmail = document.getElementById('modalEmail');
+      if (mEmail) mEmail.textContent = u.email || 'N/A';
+
+      const mPhone = document.getElementById('modalPhone');
+      if (mPhone) mPhone.textContent = u.phone || 'Not provided';
+
+      const mBirthday = document.getElementById('modalBirthday');
+      if (mBirthday) mBirthday.textContent = (u.birthday && u.birthday !== '0000-00-00') ? u.birthday : 'Not specified';
+
+      const mGender = document.getElementById('modalGender');
+      if (mGender) mGender.textContent = u.gender ? (u.gender.charAt(0).toUpperCase() + u.gender.slice(1)) : 'Unspecified';
+
+      const mJoined = document.getElementById('modalJoinedDate');
+      if (mJoined) mJoined.textContent = u.created_at || 'N/A';
+
+      const mPoints = document.getElementById('modalPoints');
+      if (mPoints) mPoints.textContent = (u.rewards_points || u.points || 0) + ' pts';
+
+      // Render Chat Thread Box
+      const box = document.getElementById('chatThreadBox');
+      if (box) {
+        let html = '';
+        let lastDateKey = '';
+
+        (data.messages || []).forEach(m => {
+          const isAdmin = (m.sender_type === 'admin');
+          const msgDateKey = (m.created_at || '').substring(0, 10);
+
+          if (msgDateKey && msgDateKey !== lastDateKey) {
+            lastDateKey = msgDateKey;
+            html += `
+              <div style="text-align: center; margin: 10px 0;">
+                <span style="background: #FAF4EB; border: 1px solid #E8DDD0; color: #8C7A6D; font-size: 0.75rem; font-weight: 800; padding: 4px 14px; border-radius: 20px;">
+                  ${escapeHtml(m.date_header || '')}
+                </span>
+              </div>
+            `;
+          }
+
+          html += `
+            <div id="msg-bubble-${m.id}" class="${isAdmin ? 'chat-bubble-admin' : 'chat-bubble-user'}" style="align-self: ${isAdmin ? 'flex-end' : 'flex-start'};">
+              <div style="font-weight: 800; font-size: 0.72rem; opacity: 0.85; margin-bottom: 2px; display: flex; justify-content: space-between; align-items: center; gap: 8px;">
+                <span>${isAdmin ? 'Cozy Barista Team' : escapeHtml(u.fullname || '')}</span>
+                ${isAdmin ? `<button type="button" onclick="deleteAdminMessage(${m.id})" class="btn-delete-msg" title="Delete this message">&times;</button>` : ''}
+              </div>
+              <div style="font-size: 0.88rem; line-height: 1.35; white-space: pre-line; word-break: break-word;">${escapeHtml(m.message || '')}</div>
+              <div style="font-size: 0.65rem; opacity: 0.75; margin-top: 3px; text-align: right; font-weight: 600;">
+                ${escapeHtml(m.formatted_date || '')}
+              </div>
+            </div>
+          `;
+        });
+
+        box.innerHTML = html;
+        box.scrollTop = box.scrollHeight;
+      }
+    }
+  })
+  .catch(err => console.error('Error switching thread:', err));
+
+  return false;
 }
 
 function escapeHtml(str) {
