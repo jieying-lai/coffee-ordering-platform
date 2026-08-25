@@ -96,3 +96,6 @@ coffee-ordering-platform/
 - Two separate database connection files exist (`db.php` at the project root and `includes/db_connect.php`); both must be kept in sync when local MySQL credentials change. Consolidating onto a single file is a planned improvement.
 - `profile/order_detail.php` and `blog/user_posts.php` are legacy pages that are no longer linked from the site navigation, since their functionality has been superseded by the order receipt modal on `profile/orders.php` and the author preview modal on the Blog page respectively.
 - `admin/manage_about.php` exists and is protected by the admin auth guard but is not yet linked from the admin sidebar.
+
+## Video Demo Requirements
+https://drive.google.com/file/d/10qJF2oBf9TigdZ_np3nhsxpVN-UlAGTC/view?usp=sharing
