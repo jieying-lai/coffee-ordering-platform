@@ -12,7 +12,7 @@ $db_pass = "";
 $db_name = "cozy_coffee_db";
 $db_port = 3308; 
 
-// Pass all 5 variables cleanly into mysqli
+// Pass all 5 variables into mysqli
 $conn = new mysqli($db_host, $db_user, $db_pass, $db_name, $db_port);
 
 if ($conn->connect_error) {
