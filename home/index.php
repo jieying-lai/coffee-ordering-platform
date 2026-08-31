@@ -129,7 +129,7 @@ if ($qRes) {
             <button type="button" id="quizQtyPlus" style="width: 36px; height: 42px; background: #FAF4EB; border: none; font-size: 1.1rem; font-weight: bold; cursor: pointer; color: #2C1C14;">+</button>
           </div>
 
-          <button type="submit" class="cta-btn cta-btn-primary" style="flex: 1; height: 44px; border-radius: 10px; font-weight: 800; font-size: 0.95rem; justify-content: center; box-shadow: 0 6px 18px rgba(200, 90, 62, 0.3);">Add to Cart ☕</button>
+          <button type="submit" class="cta-btn cta-btn-primary" style="flex: 1; height: 44px; border-radius: 10px; font-weight: 800; font-size: 0.95rem; justify-content: center; box-shadow: 0 6px 18px rgba(200, 90, 62, 0.3);">Add to Cart</button>
         </div>
       </form>
 

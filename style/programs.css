@@ -118,7 +118,7 @@ body {
   padding: 10px 4% 50px;
   max-width: 1240px;
   margin: 0 auto;
-  scroll-margin-top: 90px;
+  scroll-margin-top: 130px;
   box-sizing: border-box;
 }
 
@@ -330,6 +330,14 @@ body {
   font-size: 0.88rem;
   color: #665447;
   line-height: 1.5;
+}
+
+.offer-note {
+  text-align: center;
+  font-size: 0.84rem;
+  color: #8C7A6D;
+  font-weight: 600;
+  margin-top: 24px;
 }
 
 /* ============ INTERACTIVE MODALS (Light Coffee Style) ============ */

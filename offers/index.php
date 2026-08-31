@@ -62,6 +62,11 @@ $foodOffers  = fetchSpecialOffers($conn, 'food');
   <div class="eyebrow">Cozy Rewards</div>
   <h1>Offers Made for Members</h1>
   <p class="lede">Fresh discounts on handcrafted drinks and food, managed live by our head barista team.</p>
+
+  <div style="margin-top: 16px; display: inline-flex; align-items: center; gap: 8px; padding: 8px 20px; background: rgba(200, 90, 62, 0.08); border: 1.5px dashed #C85A3E; border-radius: 30px; color: #C85A3E; font-size: 0.88rem; font-weight: 700; font-family: var(--font-heading); font-style: italic; box-shadow: 0 2px 8px rgba(200, 90, 62, 0.06);">
+    <span>✨</span> Member prices automatically applied when ordering from this page! Offers refresh monthly check back often!
+  </div>
+
   <?php if (!$isMember): ?>
     <div class="hero-actions">
       <a href="<?php echo $isLoggedIn ? '../rewards/join.php' : '../register/index.php'; ?>" class="cta-btn cta-btn-primary">Join Cozy Rewards to unlock these prices</a>
@@ -95,21 +100,19 @@ $foodOffers  = fetchSpecialOffers($conn, 'food');
                 data-desc="<?php echo htmlspecialchars($item['description']); ?>"
                 data-price="<?php echo $item['offer_price']; ?>"
                 data-image="<?php echo htmlspecialchars($item['image']); ?>"
-                style="margin-top: 14px; padding: 12px 14px; font-size: 0.95rem; font-weight: 800; border-radius: 12px;">Add to Cart 🛒</button>
+                style="margin-top: 14px; padding: 12px 14px; font-size: 0.95rem; font-weight: 800; border-radius: 12px;">Add to Cart</button>
       </div>
       <?php endforeach; ?>
     <?php else: ?>
       <p style="grid-column: 1 / -1; color: #888;">No drink offers currently active.</p>
     <?php endif; ?>
   </div>
-
-  <p class="offer-note">Member prices automatically applied when ordering from this page! Offers refresh monthly — check back often!</p>
 </section>
 
 <!-- ============ FOOD OFFERS ============ -->
 <section class="program-section" id="food">
   <h2>🍽️ Food Offers</h2>
-  <p class="subtitle">Member prices on mains, sharing plates, and desserts — great for lingering a little longer.</p>
+  <p class="subtitle">Member prices on mains, sharing plates, and desserts, great for lingering a little longer.</p>
 
   <div class="offer-grid">
     <?php if (!empty($foodOffers)): ?>
@@ -132,7 +135,7 @@ $foodOffers  = fetchSpecialOffers($conn, 'food');
                 data-desc="<?php echo htmlspecialchars($item['description']); ?>"
                 data-price="<?php echo $item['offer_price']; ?>"
                 data-image="<?php echo htmlspecialchars($item['image']); ?>"
-                style="margin-top: 14px; padding: 12px 14px; font-size: 0.95rem; font-weight: 800; border-radius: 12px;">Add to Cart 🛒</button>
+                style="margin-top: 14px; padding: 12px 14px; font-size: 0.95rem; font-weight: 800; border-radius: 12px;">Add to Cart</button>
       </div>
       <?php endforeach; ?>
     <?php else: ?>
@@ -190,7 +193,7 @@ $foodOffers  = fetchSpecialOffers($conn, 'food');
         <span id="offModalPriceText" style="font-size:1.4rem; font-weight:800; color:#C85A3E; font-family:var(--font-heading);"></span>
       </div>
 
-      <button type="submit" class="btn btn-orange btn-full" style="font-weight:800; height:48px; border-radius:12px; font-size:1rem;">Confirm Add to Cart 🛒</button>
+      <button type="submit" class="btn btn-orange btn-full" style="font-weight:800; height:48px; border-radius:12px; font-size:1rem;">Confirm Add to Cart</button>
     </form>
   </div>
 </div>

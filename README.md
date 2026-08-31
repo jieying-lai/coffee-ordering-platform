@@ -31,18 +31,23 @@ A full-stack café ordering web application built with PHP and MySQL, where cust
 
 ---
 
-## Default Test Credentials
+## Default Test Credentials for Evaluation
 
-For testing and marking evaluation, use the following imported accounts:
+For assignment marking and evaluation, use the following imported test accounts:
 
-| User Role | Username / Email | Password | Access Level |
-| :--- | :--- | :--- | :--- |
-| **Store Admin** | `admin` | _(as set by team)_ | Full Admin Back-Office Management |
-| **Demo Customer 1** | `laijieying` (email: `jieying47@1utar.my`) | _(as set by team)_ | Customer Account |
-| **Demo Customer 2** | `yingchok` (email: `chokshiying06@gmail.com`) | _(as set by team)_ | Customer Account |
-| **Demo Customer 3** | `chloewong` (email: `chloe.wong@gmail.com`) | _(as set by team)_ | Customer Account |
+### Admin Portal Access
+- **Admin Login Page**: `http://localhost/coffee-ordering-platform/admin/login.php`
+- **Username**: `admin`
+- **Password**: `admin123`
+- **Permissions**: Full Back-Office Management (Manage Orders, Menu Items, Rewards, Vouchers, Promo Codes, Activities, Blog Moderation, Customer Care Chat).
 
-> Passwords are stored as bcrypt hashes in the database and cannot be reverse-derived — list the actual plaintext test password(s) here once confirmed with the team.
+### Demo Customer Accounts
+- **Customer Login Page**: `http://localhost/coffee-ordering-platform/login/index.php`
+
+| Customer Name | Username | Email Address | Password | Account Tier & Status |
+| :--- | :--- | :--- | :--- | :--- |
+| **Lai Jie Ying** | `laijieying` | `jieying47@1utar.my` | `12345678` | Cozy Rewards VIP Member (`CR000001` · 350 pts) |
+| **Chok Shi Ying** | `yingchok` | `chokshiying06@gmail.com` | `12345678` | Cozy Rewards Member (`CR000007` · 150 pts) |
 
 ---
 
@@ -97,5 +102,8 @@ coffee-ordering-platform/
 - `profile/order_detail.php` and `blog/user_posts.php` are legacy pages that are no longer linked from the site navigation, since their functionality has been superseded by the order receipt modal on `profile/orders.php` and the author preview modal on the Blog page respectively.
 - `admin/manage_about.php` exists and is protected by the admin auth guard but is not yet linked from the admin sidebar.
 
+---
+
 ## Video Demo Requirements
-https://drive.google.com/file/d/10qJF2oBf9TigdZ_np3nhsxpVN-UlAGTC/view?usp=sharing
+
+- **Demonstration Video Link**: [Cozy Coffee Co. - Video Demo Presentation](https://drive.google.com/file/d/10qJF2oBf9TigdZ_np3nhsxpVN-UlAGTC/view?usp=sharing)

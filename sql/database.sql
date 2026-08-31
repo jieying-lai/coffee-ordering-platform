@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1:3308
--- Generation Time: Aug 21, 2026 at 01:51 PM
+-- Generation Time: Aug 31, 2026 at 05:53 AM
 -- Server version: 8.4.7
 -- PHP Version: 8.3.28
 
@@ -65,32 +65,32 @@ CREATE TABLE IF NOT EXISTS `activities_photos` (
 --
 
 INSERT INTO `activities_photos` (`id`, `activity_id`, `image_path`, `created_at`) VALUES
-(26, 1, 'uploads/activities/act_edit_1787134425_0.jpg', '2026-08-19 10:13:45'),
-(27, 1, 'uploads/activities/act_edit_1787134426_1.jpg', '2026-08-19 10:13:46'),
-(28, 2, 'uploads/activities/act_edit_1787134856_0.jpeg', '2026-08-19 10:20:56'),
-(29, 3, 'uploads/activities/act_edit_1787134946_0.jpg', '2026-08-19 10:22:26'),
-(30, 3, 'uploads/activities/act_edit_1787134946_1.jpg', '2026-08-19 10:22:26'),
-(31, 4, 'uploads/activities/act_edit_1787134992_0.jpg', '2026-08-19 10:23:12'),
-(32, 4, 'uploads/activities/act_edit_1787134992_1.jpg', '2026-08-19 10:23:12'),
-(33, 5, 'uploads/activities/act_edit_1787135196_0.jpeg', '2026-08-19 10:26:36'),
-(34, 5, 'uploads/activities/act_edit_1787135196_1.jpg', '2026-08-19 10:26:36'),
-(35, 6, 'uploads/activities/act_edit_1787135228_0.webp', '2026-08-19 10:27:08'),
-(36, 7, 'uploads/activities/act_edit_1787135330_0.jpg', '2026-08-19 10:28:50'),
-(37, 7, 'uploads/activities/act_edit_1787135330_1.jpg', '2026-08-19 10:28:50'),
-(38, 7, 'uploads/activities/act_edit_1787135330_2.jpg', '2026-08-19 10:28:50'),
-(39, 8, 'uploads/activities/act_edit_1787135372_0.webp', '2026-08-19 10:29:32'),
-(40, 9, 'uploads/activities/act_edit_1787135438_0.jpg', '2026-08-19 10:30:38'),
-(41, 9, 'uploads/activities/act_edit_1787135438_1.jpg', '2026-08-19 10:30:38'),
-(42, 9, 'uploads/activities/act_edit_1787135438_2.jpg', '2026-08-19 10:30:38'),
-(43, 9, 'uploads/activities/act_edit_1787135438_3.jpg', '2026-08-19 10:30:38'),
-(44, 10, 'uploads/activities/act_edit_1787135651_0.jpg', '2026-08-19 10:34:11'),
-(45, 11, 'uploads/activities/act_edit_1787135720_0.jpg', '2026-08-19 10:35:20'),
-(46, 11, 'uploads/activities/act_edit_1787135720_1.jpg', '2026-08-19 10:35:20'),
-(47, 12, 'uploads/activities/act_edit_1787135754_0.jpg', '2026-08-19 10:35:54'),
-(48, 14, 'uploads/activities/act_edit_1787135854_0.jpg', '2026-08-19 10:37:34'),
-(49, 14, 'uploads/activities/act_edit_1787135854_1.jpg', '2026-08-19 10:37:34'),
-(50, 15, 'uploads/activities/act_edit_1787135888_0.jpg', '2026-08-19 10:38:08'),
-(51, 15, 'uploads/activities/act_edit_1787135888_1.jpg', '2026-08-19 10:38:08');
+(26, 1, 'uploads/activities/act_edit_1787134425_0.jpg', '2026-08-19 02:13:45'),
+(27, 1, 'uploads/activities/act_edit_1787134426_1.jpg', '2026-08-19 02:13:46'),
+(28, 2, 'uploads/activities/act_edit_1787134856_0.jpeg', '2026-08-19 02:20:56'),
+(29, 3, 'uploads/activities/act_edit_1787134946_0.jpg', '2026-08-19 02:22:26'),
+(30, 3, 'uploads/activities/act_edit_1787134946_1.jpg', '2026-08-19 02:22:26'),
+(31, 4, 'uploads/activities/act_edit_1787134992_0.jpg', '2026-08-19 02:23:12'),
+(32, 4, 'uploads/activities/act_edit_1787134992_1.jpg', '2026-08-19 02:23:12'),
+(33, 5, 'uploads/activities/act_edit_1787135196_0.jpeg', '2026-08-19 02:26:36'),
+(34, 5, 'uploads/activities/act_edit_1787135196_1.jpg', '2026-08-19 02:26:36'),
+(35, 6, 'uploads/activities/act_edit_1787135228_0.webp', '2026-08-19 02:27:08'),
+(36, 7, 'uploads/activities/act_edit_1787135330_0.jpg', '2026-08-19 02:28:50'),
+(37, 7, 'uploads/activities/act_edit_1787135330_1.jpg', '2026-08-19 02:28:50'),
+(38, 7, 'uploads/activities/act_edit_1787135330_2.jpg', '2026-08-19 02:28:50'),
+(39, 8, 'uploads/activities/act_edit_1787135372_0.webp', '2026-08-19 02:29:32'),
+(40, 9, 'uploads/activities/act_edit_1787135438_0.jpg', '2026-08-19 02:30:38'),
+(41, 9, 'uploads/activities/act_edit_1787135438_1.jpg', '2026-08-19 02:30:38'),
+(42, 9, 'uploads/activities/act_edit_1787135438_2.jpg', '2026-08-19 02:30:38'),
+(43, 9, 'uploads/activities/act_edit_1787135438_3.jpg', '2026-08-19 02:30:38'),
+(44, 10, 'uploads/activities/act_edit_1787135651_0.jpg', '2026-08-19 02:34:11'),
+(45, 11, 'uploads/activities/act_edit_1787135720_0.jpg', '2026-08-19 02:35:20'),
+(46, 11, 'uploads/activities/act_edit_1787135720_1.jpg', '2026-08-19 02:35:20'),
+(47, 12, 'uploads/activities/act_edit_1787135754_0.jpg', '2026-08-19 02:35:54'),
+(48, 14, 'uploads/activities/act_edit_1787135854_0.jpg', '2026-08-19 02:37:34'),
+(49, 14, 'uploads/activities/act_edit_1787135854_1.jpg', '2026-08-19 02:37:34'),
+(50, 15, 'uploads/activities/act_edit_1787135888_0.jpg', '2026-08-19 02:38:08'),
+(51, 15, 'uploads/activities/act_edit_1787135888_1.jpg', '2026-08-19 02:38:08');
 
 -- --------------------------------------------------------
 
@@ -150,7 +150,7 @@ CREATE TABLE IF NOT EXISTS `admins` (
 --
 
 INSERT INTO `admins` (`admin_id`, `username`, `password_hash`, `created_at`) VALUES
-(1, 'admin', '$2b$10$X0Nxo9iKPuKrb5qEPaaS2.7yPiJmwyF.vjN76lrCJwEADfKZwAyk.', '2026-08-05 07:26:52');
+(1, 'admin', '$2y$10$Zk6RYV36zJTkPy9nfA9FPuTpZNn4EbO.ifmX35eAq2UjAPlHRgKDe', '2026-08-05 07:26:52');
 
 -- --------------------------------------------------------
 
@@ -166,7 +166,7 @@ CREATE TABLE IF NOT EXISTS `blog_photos` (
   `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `post_id` (`post_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `blog_photos`
@@ -177,7 +177,10 @@ INSERT INTO `blog_photos` (`id`, `post_id`, `image_path`, `created_at`) VALUES
 (2, 4, 'uploads/blog/blog_2_1785922484_0_d7d5be.png', '2026-08-05 09:34:44'),
 (3, 4, 'uploads/blog/blog_2_1785922484_1_8f9132.jpg', '2026-08-05 09:34:44'),
 (4, 4, 'uploads/blog/blog_2_1785922484_2_1f077c.jpg', '2026-08-05 09:34:44'),
-(6, 6, 'uploads/blog/blog_edit_1_1787046413_0.jpeg', '2026-08-18 09:46:53');
+(6, 6, 'uploads/blog/blog_edit_1_1787046413_0.jpeg', '2026-08-18 09:46:53'),
+(7, 5, 'uploads/blog/blog_edit_1788150298_0.jpg', '2026-08-31 04:24:58'),
+(8, 5, 'uploads/blog/blog_edit_1788150351_0.jpeg', '2026-08-31 04:25:51'),
+(9, 15, 'uploads/blog/blog_1788153144_0.jpeg', '2026-08-31 05:12:24');
 
 -- --------------------------------------------------------
 
@@ -198,7 +201,7 @@ CREATE TABLE IF NOT EXISTS `blog_posts` (
   `deleted_at` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `blog_posts`
@@ -206,18 +209,19 @@ CREATE TABLE IF NOT EXISTS `blog_posts` (
 
 INSERT INTO `blog_posts` (`id`, `user_id`, `ordered_item`, `mood`, `description`, `created_at`, `is_hidden`, `is_deleted`, `deleted_at`) VALUES
 (1, 2, '', 'harmony', '', '2026-08-05 17:13:44', 0, 1, '2026-08-21 21:42:48'),
-(2, 2, 'Truffle Wild Mushroom Risotto', 'Happy', 'This Cozy Coffee Co. enviroment is very nice, dont have the smell of coffee will appear on your clothes after stay there 2 hours', '2026-08-05 17:16:01', 0, 1, '2026-08-21 21:42:43'),
+(2, 2, 'Truffle Wild Mushroom Risotto', 'Happy', 'This Cozy Coffee Co. enviroment is very nice, dont have the smell of coffee will appear on your clothes after stay there 2 hours', '2026-08-05 17:16:01', 0, 0, '2026-08-21 21:42:43'),
 (3, 2, '', 'Relaxed', '', '2026-08-05 17:27:33', 0, 1, '2026-08-21 21:42:40'),
-(4, 2, 'Dirty Latte', 'Energized, Cozy, Grateful', 'best drink ever', '2026-08-05 17:34:44', 0, 1, '2026-08-21 21:42:36'),
-(5, 1, 'Einspanner', 'Happy', '', '2026-08-14 12:27:17', 0, 0, NULL),
-(6, 1, 'Einspanner', 'Relaxed', '', '2026-08-18 17:33:36', 0, 0, NULL),
+(4, 2, 'Dirty Latte', 'Energized, Cozy, Grateful', 'best drink ever', '2026-08-05 17:34:44', 0, 0, '2026-08-21 21:42:36'),
+(5, 1, 'Einspanner', 'Happy', 'I recently visited Cozy Coffee Co. and was immediately charmed by the warm, welcoming atmosphere. It lives up to its name perfectly with cozy seating, pleasant lighting, and a relaxed neighborhood vibe that makes you want to stay awhile.The absolute highlight of my visit was their Einspanner. It was beautifully crafted—the thick, velvety layer of sweet whipped cream sat perfectly on top of a rich, bold espresso base. Drinking it without a straw allowed the cold cream and hot coffee to mix perfectly with every sip. It is easily one of the best Einspanners I have ever had.The baristas were incredibly friendly and passionate about their craft, making the entire experience even better. I will definitely be back to work and relax here again soon!', '2026-08-14 12:27:17', 0, 0, NULL),
+(6, 1, 'Einspanner', 'Relaxed', '', '2026-08-18 17:33:36', 0, 1, '2026-08-31 12:25:15'),
 (7, 4, 'Einspanner, Sun-Dried Tomato & Burrata Pasta', 'Happy, Cozy', 'Paired a velvety Einspanner with Burrata Pasta on a sunny Tuesday afternoon. Super cozy atmosphere at Cozy Coffee Co.!', '2026-07-02 11:30:00', 0, 0, NULL),
 (8, 5, 'Honeycomb Iced Matcha, Artisanal Smoked Salmon Avocado Toast', 'Energized, Relaxed', 'Starting my weekend right with Honeycomb Matcha and Avocado Toast. Absolute bliss! 🍵✨', '2026-07-04 13:10:00', 0, 0, NULL),
 (9, 7, 'Houjicha Strawberry, Butterfly Yuzunade', 'Cozy, Grateful', 'Tried the Houjicha Strawberry for the first time. The strawberry layer is so refreshing with the smoky tea flavor!', '2026-07-09 10:30:00', 0, 0, NULL),
 (10, 8, 'Australian Iced Coffee, Sun-Dried Tomato & Burrata Pasta', 'Happy', 'Lunch break refill! High quality coffee as always.', '2026-07-13 12:15:00', 0, 0, NULL),
 (11, 6, 'Coconut Latte, Sun-Dried Tomato & Burrata Pasta', 'Relaxed', 'Smooth coconut flavor in the latte. Perfect spot for afternoon remote work.', '2026-07-21 16:30:00', 0, 0, NULL),
 (12, 9, 'Honeycomb Iced Matcha, Artisanal Smoked Salmon Avocado Toast', 'Nostalgic, Cozy', 'Brought my friend here today. We loved the aesthetic and the food presentation!', '2026-08-07 12:00:00', 0, 0, NULL),
-(13, 10, 'Einspanner, Artisanal Smoked Salmon Avocado Toast', 'Energized, Happy', 'That thick cream on top of the Einspanner is unmatched! Highly recommended.', '2026-08-16 17:20:00', 0, 0, NULL);
+(13, 10, 'Einspanner, Artisanal Smoked Salmon Avocado Toast', 'Energized, Happy', 'That thick cream on top of the Einspanner is unmatched! Highly recommended.', '2026-08-16 17:20:00', 0, 0, NULL),
+(15, 1, 'Hot Chocolate, Sun-Dried Tomato & Burrata Pasta, Fish and Chips, Veggie Quesadilla, Lavender Honey Latte', 'Relaxed, Cozy', 'Had the best time at Cozy Coffee Co.! A relaxing place to hang out with my friends. Can\'t wait to go back!', '2026-08-31 13:12:24', 0, 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -263,23 +267,22 @@ CREATE TABLE IF NOT EXISTS `chat_messages` (
   `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 --
 -- Dumping data for table `chat_messages`
 --
 
 INSERT INTO `chat_messages` (`id`, `user_id`, `sender_type`, `message`, `is_read`, `created_at`) VALUES
-(1, 1, 'user', 'hi', 0, '2026-08-13 00:13:31'),
-(6, 1, 'admin', '1', 0, '2026-08-19 17:10:50'),
-(7, 1, 'admin', '1', 0, '2026-08-19 17:14:18'),
-(8, 1, 'user', 'qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq', 0, '2026-08-19 17:16:48'),
 (9, 4, 'user', 'Hi, do you offer non-dairy oat milk for Einspanner?', 1, '2026-07-01 14:00:00'),
-(10, 4, 'admin', 'Hi Marcus! Yes, we have Oatly oat milk available upon request at checkout.', 1, '2026-07-01 14:05:00'),
+(10, 4, 'admin', 'Hi Amy! Yes, we have Oatly oat milk available upon request at checkout.', 1, '2026-07-01 14:05:00'),
 (11, 5, 'user', 'Hello! What are your peak weekend hours?', 1, '2026-07-03 16:20:00'),
-(12, 5, 'admin', 'Hi Hannah! Our peak hours are usually 1:00 PM to 4:00 PM on Saturdays & Sundays.', 1, '2026-07-03 16:25:00'),
+(12, 5, 'admin', 'Hi! Our peak hours are usually 1:00 PM to 4:00 PM on Saturdays & Sundays.', 1, '2026-07-03 16:25:00'),
 (13, 7, 'user', 'Thank you for the wonderful Honeycomb Matcha today!', 1, '2026-08-10 14:00:00'),
-(14, 7, 'admin', 'You are most welcome Chloe! Glad you enjoyed it ✨', 1, '2026-08-10 14:02:00');
+(14, 7, 'admin', 'You are most welcome Chloe! Glad you enjoyed it ✨', 1, '2026-08-10 14:02:00'),
+(16, 1, 'user', 'Do you accept table reservations for 10 people, or is it walk-in only?', 0, '2026-08-31 13:19:54'),
+(17, 1, 'admin', 'For groups of 4 or fewer, you are always welcome to walk in! However, for groups of more than 4 people, we highly recommend booking a table in advance so we can make sure you all get to sit together.', 0, '2026-08-31 13:20:59'),
+(18, 1, 'user', 'Ok, thank you.', 0, '2026-08-31 13:21:09');
 
 -- --------------------------------------------------------
 
@@ -307,7 +310,7 @@ CREATE TABLE IF NOT EXISTS `contact_info` (
 --
 
 INSERT INTO `contact_info` (`id`, `address`, `phone`, `email`, `hours`, `map_embed_url`, `instagram_url`, `facebook_url`, `tiktok_url`, `updated_at`) VALUES
-(1, '7, Bandar Sungai Long, 43000 Kajang, Selangor', '+60 12-345 6789', 'cozycoffee@gmail.com', 'Mon - Sun: 8:00 AM - 10:00 PM', 'https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d1346.744641350054!2d101.79352459067356!3d3.0400653684064136!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2smy!4v1783592577677!5m2!1sen!2smy', 'https://www.instagram.com/cozy.coffee.co', 'https://www.facebook.com/cozy.coffee.co', 'https://www.tiktok.com/@cozy.coffee.co', '2026-08-19 00:40:17');
+(1, '7, Bandar Sungai Long, 43000 Kajang, Selangor', '+60 12-345 6789', 'cozycoffeeco@gmail.com', 'Mon - Sun: 9:00 AM - 6:00 PM', 'https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d1346.744641350054!2d101.79352459067356!3d3.0400653684064136!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2smy!4v1783592577677!5m2!1sen!2smy', 'https://www.instagram.com/cozy.coffee.co', 'https://www.facebook.com/cozy.coffee.co', 'https://www.tiktok.com/@cozy.coffee.co', '2026-08-31 05:26:29');
 
 -- --------------------------------------------------------
 
@@ -439,47 +442,49 @@ CREATE TABLE IF NOT EXISTS `notifications` (
 --
 
 INSERT INTO `notifications` (`id`, `user_id`, `title`, `message`, `type`, `link`, `is_read`, `created_at`) VALUES
-(1, 1, '☕ Order #11 Placed!', 'Your order was placed successfully. You earned +13 Cozy Points!', 'order', '../profile/orders.php', 1, '2026-08-19 02:26:27'),
-(2, 1, '☕ Order #12 Placed!', 'Your order was placed successfully. You earned +13 Cozy Points!', 'order', '../profile/orders.php', 1, '2026-08-19 02:46:55'),
-(3, 1, '☕ Order #13 Placed!', 'Your order was placed successfully. You earned +22 Cozy Points!', 'order', '../profile/orders.php', 1, '2026-08-19 02:54:27'),
-(101, 4, 'Order Completed ✨', 'Your Order #101 is completed. Thank you for visiting Cozy Coffee Co.!', 'order', 'orders/track.php?order_id=101', 1, '2026-07-02 10:15:00'),
-(102, 4, 'Order Completed ✨', 'Your Order #102 is completed. Thank you for visiting Cozy Coffee Co.!', 'order', 'orders/track.php?order_id=102', 1, '2026-07-10 14:30:00'),
-(103, 4, 'Order Completed ✨', 'Your Order #103 is completed. Thank you for visiting Cozy Coffee Co.!', 'order', 'orders/track.php?order_id=103', 1, '2026-07-18 09:45:00'),
-(104, 4, 'Order Completed ✨', 'Your Order #104 is completed. Thank you for visiting Cozy Coffee Co.!', 'order', 'orders/track.php?order_id=104', 1, '2026-07-28 16:20:00'),
-(105, 4, 'Order Completed ✨', 'Your Order #105 is completed. Thank you for visiting Cozy Coffee Co.!', 'order', 'orders/track.php?order_id=105', 1, '2026-08-05 11:10:00'),
-(106, 4, 'Order Completed ✨', 'Your Order #106 is completed. Thank you for visiting Cozy Coffee Co.!', 'order', 'orders/track.php?order_id=106', 1, '2026-08-18 15:40:00'),
-(107, 5, 'Order Completed ✨', 'Your Order #107 is completed. Thank you for visiting Cozy Coffee Co.!', 'order', 'orders/track.php?order_id=107', 1, '2026-07-04 12:00:00'),
-(108, 5, 'Order Completed ✨', 'Your Order #108 is completed. Thank you for visiting Cozy Coffee Co.!', 'order', 'orders/track.php?order_id=108', 1, '2026-07-09 15:20:00'),
-(109, 5, 'Order Completed ✨', 'Your Order #109 is completed. Thank you for visiting Cozy Coffee Co.!', 'order', 'orders/track.php?order_id=109', 1, '2026-07-15 11:45:00'),
-(110, 5, 'Order Completed ✨', 'Your Order #110 is completed. Thank you for visiting Cozy Coffee Co.!', 'order', 'orders/track.php?order_id=110', 1, '2026-07-22 14:10:00'),
-(111, 5, 'Order Completed ✨', 'Your Order #111 is completed. Thank you for visiting Cozy Coffee Co.!', 'order', 'orders/track.php?order_id=111', 1, '2026-07-30 09:30:00'),
-(112, 5, 'Order Completed ✨', 'Your Order #112 is completed. Thank you for visiting Cozy Coffee Co.!', 'order', 'orders/track.php?order_id=112', 1, '2026-08-06 16:50:00'),
-(113, 5, 'Order Completed ✨', 'Your Order #113 is completed. Thank you for visiting Cozy Coffee Co.!', 'order', 'orders/track.php?order_id=113', 1, '2026-08-12 10:30:00'),
-(114, 5, 'Order Completed ✨', 'Your Order #114 is completed. Thank you for visiting Cozy Coffee Co.!', 'order', 'orders/track.php?order_id=114', 1, '2026-08-19 13:15:00'),
-(115, 6, 'Order Completed ✨', 'Your Order #115 is completed. Thank you for visiting Cozy Coffee Co.!', 'order', 'orders/track.php?order_id=115', 1, '2026-07-06 11:00:00'),
-(116, 6, 'Order Completed ✨', 'Your Order #116 is completed. Thank you for visiting Cozy Coffee Co.!', 'order', 'orders/track.php?order_id=116', 1, '2026-07-21 15:45:00'),
-(117, 6, 'Order Completed ✨', 'Your Order #117 is completed. Thank you for visiting Cozy Coffee Co.!', 'order', 'orders/track.php?order_id=117', 1, '2026-08-11 10:20:00'),
-(118, 7, 'Order Completed ✨', 'Your Order #118 is completed. Thank you for visiting Cozy Coffee Co.!', 'order', 'orders/track.php?order_id=118', 1, '2026-07-09 09:10:00'),
-(119, 7, 'Order Completed ✨', 'Your Order #119 is completed. Thank you for visiting Cozy Coffee Co.!', 'order', 'orders/track.php?order_id=119', 1, '2026-07-14 14:00:00'),
-(120, 7, 'Order Completed ✨', 'Your Order #120 is completed. Thank you for visiting Cozy Coffee Co.!', 'order', 'orders/track.php?order_id=120', 1, '2026-07-19 11:30:00'),
-(121, 7, 'Order Completed ✨', 'Your Order #121 is completed. Thank you for visiting Cozy Coffee Co.!', 'order', 'orders/track.php?order_id=121', 1, '2026-07-25 16:15:00'),
-(122, 7, 'Order Completed ✨', 'Your Order #122 is completed. Thank you for visiting Cozy Coffee Co.!', 'order', 'orders/track.php?order_id=122', 1, '2026-07-31 10:45:00'),
-(123, 7, 'Order Completed ✨', 'Your Order #123 is completed. Thank you for visiting Cozy Coffee Co.!', 'order', 'orders/track.php?order_id=123', 1, '2026-08-04 13:50:00'),
-(124, 7, 'Order Completed ✨', 'Your Order #124 is completed. Thank you for visiting Cozy Coffee Co.!', 'order', 'orders/track.php?order_id=124', 1, '2026-08-09 15:10:00'),
-(125, 7, 'Order Completed ✨', 'Your Order #125 is completed. Thank you for visiting Cozy Coffee Co.!', 'order', 'orders/track.php?order_id=125', 1, '2026-08-15 11:00:00'),
-(126, 7, 'Order Completed ✨', 'Your Order #126 is completed. Thank you for visiting Cozy Coffee Co.!', 'order', 'orders/track.php?order_id=126', 1, '2026-08-20 14:25:00'),
-(127, 8, 'Order Completed ✨', 'Your Order #127 is completed. Thank you for visiting Cozy Coffee Co.!', 'order', 'orders/track.php?order_id=127', 1, '2026-07-13 10:40:00'),
-(128, 8, 'Order Completed ✨', 'Your Order #128 is completed. Thank you for visiting Cozy Coffee Co.!', 'order', 'orders/track.php?order_id=128', 1, '2026-07-23 15:15:00'),
-(129, 8, 'Order Completed ✨', 'Your Order #129 is completed. Thank you for visiting Cozy Coffee Co.!', 'order', 'orders/track.php?order_id=129', 1, '2026-08-01 12:30:00'),
-(130, 8, 'Order Completed ✨', 'Your Order #130 is completed. Thank you for visiting Cozy Coffee Co.!', 'order', 'orders/track.php?order_id=130', 1, '2026-08-10 16:00:00'),
-(131, 8, 'Order Completed ✨', 'Your Order #131 is completed. Thank you for visiting Cozy Coffee Co.!', 'order', 'orders/track.php?order_id=131', 1, '2026-08-17 11:20:00'),
-(132, 9, 'Order Completed ✨', 'Your Order #132 is completed. Thank you for visiting Cozy Coffee Co.!', 'order', 'orders/track.php?order_id=132', 1, '2026-07-17 14:10:00'),
-(133, 9, 'Order Completed ✨', 'Your Order #133 is completed. Thank you for visiting Cozy Coffee Co.!', 'order', 'orders/track.php?order_id=133', 1, '2026-08-07 10:50:00'),
-(134, 10, 'Order Completed ✨', 'Your Order #134 is completed. Thank you for visiting Cozy Coffee Co.!', 'order', 'orders/track.php?order_id=134', 1, '2026-07-21 09:30:00'),
-(135, 10, 'Order Completed ✨', 'Your Order #135 is completed. Thank you for visiting Cozy Coffee Co.!', 'order', 'orders/track.php?order_id=135', 1, '2026-07-29 15:00:00'),
-(136, 10, 'Order Completed ✨', 'Your Order #136 is completed. Thank you for visiting Cozy Coffee Co.!', 'order', 'orders/track.php?order_id=136', 1, '2026-08-08 11:40:00'),
-(137, 10, 'Order Completed ✨', 'Your Order #137 is completed. Thank you for visiting Cozy Coffee Co.!', 'order', 'orders/track.php?order_id=137', 1, '2026-08-16 16:10:00'),
-(200, 2, '☕ Order #200 Placed!', 'Your order was placed successfully. You earned +13 Cozy Points!', 'order', '../profile/orders.php', 0, '2026-08-21 13:44:23');
+(100, 2, '☕ Order #101 Placed!', 'Your order #101 was placed successfully. Status: Completed.', 'order', '../profile/orders.php', 1, '2026-07-02 15:30:36'),
+(101, 3, '☕ Order #102 Placed!', 'Your order #102 was placed successfully. Status: Completed.', 'order', '../profile/orders.php', 1, '2026-07-03 21:31:13'),
+(102, 4, '☕ Order #103 Placed!', 'Your order #103 was placed successfully. Status: Completed.', 'order', '../profile/orders.php', 1, '2026-07-05 03:31:50'),
+(103, 5, '☕ Order #104 Placed!', 'Your order #104 was placed successfully. Status: Completed.', 'order', '../profile/orders.php', 1, '2026-07-06 09:32:26'),
+(104, 6, '☕ Order #105 Placed!', 'Your order #105 was placed successfully. Status: Completed.', 'order', '../profile/orders.php', 1, '2026-07-07 15:33:03'),
+(105, 7, '☕ Order #106 Placed!', 'Your order #106 was placed successfully. Status: Completed.', 'order', '../profile/orders.php', 1, '2026-07-08 21:33:40'),
+(106, 9, '☕ Order #108 Placed!', 'Your order #108 was placed successfully. Status: Completed.', 'order', '../profile/orders.php', 1, '2026-07-11 09:34:53'),
+(107, 10, '☕ Order #109 Placed!', 'Your order #109 was placed successfully. Status: Completed.', 'order', '../profile/orders.php', 1, '2026-07-12 15:35:30'),
+(108, 1, '☕ Order #110 Placed!', 'Your order #110 was placed successfully. Status: Completed.', 'order', '../profile/orders.php', 1, '2026-07-13 21:36:07'),
+(109, 2, '☕ Order #111 Placed!', 'Your order #111 was placed successfully. Status: Completed.', 'order', '../profile/orders.php', 1, '2026-07-15 03:36:44'),
+(110, 3, '☕ Order #112 Placed!', 'Your order #112 was placed successfully. Status: Completed.', 'order', '../profile/orders.php', 1, '2026-07-16 09:37:20'),
+(111, 4, '☕ Order #113 Placed!', 'Your order #113 was placed successfully. Status: Completed.', 'order', '../profile/orders.php', 1, '2026-07-17 15:37:57'),
+(112, 6, '☕ Order #115 Placed!', 'Your order #115 was placed successfully. Status: Completed.', 'order', '../profile/orders.php', 1, '2026-07-20 03:39:11'),
+(113, 7, '☕ Order #116 Placed!', 'Your order #116 was placed successfully. Status: Completed.', 'order', '../profile/orders.php', 1, '2026-07-21 09:39:47'),
+(114, 8, '☕ Order #117 Placed!', 'Your order #117 was placed successfully. Status: Completed.', 'order', '../profile/orders.php', 1, '2026-07-22 15:40:24'),
+(115, 9, '☕ Order #118 Placed!', 'Your order #118 was placed successfully. Status: Completed.', 'order', '../profile/orders.php', 1, '2026-07-23 21:41:01'),
+(116, 10, '☕ Order #119 Placed!', 'Your order #119 was placed successfully. Status: Completed.', 'order', '../profile/orders.php', 1, '2026-07-25 03:41:37'),
+(117, 1, '☕ Order #120 Placed!', 'Your order #120 was placed successfully. Status: Completed.', 'order', '../profile/orders.php', 1, '2026-07-26 09:42:14'),
+(118, 3, '☕ Order #122 Placed!', 'Your order #122 was placed successfully. Status: Completed.', 'order', '../profile/orders.php', 1, '2026-07-28 21:43:28'),
+(119, 4, '☕ Order #123 Placed!', 'Your order #123 was placed successfully. Status: Completed.', 'order', '../profile/orders.php', 1, '2026-07-30 03:44:04'),
+(120, 5, '☕ Order #124 Placed!', 'Your order #124 was placed successfully. Status: Completed.', 'order', '../profile/orders.php', 1, '2026-07-31 09:44:41'),
+(121, 6, '☕ Order #125 Placed!', 'Your order #125 was placed successfully. Status: Completed.', 'order', '../profile/orders.php', 1, '2026-08-01 15:45:18'),
+(122, 7, '☕ Order #126 Placed!', 'Your order #126 was placed successfully. Status: Completed.', 'order', '../profile/orders.php', 1, '2026-08-02 21:45:55'),
+(123, 8, '☕ Order #127 Placed!', 'Your order #127 was placed successfully. Status: Completed.', 'order', '../profile/orders.php', 1, '2026-08-04 03:46:31'),
+(124, 10, '☕ Order #129 Placed!', 'Your order #129 was placed successfully. Status: Completed.', 'order', '../profile/orders.php', 1, '2026-08-06 15:47:45'),
+(125, 1, '☕ Order #130 Placed!', 'Your order #130 was placed successfully. Status: Completed.', 'order', '../profile/orders.php', 1, '2026-08-07 21:48:22'),
+(126, 2, '☕ Order #131 Placed!', 'Your order #131 was placed successfully. Status: Completed.', 'order', '../profile/orders.php', 1, '2026-08-09 03:48:58'),
+(127, 3, '☕ Order #132 Placed!', 'Your order #132 was placed successfully. Status: Completed.', 'order', '../profile/orders.php', 1, '2026-08-10 09:49:35'),
+(128, 4, '☕ Order #133 Placed!', 'Your order #133 was placed successfully. Status: Completed.', 'order', '../profile/orders.php', 1, '2026-08-11 15:50:12'),
+(129, 5, '☕ Order #134 Placed!', 'Your order #134 was placed successfully. Status: Completed.', 'order', '../profile/orders.php', 1, '2026-08-12 21:50:48'),
+(130, 7, '☕ Order #136 Placed!', 'Your order #136 was placed successfully. Status: Completed.', 'order', '../profile/orders.php', 1, '2026-08-15 09:52:02'),
+(131, 8, '☕ Order #137 Placed!', 'Your order #137 was placed successfully. Status: Completed.', 'order', '../profile/orders.php', 1, '2026-08-16 15:52:39'),
+(132, 9, '☕ Order #138 Placed!', 'Your order #138 was placed successfully. Status: Completed.', 'order', '../profile/orders.php', 1, '2026-08-17 21:53:15'),
+(133, 10, '☕ Order #139 Placed!', 'Your order #139 was placed successfully. Status: Completed.', 'order', '../profile/orders.php', 1, '2026-08-19 03:53:52'),
+(134, 1, '☕ Order #140 Placed!', 'Your order #140 was placed successfully. Status: Completed.', 'order', '../profile/orders.php', 1, '2026-08-20 09:54:29'),
+(135, 2, '☕ Order #141 Placed!', 'Your order #141 was placed successfully. Status: Completed.', 'order', '../profile/orders.php', 1, '2026-08-21 15:55:06'),
+(136, 4, '☕ Order #143 Placed!', 'Your order #143 was placed successfully. Status: Completed.', 'order', '../profile/orders.php', 1, '2026-08-24 03:56:19'),
+(137, 5, '☕ Order #144 Placed!', 'Your order #144 was placed successfully. Status: Completed.', 'order', '../profile/orders.php', 1, '2026-08-25 09:56:56'),
+(138, 6, '☕ Order #145 Placed!', 'Your order #145 was placed successfully. Status: Completed.', 'order', '../profile/orders.php', 1, '2026-08-26 15:57:33'),
+(139, 7, '☕ Order #146 Placed!', 'Your order #146 was placed successfully. Status: Completed.', 'order', '../profile/orders.php', 1, '2026-08-27 21:58:09'),
+(140, 8, '☕ Order #147 Placed!', 'Your order #147 was placed successfully. Status: Ready.', 'order', '../profile/orders.php', 1, '2026-08-29 03:58:46'),
+(141, 9, '☕ Order #148 Placed!', 'Your order #148 was placed successfully. Status: Preparing.', 'order', '../profile/orders.php', 1, '2026-08-30 09:59:23'),
+(200, 1, '☕ Order #150 Placed!', 'Your order was placed successfully. You earned +79 Cozy Points!', 'order', '../profile/orders.php', 0, '2026-08-31 05:02:30');
 
 -- --------------------------------------------------------
 
@@ -504,66 +509,64 @@ CREATE TABLE IF NOT EXISTS `orders` (
   `special_instructions` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
   PRIMARY KEY (`order_id`),
   KEY `user_id` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=201 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=151 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `orders`
 --
 
 INSERT INTO `orders` (`order_id`, `user_id`, `order_date`, `total_amount`, `status`, `fulfillment_type`, `table_number`, `payment_method`, `contact_number`, `delivery_address`, `byo_tumbler`, `byo_container`, `special_instructions`) VALUES
-(1, 1, '2026-08-12 14:48:19', 18.90, 'Completed', 'Dine-In', NULL, 'Pay at Counter', NULL, NULL, 0, 0, NULL),
-(2, NULL, '2026-08-19 02:18:15', 28.50, 'Completed', 'Takeaway Pickup', NULL, 'Pay at Counter', '012-9998888', NULL, 1, 0, NULL),
-(3, 1, '2026-08-19 02:18:15', 28.50, 'Completed', 'Dine-In', 'Table 4', 'Pay at Counter', '012-9998888', NULL, 1, 0, NULL),
-(4, 1, '2026-08-19 02:19:16', 13.90, 'Completed', 'Dine-In', 'Table 1', 'Pay at Counter', '+601120970647', NULL, 0, 0, NULL),
-(5, NULL, '2026-08-19 02:19:43', 13.90, 'Completed', 'Dine-In', 'Table 1', 'Pay at Counter', '+601120970647', NULL, 0, 0, NULL),
-(6, NULL, '2026-08-19 02:20:53', 13.90, 'Completed', 'Dine-In', 'Table 1', 'Online Banking (FPX)', '+601120970647', NULL, 0, 0, NULL),
-(7, NULL, '2026-08-19 02:21:09', 13.90, 'Completed', 'Dine-In', 'Table 1', 'Credit/Debit Card', '+601120970647', NULL, 0, 0, NULL),
-(8, NULL, '2026-08-19 02:21:25', 13.90, 'Completed', 'Dine-In', 'Table 1', 'Touch \'n Go E-Wallet', '+601120970647', NULL, 0, 0, NULL),
-(9, 1, '2026-08-19 02:22:11', 13.90, 'Completed', 'Dine-In', 'Table 12', 'Credit/Debit Card', '+601120970647', NULL, 0, 0, NULL),
-(10, 1, '2026-08-19 02:25:52', 35.00, 'Completed', 'Dine-In', 'Table 7', 'Online Banking (FPX)', '012-3334444', NULL, 1, 0, NULL),
-(11, 1, '2026-08-19 02:26:27', 13.90, 'Completed', 'Dine-In', 'Table 12', 'Credit/Debit Card', '+601120970647', NULL, 0, 0, NULL),
-(12, 1, '2026-08-19 02:46:55', 13.90, 'Preparing', 'Dine-In', 'Table 1', 'Pay at Counter', '+601120970647', NULL, 0, 0, NULL),
-(13, 1, '2026-08-19 02:54:27', 12.90, 'Preparing', 'Takeaway Pickup', NULL, 'Pay at Counter', '+601120970647', NULL, 1, 1, NULL),
-(14, NULL, '2026-08-19 05:05:51', 13.90, 'Completed', 'Dine-In', 'Table 1', 'Pay at Counter', '+601120970647', NULL, 0, 0, NULL),
-(15, NULL, '2026-08-19 05:53:15', 15.90, 'Completed', 'Dine-In', 'Table 1', 'Pay at Counter', '+601120970647', NULL, 0, 0, NULL),
-(101, 4, '2026-07-02 10:15:00', 31.80, 'Completed', 'Dine-In', 'T-04', 'Credit Card', '012-3489123', '', 0, 0, 'Less ice please'),
-(102, 4, '2026-07-10 14:30:00', 41.70, 'Completed', 'Takeaway', '', 'E-Wallet (TNG)', '012-3489123', '', 0, 0, 'Less ice please'),
-(103, 4, '2026-07-18 09:45:00', 38.80, 'Completed', 'Dine-In', 'T-02', 'Pay at Counter', '012-3489123', '', 0, 0, 'Less ice please'),
-(104, 4, '2026-07-28 16:20:00', 48.70, 'Completed', 'Dine-In', 'T-07', 'Credit Card', '012-3489123', '', 0, 0, 'Less ice please'),
-(105, 4, '2026-08-05 11:10:00', 31.80, 'Completed', 'Takeaway', '', 'E-Wallet (TNG)', '012-3489123', '', 0, 0, 'Less ice please'),
-(106, 4, '2026-08-18 15:40:00', 28.80, 'Completed', 'Dine-In', 'T-04', 'Credit Card', '012-3489123', '', 0, 0, 'Less ice please'),
-(107, 5, '2026-07-04 12:00:00', 40.80, 'Completed', 'Dine-In', 'T-01', 'Credit Card', '016-8829102', '', 0, 0, 'Less ice please'),
-(108, 5, '2026-07-09 15:20:00', 31.80, 'Completed', 'Takeaway', '', 'E-Wallet (TNG)', '016-8829102', '', 0, 0, 'Less ice please'),
-(109, 5, '2026-07-15 11:45:00', 47.70, 'Completed', 'Dine-In', 'T-03', 'Credit Card', '016-8829102', '', 0, 0, 'Less ice please'),
-(110, 5, '2026-07-22 14:10:00', 40.70, 'Completed', 'Dine-In', 'T-05', 'Pay at Counter', '016-8829102', '', 0, 0, 'Less ice please'),
-(111, 5, '2026-07-30 09:30:00', 29.80, 'Completed', 'Takeaway', '', 'E-Wallet (TNG)', '016-8829102', '', 0, 0, 'Less ice please'),
-(112, 5, '2026-08-06 16:50:00', 34.80, 'Completed', 'Dine-In', 'T-08', 'Credit Card', '016-8829102', '', 0, 0, 'Less ice please'),
-(113, 5, '2026-08-12 10:30:00', 29.80, 'Completed', 'Dine-In', 'T-01', 'Credit Card', '016-8829102', '', 0, 0, 'Less ice please'),
-(114, 5, '2026-08-19 13:15:00', 31.80, 'Completed', 'Takeaway', '', 'E-Wallet (TNG)', '016-8829102', '', 0, 0, 'Less ice please'),
-(115, 6, '2026-07-06 11:00:00', 43.70, 'Completed', 'Dine-In', 'T-06', 'Pay at Counter', '019-2231904', '', 0, 0, 'Less ice please'),
-(116, 6, '2026-07-21 15:45:00', 28.80, 'Completed', 'Takeaway', '', 'Credit Card', '019-2231904', '', 0, 0, 'Less ice please'),
-(117, 6, '2026-08-11 10:20:00', 38.80, 'Completed', 'Dine-In', 'T-06', 'Pay at Counter', '019-2231904', '', 0, 0, 'Less ice please'),
-(118, 7, '2026-07-09 09:10:00', 29.80, 'Completed', 'Dine-In', 'T-09', 'Credit Card', '011-5540192', '', 0, 0, 'Less ice please'),
-(119, 7, '2026-07-14 14:00:00', 43.70, 'Completed', 'Takeaway', '', 'E-Wallet (TNG)', '011-5540192', '', 0, 0, 'Less ice please'),
-(120, 7, '2026-07-19 11:30:00', 39.80, 'Completed', 'Dine-In', 'T-03', 'Credit Card', '011-5540192', '', 0, 0, 'Less ice please'),
-(121, 7, '2026-07-25 16:15:00', 49.70, 'Completed', 'Dine-In', 'T-09', 'Credit Card', '011-5540192', '', 0, 0, 'Less ice please'),
-(122, 7, '2026-07-31 10:45:00', 29.80, 'Completed', 'Takeaway', '', 'E-Wallet (TNG)', '011-5540192', '', 0, 0, 'Less ice please'),
-(123, 7, '2026-08-04 13:50:00', 34.80, 'Completed', 'Dine-In', 'T-02', 'Credit Card', '011-5540192', '', 0, 0, 'Less ice please'),
-(124, 7, '2026-08-09 15:10:00', 31.80, 'Completed', 'Takeaway', '', 'E-Wallet (TNG)', '011-5540192', '', 0, 0, 'Less ice please'),
-(125, 7, '2026-08-15 11:00:00', 53.70, 'Completed', 'Dine-In', 'T-09', 'Credit Card', '011-5540192', '', 0, 0, 'Less ice please'),
-(126, 7, '2026-08-20 14:25:00', 29.80, 'Completed', 'Dine-In', 'T-04', 'Credit Card', '011-5540192', '', 0, 0, 'Less ice please'),
-(127, 8, '2026-07-13 10:40:00', 45.70, 'Completed', 'Dine-In', 'T-05', 'Pay at Counter', '017-9921043', '', 0, 0, 'Less ice please'),
-(128, 8, '2026-07-23 15:15:00', 28.80, 'Completed', 'Takeaway', '', 'Credit Card', '017-9921043', '', 0, 0, 'Less ice please'),
-(129, 8, '2026-08-01 12:30:00', 33.80, 'Completed', 'Dine-In', 'T-07', 'Pay at Counter', '017-9921043', '', 0, 0, 'Less ice please'),
-(130, 8, '2026-08-10 16:00:00', 27.80, 'Completed', 'Takeaway', '', 'Credit Card', '017-9921043', '', 0, 0, 'Less ice please'),
-(131, 8, '2026-08-17 11:20:00', 38.80, 'Completed', 'Dine-In', 'T-05', 'Credit Card', '017-9921043', '', 0, 0, 'Less ice please'),
-(132, 9, '2026-07-17 14:10:00', 29.80, 'Completed', 'Dine-In', 'T-08', 'Credit Card', '013-4412095', '', 0, 0, 'Less ice please'),
-(133, 9, '2026-08-07 10:50:00', 40.80, 'Completed', 'Takeaway', '', 'E-Wallet (TNG)', '013-4412095', '', 0, 0, 'Less ice please'),
-(134, 10, '2026-07-21 09:30:00', 31.80, 'Completed', 'Dine-In', 'T-10', 'Credit Card', '018-7712940', '', 0, 0, 'Less ice please'),
-(135, 10, '2026-07-29 15:00:00', 43.70, 'Completed', 'Takeaway', '', 'Credit Card', '018-7712940', '', 0, 0, 'Less ice please'),
-(136, 10, '2026-08-08 11:40:00', 34.80, 'Completed', 'Dine-In', 'T-10', 'Pay at Counter', '018-7712940', '', 0, 0, 'Less ice please'),
-(137, 10, '2026-08-16 16:10:00', 38.80, 'Completed', 'Dine-In', 'T-02', 'Credit Card', '018-7712940', '', 0, 0, 'Less ice please'),
-(200, 2, '2026-08-21 13:44:23', 13.90, 'Pending', 'Dine-In', 'Table 1', 'Pay at Counter', '+60123456789', NULL, 0, 0, NULL);
+(100, NULL, '2026-07-01 03:10:12', 54.70, 'Completed', 'Dine-In', 'Table 1', 'Pay at Counter', '012-9466196', NULL, 1, 1, NULL),
+(101, 2, '2026-07-02 06:17:25', 73.50, 'Completed', 'Takeaway Pickup', NULL, 'Online Banking (FPX)', '+60123456789', NULL, 0, 0, NULL),
+(102, 3, '2026-07-04 09:24:38', 35.80, 'Completed', 'Dine-In', 'Table 3', 'Credit/Debit Card', '+60192723941', NULL, 0, 0, NULL),
+(103, 4, '2026-07-05 03:31:51', 14.90, 'Completed', 'Takeaway Pickup', NULL, 'Touch \'n Go E-Wallet', '012-3489123', NULL, 0, 0, NULL),
+(104, 5, '2026-07-06 06:38:18', 70.50, 'Completed', 'Dine-In', 'Table 5', 'Pay at Counter', '016-8829102', NULL, 0, 0, NULL),
+(105, 6, '2026-07-07 09:45:31', 31.80, 'Completed', 'Takeaway Pickup', NULL, 'Online Banking (FPX)', '019-2231904', NULL, 1, 0, NULL),
+(106, 7, '2026-07-09 03:52:44', 88.50, 'Completed', 'Dine-In', 'Table 7', 'Credit/Debit Card', '011-5540192', NULL, 0, 0, NULL),
+(107, NULL, '2026-07-10 06:11:57', 39.70, 'Completed', 'Takeaway Pickup', NULL, 'Touch \'n Go E-Wallet', '012-9272106', NULL, 0, 0, NULL),
+(108, 9, '2026-07-11 09:18:24', 67.90, 'Completed', 'Dine-In', 'Table 9', 'Pay at Counter', '013-4412095', NULL, 0, 1, NULL),
+(109, 10, '2026-07-12 03:25:37', 53.80, 'Completed', 'Takeaway Pickup', NULL, 'Online Banking (FPX)', '018-7712940', NULL, 0, 0, NULL),
+(110, 1, '2026-07-14 06:32:50', 75.30, 'Completed', 'Dine-In', 'Table 11', 'Credit/Debit Card', '+601120970647', NULL, 1, 0, NULL),
+(111, 2, '2026-07-15 09:39:17', 32.80, 'Completed', 'Takeaway Pickup', NULL, 'Touch \'n Go E-Wallet', '+60123456789', NULL, 0, 0, NULL),
+(112, 3, '2026-07-16 03:46:30', 73.60, 'Completed', 'Dine-In', 'Table 1', 'Pay at Counter', '+60192723941', NULL, 0, 0, NULL),
+(113, 4, '2026-07-17 06:53:43', 27.80, 'Completed', 'Takeaway Pickup', NULL, 'Online Banking (FPX)', '012-3489123', NULL, 0, 0, NULL),
+(114, NULL, '2026-07-19 09:12:56', 13.90, 'Completed', 'Dine-In', 'Table 3', 'Credit/Debit Card', '012-4548423', NULL, 0, 0, NULL),
+(115, 6, '2026-07-20 03:19:23', 20.50, 'Completed', 'Takeaway Pickup', NULL, 'Touch \'n Go E-Wallet', '019-2231904', NULL, 1, 0, NULL),
+(116, 7, '2026-07-21 06:26:36', 58.90, 'Completed', 'Dine-In', 'Table 5', 'Pay at Counter', '011-5540192', NULL, 0, 1, NULL),
+(117, 8, '2026-07-22 09:33:49', 68.40, 'Completed', 'Takeaway Pickup', NULL, 'Online Banking (FPX)', '017-9921043', NULL, 0, 0, NULL),
+(118, 9, '2026-07-24 03:40:16', 15.90, 'Completed', 'Dine-In', 'Table 7', 'Credit/Debit Card', '013-4412095', NULL, 0, 0, NULL),
+(119, 10, '2026-07-25 06:47:29', 35.80, 'Completed', 'Takeaway Pickup', NULL, 'Touch \'n Go E-Wallet', '018-7712940', NULL, 0, 0, NULL),
+(120, 1, '2026-07-26 09:54:42', 79.50, 'Completed', 'Dine-In', 'Table 9', 'Pay at Counter', '+601120970647', NULL, 1, 0, NULL),
+(121, NULL, '2026-07-27 03:13:55', 27.80, 'Completed', 'Takeaway Pickup', NULL, 'Online Banking (FPX)', '012-5036772', NULL, 0, 0, NULL),
+(122, 3, '2026-07-29 06:20:22', 48.80, 'Completed', 'Dine-In', 'Table 11', 'Credit/Debit Card', '+60192723941', NULL, 0, 0, NULL),
+(123, 4, '2026-07-30 09:27:35', 50.80, 'Completed', 'Takeaway Pickup', NULL, 'Touch \'n Go E-Wallet', '012-3489123', NULL, 0, 0, NULL),
+(124, 5, '2026-07-31 03:34:48', 59.60, 'Completed', 'Dine-In', 'Table 1', 'Pay at Counter', '016-8829102', NULL, 0, 1, NULL),
+(125, 6, '2026-08-01 06:41:15', 102.60, 'Completed', 'Takeaway Pickup', NULL, 'Online Banking (FPX)', '019-2231904', NULL, 1, 0, NULL),
+(126, 7, '2026-08-03 09:48:28', 61.60, 'Completed', 'Dine-In', 'Table 3', 'Credit/Debit Card', '011-5540192', NULL, 0, 0, NULL),
+(127, 8, '2026-08-04 03:55:41', 66.70, 'Completed', 'Takeaway Pickup', NULL, 'Touch \'n Go E-Wallet', '017-9921043', NULL, 0, 0, NULL),
+(128, NULL, '2026-08-05 06:14:54', 40.80, 'Completed', 'Dine-In', 'Table 5', 'Pay at Counter', '012-9034706', NULL, 0, 0, NULL),
+(129, 10, '2026-08-06 09:21:21', 69.50, 'Completed', 'Takeaway Pickup', NULL, 'Online Banking (FPX)', '018-7712940', NULL, 0, 0, NULL),
+(130, 1, '2026-08-08 03:28:34', 55.60, 'Completed', 'Dine-In', 'Table 7', 'Credit/Debit Card', '+601120970647', NULL, 1, 0, NULL),
+(131, 2, '2026-08-09 06:35:47', 41.00, 'Completed', 'Takeaway Pickup', NULL, 'Touch \'n Go E-Wallet', '+60123456789', NULL, 0, 0, NULL),
+(132, 3, '2026-08-10 09:42:14', 18.00, 'Completed', 'Dine-In', 'Table 9', 'Pay at Counter', '+60192723941', NULL, 0, 1, NULL),
+(133, 4, '2026-08-11 03:49:27', 73.50, 'Completed', 'Takeaway Pickup', NULL, 'Online Banking (FPX)', '012-3489123', NULL, 0, 0, NULL),
+(134, 5, '2026-08-13 06:56:40', 77.50, 'Completed', 'Dine-In', 'Table 11', 'Credit/Debit Card', '016-8829102', NULL, 0, 0, NULL),
+(135, NULL, '2026-08-14 09:15:53', 42.70, 'Completed', 'Takeaway Pickup', NULL, 'Touch \'n Go E-Wallet', '012-2771396', NULL, 1, 0, NULL),
+(136, 7, '2026-08-15 03:22:20', 80.70, 'Completed', 'Dine-In', 'Table 1', 'Pay at Counter', '011-5540192', NULL, 0, 0, NULL),
+(137, 8, '2026-08-16 06:29:33', 83.40, 'Completed', 'Takeaway Pickup', NULL, 'Online Banking (FPX)', '017-9921043', NULL, 0, 0, NULL),
+(138, 9, '2026-08-18 09:36:46', 26.80, 'Completed', 'Dine-In', 'Table 3', 'Credit/Debit Card', '013-4412095', NULL, 0, 0, NULL),
+(139, 10, '2026-08-19 03:43:13', 81.80, 'Completed', 'Takeaway Pickup', NULL, 'Touch \'n Go E-Wallet', '018-7712940', NULL, 0, 0, NULL),
+(140, 1, '2026-08-20 06:50:26', 9.00, 'Completed', 'Dine-In', 'Table 5', 'Pay at Counter', '+601120970647', NULL, 1, 1, NULL),
+(141, 2, '2026-08-21 09:57:39', 43.70, 'Completed', 'Takeaway Pickup', NULL, 'Online Banking (FPX)', '+60123456789', NULL, 0, 0, NULL),
+(142, NULL, '2026-08-23 03:16:52', 63.50, 'Completed', 'Dine-In', 'Table 7', 'Credit/Debit Card', '012-9143457', NULL, 0, 0, NULL),
+(143, 4, '2026-08-24 06:23:19', 41.70, 'Completed', 'Takeaway Pickup', NULL, 'Touch \'n Go E-Wallet', '012-3489123', NULL, 0, 0, NULL),
+(144, 5, '2026-08-25 09:30:32', 11.50, 'Completed', 'Dine-In', 'Table 9', 'Pay at Counter', '016-8829102', NULL, 0, 0, NULL),
+(145, 6, '2026-08-26 03:37:45', 18.00, 'Completed', 'Takeaway Pickup', NULL, 'Online Banking (FPX)', '019-2231904', NULL, 1, 0, NULL),
+(146, 7, '2026-08-28 06:44:12', 81.60, 'Completed', 'Dine-In', 'Table 11', 'Credit/Debit Card', '011-5540192', NULL, 0, 0, NULL),
+(147, 8, '2026-08-29 09:51:25', 32.80, 'Ready', 'Takeaway Pickup', NULL, 'Touch \'n Go E-Wallet', '017-9921043', NULL, 0, 0, NULL),
+(148, 9, '2026-08-30 03:10:38', 30.80, 'Preparing', 'Dine-In', 'Table 1', 'Pay at Counter', '013-4412095', NULL, 0, 1, NULL),
+(149, NULL, '2026-08-30 06:17:51', 39.70, 'Pending', 'Takeaway Pickup', NULL, 'Online Banking (FPX)', '012-9072375', NULL, 0, 0, NULL),
+(150, 1, '2026-08-31 09:24:18', 79.10, 'Pending', 'Dine-In', 'Table 1', 'Pay at Counter', '+601120970647', NULL, 0, 0, NULL);
 
 -- --------------------------------------------------------
 
@@ -582,99 +585,125 @@ CREATE TABLE IF NOT EXISTS `order_items` (
   PRIMARY KEY (`order_item_id`),
   KEY `order_id` (`order_id`),
   KEY `item_id` (`item_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=201 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=305 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `order_items`
 --
 
 INSERT INTO `order_items` (`order_item_id`, `order_id`, `item_id`, `quantity`, `price_at_order`, `item_options`) VALUES
-(1, 1, 2, 1, 13.90, 'Hot, No Sugar'),
-(2, 2, 8, 2, 14.25, 'Iced, Less Sugar'),
-(3, 4, 5, 1, 13.90, 'Regular Ice, Regular Sugar'),
-(4, 5, 5, 1, 13.90, 'Regular Ice, Regular Sugar'),
-(5, 6, 5, 1, 13.90, 'Regular Ice, Regular Sugar'),
-(6, 7, 3, 1, 13.90, 'Regular Ice, Regular Sugar'),
-(7, 8, 3, 1, 13.90, 'Regular Ice, Regular Sugar'),
-(8, 9, 36, 1, 13.90, 'Regular Ice, Regular Sugar'),
-(9, 11, 36, 1, 13.90, 'Regular Ice, Regular Sugar'),
-(10, 12, 2, 1, 13.90, 'Regular Ice, Regular Sugar'),
-(11, 13, 4, 1, 12.90, 'Regular Ice, Regular Sugar'),
-(12, 14, 3, 1, 13.90, 'Regular Ice, Regular Sugar'),
-(13, 15, 14, 1, 15.90, 'Regular Ice, Regular Sugar'),
-(101, 101, 2, 1, 13.90, 'Standard'),
-(102, 101, 24, 1, 17.90, 'Standard'),
-(103, 102, 3, 2, 13.90, 'Standard'),
-(104, 102, 15, 1, 13.90, 'Standard'),
-(105, 103, 5, 1, 13.90, 'Standard'),
-(106, 103, 28, 1, 24.90, 'Standard'),
-(107, 104, 2, 2, 13.90, 'Standard'),
-(108, 104, 25, 1, 20.90, 'Standard'),
-(109, 105, 13, 1, 15.90, 'Standard'),
-(110, 105, 14, 1, 15.90, 'Standard'),
-(111, 106, 2, 1, 13.90, 'Standard'),
-(112, 106, 8, 1, 14.90, 'Standard'),
-(113, 107, 14, 1, 15.90, 'Standard'),
-(114, 107, 28, 1, 24.90, 'Standard'),
-(115, 108, 13, 2, 15.90, 'Standard'),
-(116, 109, 2, 1, 13.90, 'Standard'),
-(117, 109, 21, 1, 15.90, 'Standard'),
-(118, 109, 24, 1, 17.90, 'Standard'),
-(119, 110, 6, 2, 12.90, 'Standard'),
-(120, 110, 17, 1, 14.90, 'Standard'),
-(121, 111, 14, 1, 15.90, 'Standard'),
-(122, 111, 3, 1, 13.90, 'Standard'),
-(123, 112, 25, 1, 20.90, 'Standard'),
-(124, 112, 22, 1, 13.90, 'Standard'),
-(125, 113, 2, 1, 13.90, 'Standard'),
-(126, 113, 13, 1, 15.90, 'Standard'),
-(127, 114, 14, 2, 15.90, 'Standard'),
-(128, 115, 4, 2, 12.90, 'Standard'),
-(129, 115, 24, 1, 17.90, 'Standard'),
-(130, 116, 5, 1, 13.90, 'Standard'),
-(131, 116, 8, 1, 14.90, 'Standard'),
-(132, 117, 2, 1, 13.90, 'Standard'),
-(133, 117, 28, 1, 24.90, 'Standard'),
-(134, 118, 13, 1, 15.90, 'Standard'),
-(135, 118, 22, 1, 13.90, 'Standard'),
-(136, 119, 2, 2, 13.90, 'Standard'),
-(137, 119, 14, 1, 15.90, 'Standard'),
-(138, 120, 28, 1, 24.90, 'Standard'),
-(139, 120, 17, 1, 14.90, 'Standard'),
-(140, 121, 21, 2, 15.90, 'Standard'),
-(141, 121, 24, 1, 17.90, 'Standard'),
-(142, 122, 13, 1, 15.90, 'Standard'),
-(143, 122, 3, 1, 13.90, 'Standard'),
-(144, 123, 2, 1, 13.90, 'Standard'),
-(145, 123, 25, 1, 20.90, 'Standard'),
-(146, 124, 14, 2, 15.90, 'Standard'),
-(147, 125, 2, 1, 13.90, 'Standard'),
-(148, 125, 28, 1, 24.90, 'Standard'),
-(149, 125, 16, 1, 14.90, 'Standard'),
-(150, 126, 13, 1, 15.90, 'Standard'),
-(151, 126, 2, 1, 13.90, 'Standard'),
-(152, 127, 5, 2, 13.90, 'Standard'),
-(153, 127, 24, 1, 17.90, 'Standard'),
-(154, 128, 2, 1, 13.90, 'Standard'),
-(155, 128, 8, 1, 14.90, 'Standard'),
-(156, 129, 25, 1, 20.90, 'Standard'),
-(157, 129, 4, 1, 12.90, 'Standard'),
-(158, 130, 3, 2, 13.90, 'Standard'),
-(159, 131, 2, 1, 13.90, 'Standard'),
-(160, 131, 28, 1, 24.90, 'Standard'),
-(161, 132, 13, 1, 15.90, 'Standard'),
-(162, 132, 22, 1, 13.90, 'Standard'),
-(163, 133, 14, 1, 15.90, 'Standard'),
-(164, 133, 28, 1, 24.90, 'Standard'),
-(165, 134, 2, 1, 13.90, 'Standard'),
-(166, 134, 24, 1, 17.90, 'Standard'),
-(167, 135, 8, 2, 14.90, 'Standard'),
-(168, 135, 15, 1, 13.90, 'Standard'),
-(169, 136, 25, 1, 20.90, 'Standard'),
-(170, 136, 5, 1, 13.90, 'Standard'),
-(171, 137, 2, 1, 13.90, 'Standard'),
-(172, 137, 28, 1, 24.90, 'Standard'),
-(200, 200, 3, 1, 13.90, 'Regular Ice, Regular Sugar');
+(100, 100, 5, 1, 13.90, 'Regular Ice, Regular Sugar'),
+(101, 100, 14, 1, 15.90, 'Regular Ice, Less Sugar'),
+(102, 100, 28, 1, 24.90, 'Standard'),
+(103, 101, 3, 2, 13.90, 'Regular Ice, Less Sugar'),
+(104, 101, 24, 2, 17.90, 'Note: Extra cheese'),
+(105, 101, 31, 1, 9.90, 'Standard'),
+(106, 102, 24, 2, 17.90, 'Note: Extra cheese'),
+(107, 103, 35, 1, 14.90, 'Less Ice, Less Sugar'),
+(108, 104, 24, 2, 17.90, 'Note: Extra cheese'),
+(109, 104, 31, 2, 9.90, 'Standard'),
+(110, 104, 35, 1, 14.90, 'Less Ice, Less Sugar'),
+(111, 105, 13, 2, 15.90, 'Less Ice, Regular Sugar'),
+(112, 106, 25, 2, 20.90, 'Note: Well done'),
+(113, 106, 33, 2, 15.90, 'Standard'),
+(114, 106, 35, 1, 14.90, 'Less Ice, Less Sugar'),
+(115, 107, 3, 1, 13.90, 'Regular Ice, Less Sugar'),
+(116, 107, 4, 2, 12.90, 'Hot, No Sugar'),
+(117, 108, 24, 1, 17.90, 'Note: Extra cheese'),
+(118, 108, 46, 1, 9.00, 'Hot, No Sugar'),
+(119, 108, 82, 2, 20.50, 'Standard'),
+(120, 109, 24, 2, 17.90, 'Note: Extra cheese'),
+(121, 109, 46, 2, 9.00, 'Hot, No Sugar'),
+(122, 110, 13, 2, 15.90, 'Less Ice, Regular Sugar'),
+(123, 110, 48, 2, 11.50, 'Hot, Less Sugar'),
+(124, 110, 82, 1, 20.50, 'Standard'),
+(125, 111, 8, 1, 14.90, 'Hot, Regular Sugar'),
+(126, 111, 24, 1, 17.90, 'Note: Extra cheese'),
+(127, 112, 2, 2, 13.90, 'Regular Ice, Regular Sugar'),
+(128, 112, 25, 1, 20.90, 'Note: Well done'),
+(129, 112, 28, 1, 24.90, 'Standard'),
+(130, 113, 3, 2, 13.90, 'Regular Ice, Less Sugar'),
+(131, 114, 5, 1, 13.90, 'Regular Ice, Regular Sugar'),
+(132, 115, 82, 1, 20.50, 'Standard'),
+(133, 116, 24, 1, 17.90, 'Note: Extra cheese'),
+(134, 116, 82, 2, 20.50, 'Standard'),
+(135, 117, 28, 1, 24.90, 'Standard'),
+(136, 117, 48, 2, 11.50, 'Hot, Less Sugar'),
+(137, 117, 82, 1, 20.50, 'Standard'),
+(138, 118, 33, 1, 15.90, 'Standard'),
+(139, 119, 24, 2, 17.90, 'Note: Extra cheese'),
+(140, 120, 13, 1, 15.90, 'Less Ice, Regular Sugar'),
+(141, 120, 14, 2, 15.90, 'Regular Ice, Less Sugar'),
+(142, 120, 33, 2, 15.90, 'Standard'),
+(143, 121, 2, 2, 13.90, 'Regular Ice, Regular Sugar'),
+(144, 122, 4, 2, 12.90, 'Hot, No Sugar'),
+(145, 122, 48, 2, 11.50, 'Hot, Less Sugar'),
+(146, 123, 2, 2, 13.90, 'Regular Ice, Regular Sugar'),
+(147, 123, 48, 2, 11.50, 'Hot, Less Sugar'),
+(148, 124, 2, 2, 13.90, 'Regular Ice, Regular Sugar'),
+(149, 124, 33, 2, 15.90, 'Standard'),
+(150, 125, 8, 2, 14.90, 'Hot, Regular Sugar'),
+(151, 125, 14, 2, 15.90, 'Regular Ice, Less Sugar'),
+(152, 125, 82, 2, 20.50, 'Standard'),
+(153, 126, 2, 2, 13.90, 'Regular Ice, Regular Sugar'),
+(154, 126, 14, 1, 15.90, 'Regular Ice, Less Sugar'),
+(155, 126, 24, 1, 17.90, 'Note: Extra cheese'),
+(156, 127, 25, 2, 20.90, 'Note: Well done'),
+(157, 127, 28, 1, 24.90, 'Standard'),
+(158, 128, 14, 2, 15.90, 'Regular Ice, Less Sugar'),
+(159, 128, 46, 1, 9.00, 'Hot, No Sugar'),
+(160, 129, 5, 2, 13.90, 'Regular Ice, Regular Sugar'),
+(161, 129, 31, 1, 9.90, 'Standard'),
+(162, 129, 33, 2, 15.90, 'Standard'),
+(163, 130, 3, 2, 13.90, 'Regular Ice, Less Sugar'),
+(164, 130, 5, 2, 13.90, 'Regular Ice, Regular Sugar'),
+(165, 131, 82, 2, 20.50, 'Standard'),
+(166, 132, 46, 2, 9.00, 'Hot, No Sugar'),
+(167, 133, 3, 2, 13.90, 'Regular Ice, Less Sugar'),
+(168, 133, 8, 2, 14.90, 'Hot, Regular Sugar'),
+(169, 133, 14, 1, 15.90, 'Regular Ice, Less Sugar'),
+(170, 134, 13, 1, 15.90, 'Less Ice, Regular Sugar'),
+(171, 134, 25, 2, 20.90, 'Note: Well done'),
+(172, 134, 31, 2, 9.90, 'Standard'),
+(173, 135, 24, 1, 17.90, 'Note: Extra cheese'),
+(174, 135, 31, 1, 9.90, 'Standard'),
+(175, 135, 35, 1, 14.90, 'Less Ice, Less Sugar'),
+(176, 136, 2, 1, 13.90, 'Regular Ice, Regular Sugar'),
+(177, 136, 4, 2, 12.90, 'Hot, No Sugar'),
+(178, 136, 82, 2, 20.50, 'Standard'),
+(179, 137, 2, 2, 13.90, 'Regular Ice, Regular Sugar'),
+(180, 137, 4, 2, 12.90, 'Hot, No Sugar'),
+(181, 137, 35, 2, 14.90, 'Less Ice, Less Sugar'),
+(182, 138, 4, 1, 12.90, 'Hot, No Sugar'),
+(183, 138, 5, 1, 13.90, 'Regular Ice, Regular Sugar'),
+(184, 139, 28, 2, 24.90, 'Standard'),
+(185, 139, 48, 1, 11.50, 'Hot, Less Sugar'),
+(186, 139, 82, 1, 20.50, 'Standard'),
+(187, 140, 46, 1, 9.00, 'Hot, No Sugar'),
+(188, 141, 2, 1, 13.90, 'Regular Ice, Regular Sugar'),
+(189, 141, 8, 1, 14.90, 'Hot, Regular Sugar'),
+(190, 141, 35, 1, 14.90, 'Less Ice, Less Sugar'),
+(191, 142, 2, 1, 13.90, 'Regular Ice, Regular Sugar'),
+(192, 142, 8, 2, 14.90, 'Hot, Regular Sugar'),
+(193, 142, 31, 2, 9.90, 'Standard'),
+(194, 143, 4, 1, 12.90, 'Hot, No Sugar'),
+(195, 143, 31, 2, 9.90, 'Standard'),
+(196, 143, 46, 1, 9.00, 'Hot, No Sugar'),
+(197, 144, 48, 1, 11.50, 'Hot, Less Sugar'),
+(198, 145, 46, 2, 9.00, 'Hot, No Sugar'),
+(199, 146, 28, 2, 24.90, 'Standard'),
+(200, 146, 33, 2, 15.90, 'Standard'),
+(201, 147, 24, 1, 17.90, 'Note: Extra cheese'),
+(202, 147, 35, 1, 14.90, 'Less Ice, Less Sugar'),
+(203, 148, 33, 1, 15.90, 'Standard'),
+(204, 148, 35, 1, 14.90, 'Less Ice, Less Sugar'),
+(205, 149, 4, 2, 12.90, 'Hot, No Sugar'),
+(206, 149, 5, 1, 13.90, 'Regular Ice, Regular Sugar'),
+(300, 150, 59, 1, 12.00, 'Regular Ice, Regular Sugar'),
+(301, 150, 24, 1, 17.90, ''),
+(302, 150, 82, 1, 20.50, ''),
+(303, 150, 81, 1, 15.90, ''),
+(304, 150, 43, 1, 15.80, 'Hot, No Sugar');
 
 -- --------------------------------------------------------
 
@@ -728,48 +757,49 @@ CREATE TABLE IF NOT EXISTS `points_history` (
 --
 
 INSERT INTO `points_history` (`id`, `user_id`, `points`, `description`, `created_at`) VALUES
-(1, 1, -50, 'Redeemed Coupon: COZY3OFF', '2026-08-12 15:40:57'),
-(2, 1, 13, 'Earned from Order #11', '2026-08-19 02:26:27'),
-(3, 1, 13, 'Earned from Order #12', '2026-08-19 02:46:55'),
-(4, 1, 22, 'Earned from Order #13 (includes +10 BYO Eco Bonus)', '2026-08-19 02:54:27'),
-(101, 4, 318, 'Earned from Order #101', '2026-07-02 10:15:00'),
-(102, 4, 417, 'Earned from Order #102', '2026-07-10 14:30:00'),
-(103, 4, 388, 'Earned from Order #103', '2026-07-18 09:45:00'),
-(104, 4, 487, 'Earned from Order #104', '2026-07-28 16:20:00'),
-(105, 4, 318, 'Earned from Order #105', '2026-08-05 11:10:00'),
-(106, 4, 288, 'Earned from Order #106', '2026-08-18 15:40:00'),
-(107, 5, 408, 'Earned from Order #107', '2026-07-04 12:00:00'),
-(108, 5, 318, 'Earned from Order #108', '2026-07-09 15:20:00'),
-(109, 5, 477, 'Earned from Order #109', '2026-07-15 11:45:00'),
-(110, 5, 407, 'Earned from Order #110', '2026-07-22 14:10:00'),
-(111, 5, 298, 'Earned from Order #111', '2026-07-30 09:30:00'),
-(112, 5, 348, 'Earned from Order #112', '2026-08-06 16:50:00'),
-(113, 5, 298, 'Earned from Order #113', '2026-08-12 10:30:00'),
-(114, 5, 318, 'Earned from Order #114', '2026-08-19 13:15:00'),
-(115, 6, 437, 'Earned from Order #115', '2026-07-06 11:00:00'),
-(116, 6, 288, 'Earned from Order #116', '2026-07-21 15:45:00'),
-(117, 6, 388, 'Earned from Order #117', '2026-08-11 10:20:00'),
-(118, 7, 298, 'Earned from Order #118', '2026-07-09 09:10:00'),
-(119, 7, 437, 'Earned from Order #119', '2026-07-14 14:00:00'),
-(120, 7, 398, 'Earned from Order #120', '2026-07-19 11:30:00'),
-(121, 7, 497, 'Earned from Order #121', '2026-07-25 16:15:00'),
-(122, 7, 298, 'Earned from Order #122', '2026-07-31 10:45:00'),
-(123, 7, 348, 'Earned from Order #123', '2026-08-04 13:50:00'),
-(124, 7, 318, 'Earned from Order #124', '2026-08-09 15:10:00'),
-(125, 7, 537, 'Earned from Order #125', '2026-08-15 11:00:00'),
-(126, 7, 298, 'Earned from Order #126', '2026-08-20 14:25:00'),
-(127, 8, 457, 'Earned from Order #127', '2026-07-13 10:40:00'),
-(128, 8, 288, 'Earned from Order #128', '2026-07-23 15:15:00'),
-(129, 8, 338, 'Earned from Order #129', '2026-08-01 12:30:00'),
-(130, 8, 278, 'Earned from Order #130', '2026-08-10 16:00:00'),
-(131, 8, 388, 'Earned from Order #131', '2026-08-17 11:20:00'),
-(132, 9, 298, 'Earned from Order #132', '2026-07-17 14:10:00'),
-(133, 9, 408, 'Earned from Order #133', '2026-08-07 10:50:00'),
-(134, 10, 318, 'Earned from Order #134', '2026-07-21 09:30:00'),
-(135, 10, 437, 'Earned from Order #135', '2026-07-29 15:00:00'),
-(136, 10, 348, 'Earned from Order #136', '2026-08-08 11:40:00'),
-(137, 10, 388, 'Earned from Order #137', '2026-08-16 16:10:00'),
-(200, 2, 13, 'Earned from Order #200', '2026-08-21 13:44:23');
+(100, 2, 73, 'Earned from Order #101', '2026-07-02 06:17:25'),
+(101, 3, 35, 'Earned from Order #102', '2026-07-04 09:24:38'),
+(102, 4, 14, 'Earned from Order #103', '2026-07-05 03:31:51'),
+(103, 5, 70, 'Earned from Order #104', '2026-07-06 06:38:18'),
+(104, 6, 41, 'Earned from Order #105 (includes +10 BYO Eco Bonus)', '2026-07-07 09:45:31'),
+(105, 7, 88, 'Earned from Order #106', '2026-07-09 03:52:44'),
+(106, 9, 67, 'Earned from Order #108', '2026-07-11 09:18:24'),
+(107, 10, 53, 'Earned from Order #109', '2026-07-12 03:25:37'),
+(108, 1, 85, 'Earned from Order #110 (includes +10 BYO Eco Bonus)', '2026-07-14 06:32:50'),
+(109, 2, 32, 'Earned from Order #111', '2026-07-15 09:39:17'),
+(110, 3, 73, 'Earned from Order #112', '2026-07-16 03:46:30'),
+(111, 4, 27, 'Earned from Order #113', '2026-07-17 06:53:43'),
+(112, 6, 30, 'Earned from Order #115 (includes +10 BYO Eco Bonus)', '2026-07-20 03:19:23'),
+(113, 7, 58, 'Earned from Order #116', '2026-07-21 06:26:36'),
+(114, 8, 68, 'Earned from Order #117', '2026-07-22 09:33:49'),
+(115, 9, 15, 'Earned from Order #118', '2026-07-24 03:40:16'),
+(116, 10, 35, 'Earned from Order #119', '2026-07-25 06:47:29'),
+(117, 1, 89, 'Earned from Order #120 (includes +10 BYO Eco Bonus)', '2026-07-26 09:54:42'),
+(118, 3, 48, 'Earned from Order #122', '2026-07-29 06:20:22'),
+(119, 4, 50, 'Earned from Order #123', '2026-07-30 09:27:35'),
+(120, 5, 59, 'Earned from Order #124', '2026-07-31 03:34:48'),
+(121, 6, 112, 'Earned from Order #125 (includes +10 BYO Eco Bonus)', '2026-08-01 06:41:15'),
+(122, 7, 61, 'Earned from Order #126', '2026-08-03 09:48:28'),
+(123, 8, 66, 'Earned from Order #127', '2026-08-04 03:55:41'),
+(124, 10, 69, 'Earned from Order #129', '2026-08-06 09:21:21'),
+(125, 1, 65, 'Earned from Order #130 (includes +10 BYO Eco Bonus)', '2026-08-08 03:28:34'),
+(126, 2, 41, 'Earned from Order #131', '2026-08-09 06:35:47'),
+(127, 3, 18, 'Earned from Order #132', '2026-08-10 09:42:14'),
+(128, 4, 73, 'Earned from Order #133', '2026-08-11 03:49:27'),
+(129, 5, 77, 'Earned from Order #134', '2026-08-13 06:56:40'),
+(130, 7, 80, 'Earned from Order #136', '2026-08-15 03:22:20'),
+(131, 8, 83, 'Earned from Order #137', '2026-08-16 06:29:33'),
+(132, 9, 26, 'Earned from Order #138', '2026-08-18 09:36:46'),
+(133, 10, 81, 'Earned from Order #139', '2026-08-19 03:43:13'),
+(134, 1, 19, 'Earned from Order #140 (includes +10 BYO Eco Bonus)', '2026-08-20 06:50:26'),
+(135, 2, 43, 'Earned from Order #141', '2026-08-21 09:57:39'),
+(136, 4, 41, 'Earned from Order #143', '2026-08-24 06:23:19'),
+(137, 5, 11, 'Earned from Order #144', '2026-08-25 09:30:32'),
+(138, 6, 28, 'Earned from Order #145 (includes +10 BYO Eco Bonus)', '2026-08-26 03:37:45'),
+(139, 7, 81, 'Earned from Order #146', '2026-08-28 06:44:12'),
+(140, 8, 32, 'Earned from Order #147', '2026-08-29 09:51:25'),
+(141, 9, 30, 'Earned from Order #148', '2026-08-30 03:10:38'),
+(200, 1, 79, 'Earned from Order #150', '2026-08-31 09:24:18');
 
 -- --------------------------------------------------------
 
@@ -870,16 +900,16 @@ CREATE TABLE IF NOT EXISTS `users` (
 --
 
 INSERT INTO `users` (`id`, `fullname`, `email`, `username`, `password`, `created_at`, `birthday`, `gender`, `phone`, `profile_pic`, `is_rewards_member`, `rewards_points`, `rewards_member_no`, `rewards_joined_at`, `points`, `last_notif_read_at`) VALUES
-(1, 'Jie Ying', 'jieying47@1utar.my', 'laijieying', '$2y$10$kNkzG8Ab1FuWgfVbtbz7P.aGvTAKgdEFHsuzrq5b71TtwwiRVbwxy', '2026-08-01 21:32:31', '2006-04-07', 'Female', '+601120970647', 'user_1_1785652687.jpg', 1, 93, 'CR000001', '2026-08-12 14:42:42', 93, '2026-08-19 15:00:33'),
-(2, 'Chok Shi Ying', 'chokshiying06@gmail.com', 'yingchok', '$2y$10$Amklq4awtRbRlrfNk82VzuzhFOP1gJvuhvZIKXpXmu4k.nj.h2tKm', '2026-08-05 07:57:54', '2006-08-16', '', '+60123456789', 'user_2_1785922625.jpg', 1, 63, 'CR000002', '2026-08-21 13:43:51', 13, '2026-08-21 21:43:58'),
-(3, 'Zhi Qing', 'changzhiqing1996@gmail.com', 'ZhiQing', '$2y$10$tsJdBo23ikIpXBLAYxbyfuOQe7C/yviTlDC54y9nttvNAgWcKOrbG', '2026-08-08 01:47:26', '2006-08-08', NULL, '+60192723941', 'default.png', 1, 50, 'CR000003', '2026-08-08 01:49:04', 50, NULL),
-(4, 'Marcus Tan', 'marcus.tan@gmail.com', 'marcustan', '$2y$10$DfhI19G60L79vSuAcNwRsO..OiI8uqsl8DqW1/s0a0RMxeJl0CBjq', '2026-07-01 09:15:00', '1996-05-14', 'Male', '012-3489123', '', 1, 1850, 'CC-882910', '2026-07-01 09:20:00', 1850, NULL),
-(5, 'Hannah Lim', 'hannah.lim@outlook.com', 'hannahlim', '$2y$10$DfhI19G60L79vSuAcNwRsO..OiI8uqsl8DqW1/s0a0RMxeJl0CBjq', '2026-07-03 11:30:00', '1998-09-22', 'Female', '016-8829102', '', 1, 2400, 'CC-882911', '2026-07-03 11:35:00', 2400, NULL),
-(6, 'David Chen', 'david.chen@yahoo.com', 'davidchen', '$2y$10$DfhI19G60L79vSuAcNwRsO..OiI8uqsl8DqW1/s0a0RMxeJl0CBjq', '2026-07-05 14:10:00', '1993-11-03', 'Male', '019-2231904', '', 1, 920, 'CC-882912', '2026-07-05 14:15:00', 920, NULL),
-(7, 'Chloe Wong', 'chloe.wong@gmail.com', 'chloewong', '$2y$10$DfhI19G60L79vSuAcNwRsO..OiI8uqsl8DqW1/s0a0RMxeJl0CBjq', '2026-07-08 10:05:00', '2001-03-18', 'Female', '011-5540192', '', 1, 3100, 'CC-882913', '2026-07-08 10:10:00', 3100, NULL),
-(8, 'Jason Lee', 'jason.lee@hotmail.com', 'jasonlee', '$2y$10$DfhI19G60L79vSuAcNwRsO..OiI8uqsl8DqW1/s0a0RMxeJl0CBjq', '2026-07-12 16:45:00', '1995-07-29', 'Male', '017-9921043', '', 1, 1420, 'CC-882914', '2026-07-12 16:50:00', 1420, NULL),
-(9, 'Sophie Taylor', 'sophie.taylor@gmail.com', 'sophietaylor', '$2y$10$DfhI19G60L79vSuAcNwRsO..OiI8uqsl8DqW1/s0a0RMxeJl0CBjq', '2026-07-16 08:20:00', '1999-12-08', 'Female', '013-4412095', '', 1, 780, 'CC-882915', '2026-07-16 08:25:00', 780, NULL),
-(10, 'Lucas Fernandez', 'lucas.fernandez@gmail.com', 'lucasf', '$2y$10$DfhI19G60L79vSuAcNwRsO..OiI8uqsl8DqW1/s0a0RMxeJl0CBjq', '2026-07-20 13:00:00', '1997-04-05', 'Male', '018-7712940', '', 1, 1650, 'CC-882916', '2026-07-20 13:05:00', 1650, NULL);
+(1, 'Lai Jie Ying', 'jieying47@1utar.my', 'laijieying', '$2y$10$.4egBG37CAba/aaidMU9euxnxCNdFN4OsQxvSW/w/yhmZc5Jz0uVy', '2026-07-01 09:00:00', '2006-09-07', 'Female', '+601120970647', 'user_1_1788150667.jpg', 1, 429, 'CR000001', '2026-07-01 09:05:00', 429, NULL),
+(2, 'Chok Shi Ying', 'chokshiying06@gmail.com', 'yingchok', '$2y$10$.4egBG37CAba/aaidMU9euxnxCNdFN4OsQxvSW/w/yhmZc5Jz0uVy', '2026-07-01 10:30:00', '2006-08-16', 'Female', '+60123456789', 'user_2_1785922625.jpg', 1, 280, 'CR000002', '2026-07-01 10:35:00', 280, NULL),
+(3, 'Chang Zhi Qing', 'changzhiqing1996@gmail.com', 'zhiqing', '$2y$10$.4egBG37CAba/aaidMU9euxnxCNdFN4OsQxvSW/w/yhmZc5Jz0uVy', '2026-07-02 11:15:00', '2006-08-08', 'Female', '+60192723941', 'default.png', 1, 210, 'CR000003', '2026-07-02 11:20:00', 210, NULL),
+(4, 'Amy Lee', 'amylee@gmail.com', 'amylee', '$2y$10$.4egBG37CAba/aaidMU9euxnxCNdFN4OsQxvSW/w/yhmZc5Jz0uVy', '2026-07-03 14:00:00', '1998-05-14', 'Female', '012-3489123', 'default.png', 1, 420, 'CR000004', '2026-07-03 14:05:00', 420, NULL),
+(5, 'Chai Xiu Yi', 'xiuyi@gmail.com', 'xiuyi', '$2y$10$.4egBG37CAba/aaidMU9euxnxCNdFN4OsQxvSW/w/yhmZc5Jz0uVy', '2026-07-04 09:45:00', '2001-09-22', 'Female', '016-8829102', 'default.png', 1, 310, 'CR000005', '2026-07-04 09:50:00', 310, NULL),
+(6, 'Alice Lim', 'alice@gmail.com', 'alicelim', '$2y$10$.4egBG37CAba/aaidMU9euxnxCNdFN4OsQxvSW/w/yhmZc5Jz0uVy', '2026-07-05 16:20:00', '1999-11-03', 'Female', '019-2231904', 'default.png', 1, 290, 'CR000006', '2026-07-05 16:25:00', 290, NULL),
+(7, 'Chloe Wong', 'chloe.wong@gmail.com', 'chloewong', '$2y$10$.4egBG37CAba/aaidMU9euxnxCNdFN4OsQxvSW/w/yhmZc5Jz0uVy', '2026-07-06 13:10:00', '2001-03-18', 'Female', '011-5540192', 'default.png', 1, 510, 'CR000007', '2026-07-06 13:15:00', 510, NULL),
+(8, 'Tan Wei Ming', 'weiming.tan@gmail.com', 'weimingtan', '$2y$10$.4egBG37CAba/aaidMU9euxnxCNdFN4OsQxvSW/w/yhmZc5Jz0uVy', '2026-07-08 15:30:00', '1997-07-29', 'Male', '017-9921043', 'default.png', 1, 240, 'CR000008', '2026-07-08 15:35:00', 240, NULL),
+(9, 'Wong Jun Jie', 'junjie.wong@gmail.com', 'junjiewong', '$2y$10$.4egBG37CAba/aaidMU9euxnxCNdFN4OsQxvSW/w/yhmZc5Jz0uVy', '2026-07-10 10:15:00', '2000-12-08', 'Male', '013-4412095', 'default.png', 1, 330, 'CR000009', '2026-07-10 10:20:00', 330, NULL),
+(10, 'Teoh Qi Xuan', 'qixuan.teoh@gmail.com', 'qixuanteoh', '$2y$10$.4egBG37CAba/aaidMU9euxnxCNdFN4OsQxvSW/w/yhmZc5Jz0uVy', '2026-07-12 12:40:00', '1998-04-05', 'Female', '018-7712940', 'default.png', 1, 190, 'CR000010', '2026-07-12 12:45:00', 190, NULL);
 
 -- --------------------------------------------------------
 
@@ -927,6 +957,24 @@ INSERT INTO `user_vouchers` (`id`, `user_id`, `voucher_code`, `discount_amount`,
 --
 ALTER TABLE `activities_photos`
   ADD CONSTRAINT `activities_photos_ibfk_1` FOREIGN KEY (`activity_id`) REFERENCES `activities_posts` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `orders`
+--
+ALTER TABLE `orders`
+  ADD CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE SET NULL;
+
+--
+-- Constraints for table `order_items`
+--
+ALTER TABLE `order_items`
+  ADD CONSTRAINT `order_items_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `orders` (`order_id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `points_history`
+--
+ALTER TABLE `points_history`
+  ADD CONSTRAINT `points_history_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

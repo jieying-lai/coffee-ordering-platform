@@ -11,6 +11,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $customPrice = isset($_POST['custom_price']) ? (float)$_POST['custom_price'] : null;
 
     if ($itemId > 0 && $quantity > 0) {
+        require_once '../includes/db_connect.php';
+        $catStmt = $conn->prepare("SELECT c.category_key, mi.category_id FROM menu_items mi JOIN categories c ON c.category_id = mi.category_id WHERE mi.item_id = ?");
+        if ($catStmt) {
+            $catStmt->bind_param("i", $itemId);
+            $catStmt->execute();
+            $catRes = $catStmt->get_result()->fetch_assoc();
+            $catStmt->close();
+            if ($catRes) {
+                $cKey = strtolower($catRes['category_key'] ?? '');
+                $cId = (int)($catRes['category_id'] ?? 0);
+                if ($cId === 5 || $cId === 6 || in_array($cKey, ['mains', 'desserts', 'food'], true)) {
+                    $temperature = '';
+                    $sweetness = '';
+                }
+            }
+        }
+
         if (!isset($_SESSION['cart'])) {
             $_SESSION['cart'] = [];
         }

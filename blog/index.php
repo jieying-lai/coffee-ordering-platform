@@ -861,8 +861,16 @@ if ($isLoggedIn) {
       </div>
 
       <div class="form-group" style="margin-bottom: 20px;">
-        <label style="font-weight:700; color:#2C1C14; display:block; margin-bottom:6px;">Add New Photos (Optional, max 5 total)</label>
-        <input type="file" name="edit_photos[]" id="editPhotosInput" accept="image/*" multiple onchange="handleFileAccumulate('edit')">
+        <label style="font-weight:700; color:#2C1C14; display:block; margin-bottom:8px;">Add New Photos (Optional, max 5 total)</label>
+        
+        <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+          <label for="editPhotosInput" class="btn-custom-upload" style="cursor: pointer; padding: 10px 18px; background: #FAF4EB; border: 1.5px solid #E8DDD0; border-radius: 20px; font-size: 0.85rem; font-weight: 800; color: #4A3B32; display: inline-flex; align-items: center; gap: 6px; transition: all 0.2s ease; box-shadow: 0 2px 8px rgba(60,42,33,0.04);">
+            <span>📷</span> Add Photos
+          </label>
+          <input type="file" name="edit_photos[]" id="editPhotosInput" accept="image/*" multiple onchange="handleFileAccumulate('edit')" style="display: none;">
+          <span id="editPhotoCountLabel" style="font-size: 0.82rem; color: #7A685A; font-weight: 600;">No photos selected</span>
+        </div>
+
         <div id="editPreviewGrid" style="display: none; gap: 10px; flex-wrap: wrap; margin-top: 12px; padding: 12px; background: #FAF7F2; border: 1.5px dashed #E8DDD0; border-radius: 14px;"></div>
       </div>
 
@@ -1020,16 +1028,17 @@ function handleFileAccumulate(prefix) {
 
 function syncInputFiles(prefix) {
     const inputId = prefix === 'create' ? 'photos' : 'editPhotosInput';
+    const countLabelId = prefix === 'create' ? 'photoCountLabel' : 'editPhotoCountLabel';
     const input = document.getElementById(inputId);
     const stagedArr = prefix === 'create' ? createStagedFiles : editStagedFiles;
-    const countLabel = document.getElementById('photoCountLabel');
+    const countLabel = document.getElementById(countLabelId);
     if (!input) return;
 
     try {
         const dt = new DataTransfer();
         stagedArr.forEach(file => dt.items.add(file));
         input.files = dt.files;
-        if (countLabel && prefix === 'create') {
+        if (countLabel) {
             countLabel.textContent = stagedArr.length > 0 ? `${stagedArr.length} photo(s) selected` : 'No photos selected';
         }
     } catch(e) {
@@ -1132,6 +1141,7 @@ function openUserEditModal(id, item, mood, desc, photos) {
     document.getElementById('editDescription').value = desc;
 
     editStagedFiles = [];
+    syncInputFiles('edit');
     renderStagedPreviews('edit');
 
     const delContainer = document.getElementById('editDeletedPhotoInputs');

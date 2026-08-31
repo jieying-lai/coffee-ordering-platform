@@ -131,7 +131,7 @@ $imgSrc = (stripos($rawImage, 'http://') === 0 || stripos($rawImage, 'https://')
         data-name="<?php echo htmlspecialchars($item['name']); ?>"
         data-price="<?php echo (float)$item['price']; ?>"
         data-image="<?php echo htmlspecialchars($imgSrc); ?>">
-        Add to Cart 🛒
+        Add to Cart
       </button>
 
       <a href="../menu/index.php" class="details-back">← Back to Menu</a>
@@ -202,7 +202,7 @@ $imgSrc = (stripos($rawImage, 'http://') === 0 || stripos($rawImage, 'https://')
     .then(res => res.json())
     .then(data => {
       btn.disabled = false;
-      btn.textContent = 'Add to Cart 🛒';
+      btn.textContent = 'Add to Cart';
       if (data.status === 'success') {
         const msg = document.getElementById('message');
         msg.textContent = `${itemName} added to cart ☕`;
@@ -212,7 +212,7 @@ $imgSrc = (stripos($rawImage, 'http://') === 0 || stripos($rawImage, 'https://')
     })
     .catch(() => {
       btn.disabled = false;
-      btn.textContent = 'Add to Cart 🛒';
+      btn.textContent = 'Add to Cart';
     });
   });
 </script>

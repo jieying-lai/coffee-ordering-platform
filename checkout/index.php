@@ -116,8 +116,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['place_order'])) {
                 } else {
                     foreach ($cartItems as $item) {
                         $optsArr = [];
-                        if (!empty($item['temperature'])) $optsArr[] = $item['temperature'];
-                        if (!empty($item['sweetness'])) $optsArr[] = $item['sweetness'];
+                        $isFoodCat = in_array((int)($item['category_id'] ?? 0), [5, 6], true);
+                        if (!$isFoodCat && !empty($item['temperature'])) $optsArr[] = $item['temperature'];
+                        if (!$isFoodCat && !empty($item['sweetness'])) $optsArr[] = $item['sweetness'];
                         if (!empty($item['remarks'])) $optsArr[] = 'Note: ' . $item['remarks'];
                         $optsStr = implode(', ', $optsArr);
 
@@ -328,7 +329,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['place_order'])) {
                     <input type="radio" name="payment_method" value="Pay at Counter" checked>
                     <span class="payment-label">
                         <span class="payment-icon">💵</span>
-                        Pay at Counter (Cash / Counter QR)
+                        Pay at Counter (Cash)
                     </span>
                 </label>
 

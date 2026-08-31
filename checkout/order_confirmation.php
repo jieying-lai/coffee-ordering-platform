@@ -15,7 +15,7 @@ if ($orderId > 0) {
     $stmt->close();
 
     if ($dbOrder) {
-        $stmt2 = $conn->prepare("SELECT oi.*, mi.name as item_name, mi.image as item_image FROM order_items oi JOIN menu_items mi ON oi.item_id = mi.item_id WHERE oi.order_id = ?");
+        $stmt2 = $conn->prepare("SELECT oi.*, mi.name as item_name, mi.image as item_image, mi.category_id FROM order_items oi JOIN menu_items mi ON oi.item_id = mi.item_id WHERE oi.order_id = ?");
         $stmt2->bind_param("i", $orderId);
         $stmt2->execute();
         $res = $stmt2->get_result();
@@ -169,8 +169,20 @@ if ($orderId > 0) {
                     <?php echo htmlspecialchars($item['item_name']); ?>
                     <span style="color: #C85A3E;">×<?php echo $item['quantity']; ?></span>
                   </div>
-                  <?php if (!empty($item['item_options'])): ?>
-                    <div style="font-size: 0.78rem; color: #7A685A; font-weight: 600;"><?php echo htmlspecialchars($item['item_options']); ?></div>
+                  <?php 
+                    $displayOpts = $item['item_options'] ?? '';
+                    $catId = (int)($item['category_id'] ?? 0);
+                    if (in_array($catId, [5, 6], true)) {
+                      $optsArr = explode(',', $displayOpts);
+                      $filteredOpts = array_filter($optsArr, function($o) {
+                        $t = trim($o);
+                        return !in_array($t, ['Regular Ice', 'Regular Sugar', 'No Ice', 'Less Ice', 'Warm', 'Hot', 'Less Sugar', 'No Sugar'], true);
+                      });
+                      $displayOpts = implode(', ', $filteredOpts);
+                    }
+                  ?>
+                  <?php if (!empty($displayOpts)): ?>
+                    <div style="font-size: 0.78rem; color: #7A685A; font-weight: 600;"><?php echo htmlspecialchars($displayOpts); ?></div>
                   <?php endif; ?>
                 </div>
               </div>

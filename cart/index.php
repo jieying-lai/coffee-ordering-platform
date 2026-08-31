@@ -270,11 +270,12 @@ $appliedFreeItemId = $_SESSION['applied_promo']['free_item_id'] ?? null;
                             </div>
                             
                             <!-- Display Custom Choices as Tag Chips -->
+                            <?php $isFoodCategory = in_array((int)$item['category_id'], [5, 6], true); ?>
                             <div class="item-options" style="margin-top:4px;">
-                                <?php if (!empty($item['temperature'])): ?>
+                                <?php if (!$isFoodCategory && !empty($item['temperature'])): ?>
                                     <span class="tag-chip tag-chip-temp"><?php echo htmlspecialchars($item['temperature']); ?></span>
                                 <?php endif; ?>
-                                <?php if (!empty($item['sweetness'])): ?>
+                                <?php if (!$isFoodCategory && !empty($item['sweetness'])): ?>
                                     <span class="tag-chip tag-chip-sweet"><?php echo htmlspecialchars($item['sweetness']); ?></span>
                                 <?php endif; ?>
                             </div>
@@ -324,7 +325,7 @@ $appliedFreeItemId = $_SESSION['applied_promo']['free_item_id'] ?? null;
 
         <!-- SELECT MY VOUCHER BUTTON -->
         <button type="button" onclick="openVoucherModal()" style="width: 100%; margin-bottom: 12px; font-weight: 800; border-radius: 10px; padding: 10px 14px; border: 1.5px solid #E5D9CC; background: #FFFBF5; color: #2C1C14; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.03);">
-          <span>🎟️</span> Select My Voucher / Claimed Coupons
+          <span>🎟️</span> Select My Voucher
         </button>
 
         <div style="font-size: 0.78rem; color: #8A7769; font-weight: 700; margin-bottom: 8px; display: flex; align-items: center; gap: 5px; background: #FAF5EE; padding: 6px 10px; border-radius: 8px; border: 1px solid #E8DDD0;">

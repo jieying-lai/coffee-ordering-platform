@@ -148,7 +148,7 @@ while ($row = $categories->fetch_assoc()) {
               <input type="number" name="quantity" id="itemQty" value="1" min="1" max="99" readonly>
               <button type="button" id="qtyPlus">+</button>
             </div>
-            <button type="submit" class="submit-cart-btn" id="submitCartBtn" style="padding: 12px 18px; font-size: 0.95rem; font-weight: 700;">Add to Cart ☕</button>
+            <button type="submit" class="submit-cart-btn" id="submitCartBtn" style="padding: 12px 18px; font-size: 0.95rem; font-weight: 700;">Add to Cart</button>
           </div>
         </div>
       </div>
@@ -257,6 +257,10 @@ while ($row = $categories->fetch_assoc()) {
   addToCartForm.addEventListener('submit', function(e) {
     e.preventDefault();
     const formData = new FormData(addToCartForm);
+    if (drinkOptionsSection.style.display === 'none') {
+      formData.delete('temperature');
+      formData.delete('sweetness');
+    }
     formData.append('ajax', '1');
 
     submitCartBtn.disabled = true;

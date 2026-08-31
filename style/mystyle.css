@@ -53,6 +53,7 @@ a { text-decoration: none; color: inherit; }
 /* ============ NAVIGATION ============ */
 /* ============ NAVIGATION (High-End Dark Roasted Espresso) ============ */
 nav, .user-main-nav {
+  font-family: var(--font-body) !important;
   display: flex;
   align-items: center;
   justify-content: space-between;
