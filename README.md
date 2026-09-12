@@ -1,4 +1,3 @@
-```markdown
 <div align="center">
 
   # ☕ Cozy Coffee Co. — Full-Stack Café Ordering & Management Platform
