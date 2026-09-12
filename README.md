@@ -16,7 +16,7 @@
 
 ## 📌 Project Overview
 
-**Cozy Coffee Co.** is a complete, responsive commercial café web application engineered for the **UECS2094 / UECS2194 / EECS2194 Web Application Development** coursework at Universiti Tunku Abdul Rahman (UTAR).
+**Cozy Coffee Co.** is a complete, responsive commercial café web application engineered for the **UECS2194 Web Application Development** coursework at Universiti Tunku Abdul Rahman (UTAR).
 
 The platform bridges consumer-facing hospitality workflows with administrative back-office operations. It allows patrons to explore handcrafted beverage catalogs, customize item recipes, place dynamic orders, track barista preparation progress in real time, redeem loyalty vouchers, and interact on the "Coffee Moments" community blog. Behind the scenes, an authenticated administrative dashboard provides end-to-end management over menu items, order fulfillment, promotional vouchers, and customer service inquiries.
 
