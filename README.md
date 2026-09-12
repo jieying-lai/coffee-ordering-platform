@@ -173,9 +173,3 @@ For project assessment and grading evaluation, use the following pre-seeded test
 * **Admin Module Protection**: `admin/manage_about.php` is protected by administrative session authentication guards and accessible via direct path pending sidebar navigation integration.
 
 ---
-
-## 🎥 Video Demonstration
-
-* **Project Walkthrough & Feature Demo**: [Cozy Coffee Co. - Demonstration Video](https://drive.google.com/file/d/10qJF2oBf9TigdZ_np3nhsxpVN-UlAGTC/view?usp=sharing)
-
----
