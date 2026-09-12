@@ -1,6 +1,6 @@
 <div align="center">
 
-  # ☕ Cozy Coffee Co. — Full-Stack Café Ordering & Management Platform
+  # ☕ Cozy Coffee Co. [Full-Stack Café Ordering & Management Platform]
 
   **A framework-free, responsive commercial café ordering, live preparation tracking, and loyalty management system.**
 
