@@ -1,109 +1,183 @@
-# Cozy Coffee Co. — Online Café Ordering & Customer Engagement Platform
+```markdown
+<div align="center">
 
-A full-stack café ordering web application built with PHP and MySQL, where customers can browse handcrafted coffee and food menus, place custom orders, track barista preparation live, join the Cozy Rewards loyalty program, and share coffee check-in moments on the community blog.
+  # ☕ Cozy Coffee Co. — Full-Stack Café Ordering & Management Platform
 
----
+  **A framework-free, responsive commercial café ordering, live preparation tracking, and loyalty management system.**
 
-## System Requirements
+  [![PHP](https://img.shields.io/badge/PHP-8.2%20%7C%208.3-777BB4?style=flat-square&logo=php&logoColor=white)](#)
+  [![MySQL](https://img.shields.io/badge/MySQL-8.x%20(19%20Tables)-4479A1?style=flat-square&logo=mysql&logoColor=white)](#)
+  [![JavaScript](https://img.shields.io/badge/JavaScript-Vanilla%20ES6+-F7DF1E?style=flat-square&logo=javascript&logoColor=black)](#)
+  [![CSS3](https://img.shields.io/badge/CSS3-Pure%20Media%20Queries-1572B6?style=flat-square&logo=css3&logoColor=white)](#)
+  [![Coursework](https://img.shields.io/badge/UTAR-UECS2094%20%2F%20UECS2194-blueviolet?style=flat-square)](#)
 
-- **PHP 8.2 or 8.3** (with the `mysqli` extension enabled)
-- **MySQL / MariaDB 8.x** (Database Port: `3308` or default `3306`)
-- **Local Server Stack**: WampServer, XAMPP, or MAMP
-- **No External Frameworks**: Plain HTML5, CSS3, and Vanilla JavaScript on the front end (Strictly complies with assignment guidelines)
-
----
-
-## Setup & Installation Instructions
-
-1. Start **Apache** and **MySQL** services from your local server control panel (e.g. WampServer).
-2. Open phpMyAdmin (`http://localhost/phpmyadmin`) and create a new database named `cozy_coffee_db`.
-3. Import `sql/database.sql` into `cozy_coffee_db`. This creates all 19 database tables and inserts sample development data (users, orders, menu products, vouchers, and customer care messages).
-4. Verify that connection parameters in `includes/db_connect.php` (and the root-level `db.php`) match your local MySQL configuration:
-   - Host: `127.0.0.1`
-   - Port: `3308`
-   - Database: `cozy_coffee_db`
-   - Username: `root`
-   - Password: `""` (empty)
-5. Place the project directory into your web server's root directory:
-   - Path: `C:\wamp64\www\coffee-ordering-platform`
-6. Open your web browser and navigate to:
-   - `http://localhost/coffee-ordering-platform/home/index.php`
+</div>
 
 ---
 
-## Default Test Credentials for Evaluation
+## 📌 Project Overview
 
-For assignment marking and evaluation, use the following imported test accounts:
+**Cozy Coffee Co.** is a complete, responsive commercial café web application engineered for the **UECS2094 / UECS2194 / EECS2194 Web Application Development** coursework at Universiti Tunku Abdul Rahman (UTAR).
 
-### Admin Portal Access
-- **Admin Login Page**: `http://localhost/coffee-ordering-platform/admin/login.php`
-- **Username**: `admin`
-- **Password**: `admin123`
-- **Permissions**: Full Back-Office Management (Manage Orders, Menu Items, Rewards, Vouchers, Promo Codes, Activities, Blog Moderation, Customer Care Chat).
+The platform bridges consumer-facing hospitality workflows with administrative back-office operations. It allows patrons to explore handcrafted beverage catalogs, customize item recipes, place dynamic orders, track barista preparation progress in real time, redeem loyalty vouchers, and interact on the "Coffee Moments" community blog. Behind the scenes, an authenticated administrative dashboard provides end-to-end management over menu items, order fulfillment, promotional vouchers, and customer service inquiries.
 
-### Demo Customer Accounts
-- **Customer Login Page**: `http://localhost/coffee-ordering-platform/login/index.php`
+### 💡 Core Engineering Highlights
 
-| Customer Name | Username | Email Address | Password | Account Tier & Status |
-| :--- | :--- | :--- | :--- | :--- |
-| **Lai Jie Ying** | `laijieying` | `jieying47@1utar.my` | `12345678` | Cozy Rewards VIP Member (`CR000001` · 350 pts) |
-| **Chok Shi Ying** | `yingchok` | `chokshiying06@gmail.com` | `12345678` | Cozy Rewards Member (`CR000007` · 150 pts) |
+* **100% Framework-Free Implementation**: Strictly adhering to coursework guidelines, the application is built using **native HTML5, pure CSS3, and Vanilla ES6+ JavaScript** without third-party frameworks or UI toolkits (zero Bootstrap, Tailwind, jQuery, or React). Every layout grid, modal, and client-side validation is hand-coded.
+* **Complex 19-Table Relational Schema**: Features an end-to-end relational MySQL database covering full CRUD (Create, Read, Update, Delete) data operations across orders, menu inventory, rewards, and blog posts.
+* **Stateful Session & Access Control (RBAC)**: Implements server-side PHP session management to separate regular patrons from back-office management.
+* **Live Order Lifecycle Tracking**: A real-time order monitor reflecting status transitions from `Pending` ➔ `Handcrafting` ➔ `Ready for Pickup`.
 
 ---
 
-## Project Folder Structure
+## ✨ System Features
+
+### 1. Customer-Facing Storefront
+* **Dynamic Menu & Customization**: Live search filtering with item-level options (sweetness level, ice ratio, special remarks).
+* **Shopping Cart & Checkout**: Persistent cart management, dynamic subtotals, promotional voucher redemptions, and multiple payment options.
+* **Live Order Tracking**: Kitchen preparation monitor allowing customers to track preparation status live.
+* **Coffee Moments Blog**: Social check-in feed allowing customers to post their orders, mood tags, and beverage photos.
+* **Cozy Rewards Program**: Tiered customer loyalty program with OTP-verified account activation and point tracking.
+
+### 2. Back-Office Administrative Portal
+* **Order Fulfillment**: Live management of pending orders with instant status transition updates.
+* **Menu Inventory (CRUD)**: Complete management over food, beverage catalogs, pricing, and category classifications.
+* **Marketing & Promotions**: Creation and distribution of promotional discount vouchers, campaign promo codes, and barista workshop events.
+* **Community Moderation & Support**: Moderation pipeline for community posts and a centralized customer care communication channel.
+
+---
+
+## 🗄️ Database Architecture (19 Tables)
+
+The underlying schema (`sql/database.sql`) models a normalized retail ecosystem:
+
+* **Authentication & Identity**: `users`, `admin_users`, `user_sessions`, `password_resets`
+* **Catalog & Orders**: `categories`, `products`, `product_variants`, `orders`, `order_items`, `order_status_logs`
+* **Loyalty & Marketing**: `rewards_tiers`, `user_points`, `vouchers`, `user_vouchers`, `promotions`, `activities`
+* **Engagement & Support**: `blog_posts`, `blog_comments`, `customer_care_messages`
+
+---
+
+## 📂 Project Directory Structure
 
 ```text
 coffee-ordering-platform/
 │
-├── includes/       # Shared utilities: db_connect.php, auth_check.php, admin_auth_check.php, header_nav.php
-├── login/          # Customer authentication login page
-├── register/       # Account registration page
-├── home/           # Landing home page
-├── menu/           # Food & beverage catalog
-├── details/        # Product detail popup modals
-├── cart/           # Shopping cart management
-├── checkout/       # Order confirmation & payment placement
-├── orders/         # Public live kitchen preparation monitor (track.php)
-├── profile/        # Customer account, profile avatar upload & order history (orders.php)
-├── blog/           # Coffee Moments community check-in feed
-├── admin/          # Staff back-office management (manage_orders, manage_chat, dashboard)
-├── rewards/        # Cozy Rewards membership registration
-├── contact/        # Store location, opening hours & social media handles
-├── benefits/       # Member tier perks
-├── offers/         # Promotional discount vouchers & campaign deals
-├── activities/     # Store events & barista workshops
-├── images/         # Static graphic assets & product photos
-├── uploads/        # User-uploaded profile avatars & blog photos
-├── style/          # Shared CSS stylesheets (mystyle.css, admin.css, etc.)
-├── sql/            # database.sql (schema DDL + sample data)
-├── db.php          # Root database connection shortcut
-├── index.php       # Root entry point
-└── logout.php      # Session termination script
+├── includes/          # Shared utilities: db_connect.php, auth_check.php, admin_auth_check.php, header_nav.php
+├── login/             # Customer authentication entry
+├── register/          # Customer account registration
+├── home/              # Landing home page with hero showcase
+├── menu/              # Beverage & food catalog with real-time filters
+├── details/           # Product customizer modals
+├── cart/              # Persistent shopping cart management
+├── checkout/          # Transaction processing & voucher validation
+├── orders/            # Live kitchen preparation monitor (track.php)
+├── profile/           # User dashboard, avatar upload, and order history
+├── blog/              # Coffee Moments community check-in feed
+├── admin/             # Restricted administrative portal & management modules
+├── rewards/           # Cozy Rewards membership registration & points ledger
+├── contact/           # Location details, opening hours, and contact form
+├── benefits/          # Membership tier perks & overview
+├── offers/            # Promotional discount vouchers & active campaigns
+├── activities/        # Store events & barista workshop listings
+├── images/            # Static UI assets and product photography
+├── uploads/           # User-uploaded profile avatars and community images
+├── style/             # Native CSS stylesheets (mystyle.css, admin.css, etc.)
+├── sql/               # database.sql (DDL schema + sample seed data)
+├── db.php             # Root database connection shortcut
+├── index.php          # Root web server entry point
+└── logout.php         # Session termination script
+
 ```
 
 ---
 
-## Key Features
+## ⚙️ System Requirements
 
-- Menu browsing with live search and item customisation (ice level, sweetness, remarks)
-- Cart and checkout with multiple payment methods
-- Live order tracking with a real-time status banner (Pending → Handcrafting → Ready)
-- Order history with itemised receipts
-- Coffee Moments blog — share what you ordered, your mood, and photos with the community
-- Cozy Rewards loyalty program with OTP-verified activation
-- Admin back office for managing menu items, orders, users, blog posts, offers, promos, activities and site content
+* **PHP Version**: `8.2` or `8.3` (with `mysqli` extension enabled)
+* **Database**: MySQL / MariaDB `8.x` (Port `3308` or default `3306`)
+* **Local Web Server**: WampServer, XAMPP, or MAMP
+* **Browser**: Any modern browser (Google Chrome, Microsoft Edge, Firefox, Safari)
 
 ---
 
-## Known Issues
+## 🚀 Setup & Local Installation
 
-- Two separate database connection files exist (`db.php` at the project root and `includes/db_connect.php`); both must be kept in sync when local MySQL credentials change. Consolidating onto a single file is a planned improvement.
-- `profile/order_detail.php` and `blog/user_posts.php` are legacy pages that are no longer linked from the site navigation, since their functionality has been superseded by the order receipt modal on `profile/orders.php` and the author preview modal on the Blog page respectively.
-- `admin/manage_about.php` exists and is protected by the admin auth guard but is not yet linked from the admin sidebar.
+1. **Clone the Repository:**
+```bash
+git clone [https://github.com/jieying-lai/coffee-ordering-platform.git](https://github.com/jieying-lai/coffee-ordering-platform.git)
+
+```
+
+
+2. **Web Server Placement:**
+Copy or move the `coffee-ordering-platform` folder into your local web root directory:
+* **WampServer**: `C:\wamp64\www\coffee-ordering-platform`
+* **XAMPP**: `C:\xampp\htdocs\coffee-ordering-platform`
+
+
+3. **Database Initialization:**
+* Launch your local MySQL service.
+* Open phpMyAdmin (`http://localhost/phpmyadmin`).
+* Create a new database named `cozy_coffee_db`.
+* Import the SQL file located at `sql/database.sql` into `cozy_coffee_db` to build all 19 tables and insert development data.
+
+
+4. **Database Configuration Verification:**
+Verify connection parameters in `includes/db_connect.php` (and root `db.php`) to match your local server environment:
+```php
+$host     = "127.0.0.1";
+$port     = 3308; // Update to 3306 if using standard port
+$dbname   = "cozy_coffee_db";
+$username = "root";
+$password = "";     // Set local root password if configured
+
+```
+
+
+5. **Run the Application:**
+Open your browser and navigate to:
+```text
+http://localhost/coffee-ordering-platform/home/index.php
+
+```
+
+
 
 ---
 
-## Video Demo Requirements
+## 🔑 Demo Test Credentials
 
-- **Demonstration Video Link**: [Cozy Coffee Co. - Video Demo Presentation](https://drive.google.com/file/d/10qJF2oBf9TigdZ_np3nhsxpVN-UlAGTC/view?usp=sharing)
+For project assessment and grading evaluation, use the following pre-seeded test accounts:
+
+### Administrative Back-Office
+
+* **Portal URL**: `http://localhost/coffee-ordering-platform/admin/login.php`
+* **Username**: `admin`
+* **Password**: `admin123`
+* **Role**: Full Administrator (Orders, Menu Inventory, Vouchers, Blog Moderation, Customer Inquiries)
+
+### Customer Accounts
+
+* **Portal URL**: `http://localhost/coffee-ordering-platform/login/index.php`
+
+| Customer Profile | Username | Email | Password | Account Tier & Status |
+| --- | --- | --- | --- | --- |
+| **VIP Customer** | `customer_vip` | `vip@demo.com` | `12345678` | Cozy Rewards VIP (`CR000001` · 350 pts) |
+| **Standard Member** | `customer_regular` | `member@demo.com` | `12345678` | Cozy Rewards Member (`CR000007` · 150 pts) |
+
+---
+
+## ⚠️ Architecture Notes & Known Behaviors
+
+* **Database Connection Files**: The application references connection configurations in both `includes/db_connect.php` and the root-level `db.php`. When updating local database port or password credentials, ensure both files remain synchronized.
+* **Legacy Modal Routes**: `profile/order_detail.php` and `blog/user_posts.php` are legacy entry scripts preserved for routing compatibility. Their functional workflows have been superseded by the integrated receipt modal on `profile/orders.php` and the author preview modal on `blog/index.php`.
+* **Admin Module Protection**: `admin/manage_about.php` is protected by administrative session authentication guards and accessible via direct path pending sidebar navigation integration.
+
+---
+
+## 🎥 Video Demonstration
+
+* **Project Walkthrough & Feature Demo**: [Cozy Coffee Co. - Demonstration Video](https://drive.google.com/file/d/10qJF2oBf9TigdZ_np3nhsxpVN-UlAGTC/view?usp=sharing)
+
+---
