@@ -8,7 +8,6 @@
   [![MySQL](https://img.shields.io/badge/MySQL-8.x%20(19%20Tables)-4479A1?style=flat-square&logo=mysql&logoColor=white)](#)
   [![JavaScript](https://img.shields.io/badge/JavaScript-Vanilla%20ES6+-F7DF1E?style=flat-square&logo=javascript&logoColor=black)](#)
   [![CSS3](https://img.shields.io/badge/CSS3-Pure%20Media%20Queries-1572B6?style=flat-square&logo=css3&logoColor=white)](#)
-  [![Coursework](https://img.shields.io/badge/UTAR-UECS2094%20%2F%20UECS2194-blueviolet?style=flat-square)](#)
 
 </div>
 
